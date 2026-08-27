@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { NAV_ITEMS, SITE_CONFIG } from "@/data/siteData";
 import { Logo } from "@/components/ui/Logo";
 import { LinkedinIcon } from "@/components/ui/LinkedinIcon";
@@ -11,22 +12,27 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = NAV_ITEMS.map((item) => item.href.substring(1));
-      const scrollPosition = window.scrollY + 120;
+      if (pathname === "/") {
+        const sections = NAV_ITEMS.filter((i) => !i.isRoute).map((item) =>
+          item.href.replace("/#", "").replace("#", "")
+        );
+        const scrollPosition = window.scrollY + 120;
 
-      for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(sectionId);
-            break;
+        for (const sectionId of sections) {
+          const el = document.getElementById(sectionId);
+          if (el) {
+            const top = el.offsetTop;
+            const height = el.offsetHeight;
+            if (scrollPosition >= top && scrollPosition < top + height) {
+              setActiveSection(sectionId);
+              break;
+            }
           }
         }
       }
@@ -34,7 +40,7 @@ export function Navbar() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
 
   return (
     <header
@@ -48,7 +54,7 @@ export function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link
-            href="#"
+            href="/"
             id="nav-logo"
             aria-label="Hemanth Ranam Home"
             className="group focus:outline-hidden focus:ring-2 focus:ring-blue-500 rounded-lg"
@@ -62,9 +68,15 @@ export function Navbar() {
             className="hidden lg:flex items-center gap-1 bg-slate-50/90 p-1.5 rounded-full border border-slate-200/80"
           >
             {NAV_ITEMS.map((item) => {
-              const isActive = activeSection === item.href.substring(1);
+              const isBlogRoute = item.isRoute && pathname.startsWith("/blogs");
+              const isSectionActive =
+                !item.isRoute &&
+                pathname === "/" &&
+                activeSection === item.href.replace("/#", "").replace("#", "");
+              const isActive = isBlogRoute || isSectionActive;
+
               return (
-                <a
+                <Link
                   key={item.label}
                   href={item.href}
                   className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-150 ${
@@ -74,7 +86,7 @@ export function Navbar() {
                   }`}
                 >
                   {item.label}
-                </a>
+                </Link>
               );
             })}
           </nav>
@@ -92,25 +104,25 @@ export function Navbar() {
               <LinkedinIcon className="w-4 h-4" />
             </a>
 
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               id="nav-contact-cta"
               className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-xs"
             >
               <span>Start a Project</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Toggle */}
           <div className="flex sm:hidden items-center gap-2">
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               className="p-2 text-xs font-medium text-white bg-blue-600 rounded-lg"
               aria-label="Contact"
             >
               <MessageSquare className="w-4 h-4" />
-            </a>
+            </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               id="mobile-menu-toggle-btn"
@@ -129,7 +141,7 @@ export function Navbar() {
         <div className="sm:hidden fixed inset-x-0 top-[61px] bg-white/98 backdrop-blur-xl border-b border-slate-200 shadow-xl px-6 py-6 transition-all duration-200 max-h-[85vh] overflow-y-auto">
           <div className="flex flex-col gap-1.5">
             {NAV_ITEMS.map((item) => (
-              <a
+              <Link
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
@@ -137,18 +149,18 @@ export function Navbar() {
               >
                 <span>{item.label}</span>
                 <ArrowUpRight className="w-4 h-4 text-slate-400" />
-              </a>
+              </Link>
             ))}
 
             <div className="pt-4 flex flex-col gap-2">
-              <a
-                href="#contact"
+              <Link
+                href="/#contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center justify-center gap-2 w-full py-3 text-sm font-semibold text-white bg-blue-600 rounded-xl shadow-xs"
               >
                 <span>Start a Project</span>
                 <ArrowUpRight className="w-4 h-4" />
-              </a>
+              </Link>
               <a
                 href={SITE_CONFIG.linkedin}
                 target="_blank"
