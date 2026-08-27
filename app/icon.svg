@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" fill="none">
+  <defs>
+    <linearGradient id="hrGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" />
+      <stop offset="100%" stop-color="#2563EB" />
+    </linearGradient>
+  </defs>
+  <!-- Background rounded squircle -->
+  <rect x="4" y="4" width="92" height="92" rx="22" fill="#0F172A" />
+  <rect x="5" y="5" width="90" height="90" rx="21" stroke="#334155" stroke-width="1.5" />
+  
+  <!-- H Stem Left -->
+  <rect x="22" y="24" width="11" height="52" rx="5.5" fill="url(#hrGrad)" />
+  <!-- H Crossbar -->
+  <rect x="22" y="44.5" width="28" height="11" rx="5.5" fill="url(#hrGrad)" />
+  <!-- H Right / R Shared Spine -->
+  <rect x="42" y="24" width="11" height="52" rx="5.5" fill="#FFFFFF" />
+  
+  <!-- R Loop -->
+  <path d="M48 24 H62 C71 24 77 30 77 38 C77 46 71 52 62 52 H48 Z" fill="url(#accentGrad)" />
+  <path d="M53 33 H61 C64.5 33 67 35 67 38 C67 41 64.5 43 61 43 H53 Z" fill="#0F172A" />
+  
+  <!-- R Leg -->
+  <path d="M57 48 L73.5 73.5 C75 75.8 72.8 78 70 76 L52 56 Z" fill="url(#hrGrad)" />
+</svg>
