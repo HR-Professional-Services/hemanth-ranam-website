@@ -25,13 +25,13 @@ Personal professional website for Hemanth Ranam.
 - **Styling**: Tailwind CSS
 - **3D Visuals**: Three.js (WebGL)
 - **Icons**: Lucide React + Custom Vector Assets
-- **Deployment**: Cloudflare Workers
+- **Deployment**: Cloudflare Workers (`app`)
 
 ### Contact
 
 - **Email**: [hemanth.ranam@gmail.com](mailto:hemanth.ranam@gmail.com)
 - **LinkedIn**: [https://www.linkedin.com/in/hemanth-ranam-41b542253](https://www.linkedin.com/in/hemanth-ranam-41b542253)
-- **Website**: [https://hemanth-ranam.dev](https://hemanth-ranam.dev)
+- **Website**: [https://app.hemanth-ranam.workers.dev](https://app.hemanth-ranam.workers.dev)
 
 ---
 
