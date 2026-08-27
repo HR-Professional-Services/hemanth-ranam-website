@@ -40,11 +40,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.linkedin }],
   creator: SITE_CONFIG.name,
-  metadataBase: new URL("https://hemanthranam.com"),
+  metadataBase: new URL("https://hemanth.ranam.dev"),
   openGraph: {
     type: "website",
     locale: "en_GB",
-    url: "https://hemanthranam.com",
+    url: "https://hemanth.ranam.dev",
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,
     siteName: "Hemanth Ranam",
@@ -91,17 +91,17 @@ export default function RootLayout({
     "@graph": [
       {
         "@type": "Person",
-        "@id": "https://hemanthranam.com/#person",
+        "@id": "https://hemanth.ranam.dev/#person",
         name: "Hemanth Ranam",
         jobTitle: "Technology Entrepreneur & Business Systems Specialist",
         description: SITE_CONFIG.description,
         email: `mailto:${SITE_CONFIG.email}`,
-        url: "https://hemanthranam.com",
+        url: "https://hemanth.ranam.dev",
         sameAs: [
           SITE_CONFIG.linkedin,
           SITE_CONFIG.scalenovaUrl,
         ],
-        image: "https://hemanthranam.com/images/hemanth-ranam-profile.jpg",
+        image: "https://hemanth.ranam.dev/images/hemanth-ranam-profile.jpg",
         alumniOf: [
           {
             "@type": "EducationalOrganization",
@@ -117,11 +117,11 @@ export default function RootLayout({
       },
       {
         "@type": "ProfessionalService",
-        "@id": "https://hemanthranam.com/#service",
+        "@id": "https://hemanth.ranam.dev/#service",
         name: "Hemanth Ranam — Business Systems & Trading Technology",
-        url: "https://hemanthranam.com",
+        url: "https://hemanth.ranam.dev",
         provider: {
-          "@id": "https://hemanthranam.com/#person",
+          "@id": "https://hemanth.ranam.dev/#person",
         },
         serviceType: [
           "Business Systems Consulting",

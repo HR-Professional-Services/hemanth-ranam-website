@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://hemanthranam.com/sitemap.xml",
+    sitemap: "https://hemanth.ranam.dev/sitemap.xml",
   };
 }

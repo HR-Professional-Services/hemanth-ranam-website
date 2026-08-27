@@ -25,13 +25,13 @@ Personal professional website for Hemanth Ranam.
 - **Styling**: Tailwind CSS
 - **3D Visuals**: Three.js (WebGL)
 - **Icons**: Lucide React + Custom Vector Assets
-- **Deployment**: Vercel / Cloudflare / Node.js
+- **Deployment**: Cloudflare Workers / Vercel
 
 ### Contact
 
 - **Email**: [hemanth.ranam@gmail.com](mailto:hemanth.ranam@gmail.com)
 - **LinkedIn**: [https://www.linkedin.com/in/hemanth-ranam-41b542253](https://www.linkedin.com/in/hemanth-ranam-41b542253)
-- **Website**: [https://hemanthranam.com](https://hemanthranam.com)
+- **Website**: [https://hemanth.ranam.dev](https://hemanth.ranam.dev)
 
 ---
 
