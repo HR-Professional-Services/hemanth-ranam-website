@@ -3,11 +3,16 @@ export interface NavItem {
   href: string;
 }
 
-export interface CredentialItem {
-  value: string;
-  label: string;
-  sublabel: string;
+export interface SkillCategory {
+  title: string;
+  skills: { name: string; badge: string; icon: string }[];
+}
+
+export interface ServiceCard {
+  name: string;
+  description: string;
   icon: string;
+  tag: string;
 }
 
 export interface ServiceCategory {
@@ -15,389 +20,349 @@ export interface ServiceCategory {
   title: string;
   tagline: string;
   icon: string;
-  badge: string;
-  services: {
-    title: string;
-    description: string;
-    deliverables: string[];
-    tech: string[];
-  }[];
+  items: ServiceCard[];
 }
 
-export interface TimelineMilestone {
-  year: string;
-  period: string;
+export interface PricingPlan {
   title: string;
-  role: string;
+  category: "Business" | "Software" | "Trading Tech";
+  price: string;
   description: string;
-  highlights: string[];
-  tags: string[];
+  deliverables: string[];
+  popular?: boolean;
 }
 
-export interface TechItem {
-  name: string;
-  category: "Business & ERP" | "Frontend & Web" | "Backend & Data" | "Trading Tech" | "Automation & AI";
-  description: string;
-  badge: string;
+export interface VisualFlow {
+  title: string;
+  category: string;
+  steps: { num: string; label: string; desc: string; icon: string }[];
 }
 
 export const SITE_CONFIG = {
   name: "Hemanth Ranam",
-  title: "Hemanth Ranam | Business Systems, Technology & Automation",
+  title: "Hemanth Ranam | Technology, Business Systems & Automation",
   description:
-    "Hemanth Ranam helps businesses design, build and optimise digital systems, automation, custom software, CRM/ERP solutions and trading technology.",
-  tagline: "Building Smarter Business Systems & Technology.",
-  supportingStatement:
-    "I help businesses design, build and optimise digital systems that reduce manual work, improve workflows and increase operational efficiency.",
-  secondaryStatement:
-    "From business systems and automation to custom software and trading technology, I design practical, scalable solutions around real-world requirements.",
-  shortPositioning: "Business Systems • Technology • Automation • Trading Technology",
+    "Hemanth Ranam designs and builds business systems, automation, custom software and trading technology for businesses, entrepreneurs and traders.",
+  tagline: "Building Digital Systems That Work Smarter.",
+  mainPositioning: "Technology Entrepreneur • Business Systems • Automation • Software • Trading Technology",
+  shortDescription: "I design and build practical digital systems, automation, software and trading technology.",
   email: "hemanth.ranam@gmail.com",
   linkedin: "https://www.linkedin.com/in/hemanth-ranam-41b542253",
   location: "United Kingdom",
   scalenovaUrl: "https://www.scalenovasys.com",
-  currentRole: "2X Founder | CEO @ ScaleNova Pvt Ltd | MBA | CMI Level 7",
   education: [
     {
-      degree: "MBA (Master of Business Administration)",
+      degree: "MBA",
       institution: "University of South Wales",
-      year: "Postgraduate",
+      badge: "Postgraduate",
     },
     {
       degree: "CMI Level 7",
       institution: "Strategic Management & Leadership",
-      year: "Chartered Management Institute",
+      badge: "Chartered Executive",
     },
   ],
 };
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
   { label: "Services", href: "#services" },
-  { label: "Business Systems", href: "#business-systems" },
+  { label: "Process", href: "#process" },
   { label: "Trading Tech", href: "#trading-tech" },
   { label: "Tech Stack", href: "#tech-stack" },
-  { label: "Process", href: "#process" },
-  { label: "Experience", href: "#experience" },
-  { label: "ScaleNova", href: "#scalenova" },
+  { label: "Pricing", href: "#pricing" },
   { label: "Contact", href: "#contact" },
 ];
 
-export const TRUST_METRICS: CredentialItem[] = [
+export const TRUST_NUMBERS = [
+  { value: "~10 Years", label: "Business & Technology Experience", sub: "Active since 2017" },
+  { value: "5+ Years", label: "Trading & Financial Systems", sub: "Algo & Pine Script/MT5" },
+  { value: "2X Founder", label: "Technology Entrepreneur", sub: "CEO @ ScaleNova" },
+  { value: "MBA & CMI", label: "Strategic Leadership", sub: "Executive Qualified" },
+];
+
+export const SKILL_CATEGORIES: SkillCategory[] = [
   {
-    value: "2X Founder",
-    label: "Technology Entrepreneur",
-    sublabel: "CEO @ ScaleNova",
-    icon: "Building2",
+    title: "Programming",
+    skills: [
+      { name: "Python", badge: "Core", icon: "FileCode2" },
+      { name: "TypeScript", badge: "Type-Safe", icon: "Code2" },
+      { name: "JavaScript", badge: "Web", icon: "Braces" },
+      { name: "SQL", badge: "Data", icon: "Database" },
+      { name: "HTML / CSS", badge: "Design", icon: "Layout" },
+    ],
   },
   {
-    value: "~10 Years",
-    label: "Business & Tech Systems",
-    sublabel: "Active Since 2017",
-    icon: "Layers",
+    title: "Frameworks & Platforms",
+    skills: [
+      { name: "React", badge: "UI", icon: "Atom" },
+      { name: "Next.js", badge: "Full-Stack", icon: "Cpu" },
+      { name: "Frappe Framework", badge: "ERP Architecture", icon: "Layers" },
+      { name: "ERPNext", badge: "Business Engine", icon: "Boxes" },
+    ],
   },
   {
-    value: "5+ Years",
-    label: "Trading & Financial Markets",
-    sublabel: "Algo & Tech Automation",
-    icon: "TrendingUp",
+    title: "Backend & Infrastructure",
+    skills: [
+      { name: "REST APIs & Webhooks", badge: "Integration", icon: "Network" },
+      { name: "MariaDB & PostgreSQL", badge: "Databases", icon: "Server" },
+      { name: "Redis", badge: "Cache / Queues", icon: "Zap" },
+      { name: "Git & GitHub", badge: "DevOps", icon: "GitBranch" },
+    ],
   },
   {
-    value: "MBA",
-    label: "Univ of South Wales",
-    sublabel: "Business Administration",
-    icon: "GraduationCap",
-  },
-  {
-    value: "CMI Level 7",
-    label: "Strategic Management",
-    sublabel: "Executive Leadership",
-    icon: "Award",
-  },
-  {
-    value: "Architecture",
-    label: "Custom Software & ERP",
-    sublabel: "End-to-End Systems",
-    icon: "Cpu",
+    title: "Trading Technology",
+    skills: [
+      { name: "Pine Script v5", badge: "TradingView", icon: "TrendingUp" },
+      { name: "MetaTrader 5 (MT5)", badge: "Platform", icon: "Activity" },
+      { name: "MQL5 Development", badge: "Expert Advisors", icon: "Binary" },
+      { name: "Telegram Bot API", badge: "Alert Dispatch", icon: "Send" },
+      { name: "Trading Automation", badge: "Workflow", icon: "Workflow" },
+    ],
   },
 ];
 
 export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: "business-systems",
-    title: "Business Systems & Consulting",
-    tagline: "Connecting disconnected business departments into cohesive operating engines.",
+    title: "Business Systems",
+    tagline: "Connecting disjointed operations into unified digital systems.",
     icon: "Workflow",
-    badge: "Operations & Architecture",
-    services: [
-      {
-        title: "Business Systems Architecture",
-        description: "Designing end-to-end operational software architecture that bridges fragmented tools, data silos, and departmental handoffs.",
-        deliverables: ["Systems Architecture Blueprint", "Data Flow Diagrams", "Application Ecosystem Roadmap"],
-        tech: ["Frappe", "ERPNext", "Cloud SQL", "System Diagrams"],
-      },
-      {
-        title: "Business Process Optimisation",
-        description: "Mapping operational bottlenecks, eliminating manual duplicate entries, and streamlining workflow throughput.",
-        deliverables: ["Process Audit Report", "Bottleneck Elimination Plan", "Standard Operating Procedures (SOP)"],
-        tech: ["BPMN", "Workflow Analysis", "Operational Audit"],
-      },
-      {
-        title: "ERP & CRM Implementation",
-        description: "Scoping, customizing, and deploying business-critical ERP and CRM systems tailored to real-world corporate workflows.",
-        deliverables: ["DocType/Module Architecture", "Custom Field Workflows", "Multi-tenant Permissions"],
-        tech: ["Frappe Framework", "ERPNext", "PostgreSQL", "MariaDB"],
-      },
-      {
-        title: "Data Management & Analytics",
-        description: "Consolidating business data into real-time executive dashboards, reporting pipelines, and structured operational databases.",
-        deliverables: ["Executive KPI Dashboards", "Automated Financial & Sales Reports", "Data Pipelines"],
-        tech: ["SQL Analytics", "BI Dashboards", "Reporting Engine"],
-      },
+    items: [
+      { name: "Business Systems Architecture", description: "Design end-to-end operational software blueprints that connect disconnected tools.", icon: "Workflow", tag: "Architecture" },
+      { name: "Process Optimisation", description: "Map operational bottlenecks, eliminate redundant steps, and speed up turnaround.", icon: "Sparkles", tag: "Efficiency" },
+      { name: "Business Consulting", description: "Review existing technology and formulate practical digital transformation roadmaps.", icon: "Briefcase", tag: "Strategy" },
+      { name: "Digital Transformation", description: "Modernize legacy manual workflows with automated cloud-native systems.", icon: "RefreshCw", tag: "Modernization" },
+      { name: "CRM / ERP Implementation", description: "Deploy and customize Frappe/ERPNext systems tailored to your workflows.", icon: "Layers", tag: "ERP / CRM" },
+      { name: "HR Management Systems", description: "Streamline employee onboarding, role-based access, and internal administration.", icon: "Users", tag: "HR / Teams" },
+      { name: "Business Operations", description: "Unify project tracking, task queues, and team execution pipelines.", icon: "Sliders", tag: "Operations" },
+      { name: "SOP & Documentation", description: "Structured operating procedures and technical documentation for teams.", icon: "FileText", tag: "Governance" },
+      { name: "Data Management", description: "Clean, model, and store business data in high-performance relational databases.", icon: "Database", tag: "Data" },
+      { name: "Business Analytics", description: "Executive KPI dashboards providing real-time financial and operational visibility.", icon: "BarChart3", tag: "Reporting" },
     ],
   },
   {
-    id: "software-products",
-    title: "Software & Digital Products",
-    tagline: "Building high-performance custom applications, client portals, and SaaS platforms.",
+    id: "software",
+    title: "Software",
+    tagline: "High-performance custom web applications, SaaS tools, and portals.",
     icon: "Code2",
-    badge: "Engineering & SaaS",
-    services: [
-      {
-        title: "Custom SaaS & Web Applications",
-        description: "Full-stack cloud applications engineered for scalability, multi-tenancy, and seamless user experiences.",
-        deliverables: ["Multi-tenant SaaS Architecture", "Role-based Access Control", "Clean Responsive UI"],
-        tech: ["Next.js", "TypeScript", "React", "Node.js / Python"],
-      },
-      {
-        title: "Business Portals & Booking Engines",
-        description: "Secure, branded client portals, customer self-service hubs, internal management platforms, and booking solutions.",
-        deliverables: ["Customer Dashboard", "Self-service Workflows", "Stripe / Payment Integration"],
-        tech: ["TypeScript", "Tailwind CSS", "REST APIs", "Webhooks"],
-      },
-      {
-        title: "Premium Corporate Websites",
-        description: "Ultra-fast, conversion-focused digital platforms with modern typography, micro-interactions, and SEO architecture.",
-        deliverables: ["Lighthouse 95+ Performance", "Interactive Components", "SEO & OpenGraph Setup"],
-        tech: ["Next.js", "Modern CSS", "Accessibility (a11y)", "Vercel"],
-      },
-      {
-        title: "API Integrations & Custom Microservices",
-        description: "Bridging third-party services, banking/payment gateways, communications APIs, and cloud microservices.",
-        deliverables: ["Secure REST / Webhook Endpoints", "Rate-limiting & Logging", "Data Sync Workers"],
-        tech: ["REST", "WebSockets", "Redis", "Python / Node"],
-      },
+    items: [
+      { name: "Custom Software", description: "Engineered bespoke software solutions solving unique business challenges.", icon: "Code2", tag: "Custom" },
+      { name: "Web Development", description: "Clean, responsive, high-converting digital products built on modern web standards.", icon: "Globe", tag: "Web" },
+      { name: "Web Applications", description: "Full-stack cloud applications with authentication, databases, and microservices.", icon: "Layout", tag: "Apps" },
+      { name: "Mobile Applications", description: "Cross-platform responsive web applications optimized for touch devices.", icon: "Smartphone", tag: "Mobile" },
+      { name: "SaaS Products", description: "Multi-tenant cloud architectures engineered for rapid scaling and recurring billing.", icon: "Cloud", tag: "SaaS" },
+      { name: "Business Websites", description: "Fast, minimal, executive business websites with top-tier Lighthouse scores.", icon: "Laptop", tag: "Websites" },
+      { name: "Booking Systems", description: "Automated customer appointment scheduling with payment gateway integration.", icon: "Calendar", tag: "Booking" },
+      { name: "Dashboards", description: "Interactive telemetry portals providing clear data visualizations and metrics.", icon: "PieChart", tag: "Dashboards" },
+      { name: "Client Portals", description: "Secure, branded hubs for customer self-service, document sharing, and status tracking.", icon: "ShieldCheck", tag: "Portals" },
+      { name: "API Integrations", description: "Seamless REST and webhook communication between third-party services.", icon: "Network", tag: "APIs" },
     ],
   },
   {
-    id: "automation-ai",
-    title: "Automation & AI Workflows",
-    tagline: "Eliminating repetitive human tasks and accelerating business execution speed.",
+    id: "automation",
+    title: "Automation",
+    tagline: "Eliminating manual data entry and speeding up business workflows.",
     icon: "Bot",
-    badge: "Efficiency & AI",
-    services: [
-      {
-        title: "Internal Workflow Automation",
-        description: "Automating repetitive business workflows across lead capture, CRM pipeline transitions, invoice generation, and customer onboarding.",
-        deliverables: ["Multi-step Trigger Pipelines", "Automated Document Generation", "Error Handlers"],
-        tech: ["Webhooks", "Custom Scripts", "Queue Workers", "Redis"],
-      },
-      {
-        title: "Communication & Notification Systems",
-        description: "Automated instant transactional alerts, approval requests, and business telemetry pushed directly to Telegram, Email, and SMS.",
-        deliverables: ["Telegram Bot Control Plane", "Transactional Email Pipelines", "Real-time Alerts"],
-        tech: ["Telegram Bot API", "SMTP / Resend", "Background Queues"],
-      },
-      {
-        title: "AI Automation & Document Processing",
-        description: "Applying AI models to automate structured data extraction from invoices, unstructured contracts, customer requests, and emails.",
-        deliverables: ["Automated Document Parser", "LLM-assisted Triaging", "Structured Data Output"],
-        tech: ["Gemini API", "Python", "JSON Schema", "REST"],
-      },
-      {
-        title: "Cross-System Synchronization",
-        description: "Bi-directional data sync keeping inventory, orders, CRM contacts, and accounting records in perpetual real-time harmony.",
-        deliverables: ["Fault-tolerant Sync Engine", "Conflict Resolution Rules", "Audit Log Trail"],
-        tech: ["Database Triggers", "Cron Workers", "Event Sourcing"],
-      },
+    items: [
+      { name: "Workflow Automation", description: "Trigger multi-step actions across tools whenever key business events occur.", icon: "Workflow", tag: "Workflows" },
+      { name: "AI Automation", description: "Structured data extraction from documents, emails, and invoices using AI models.", icon: "Sparkles", tag: "AI Engine" },
+      { name: "CRM Automation", description: "Automate lead capture, qualification status changes, and deal pipeline updates.", icon: "Users", tag: "CRM" },
+      { name: "ERP Automation", description: "Automated invoice creation, payment status reconciliation, and stock updates.", icon: "Layers", tag: "ERP" },
+      { name: "Business Automation", description: "End-to-end operational automation eliminating manual human friction.", icon: "Bot", tag: "Automation" },
+      { name: "Email Automation", description: "Transactional email delivery, automated sequences, and delivery tracking.", icon: "Mail", tag: "Email" },
+      { name: "Telegram Automation", description: "Real-time interactive bots, status updates, and broadcast channels.", icon: "Send", tag: "Telegram" },
+      { name: "Notification Systems", description: "Multi-channel critical alerts pushed instantly to staff and stakeholders.", icon: "Bell", tag: "Alerts" },
+      { name: "Data Automation", description: "Scheduled data synchronization, scheduled backups, and automated ETL pipelines.", icon: "Database", tag: "Data Sync" },
+      { name: "System Integrations", description: "Bi-directional sync keeping disparate platforms in perfect continuous harmony.", icon: "Link2", tag: "Integrations" },
     ],
   },
   {
     id: "trading-tech",
-    title: "Trading Technology & Algo Systems",
-    tagline: "Custom indicators, automated execution workflows, and alert engines engineered to precise rules.",
-    icon: "CandlestickChart",
-    badge: "Markets & Automation",
-    services: [
-      {
-        title: "TradingView Indicators & Pine Script",
-        description: "Developing robust, multi-timeframe custom indicators, signal validation engines, and visual market structure tools in Pine Script v5.",
-        deliverables: ["Pine Script v5 Source Code", "Multi-timeframe Logic", "Dynamic Visual Overlay"],
-        tech: ["Pine Script v5", "TradingView", "Custom Visuals"],
-      },
-      {
-        title: "MetaTrader 5 (MT5) EAs & Custom Indicators",
-        description: "High-performance MQL5 Expert Advisors (EAs) and indicators built strictly around client-defined execution rules and risk parameters.",
-        deliverables: ["Compiled .ex5 & Source Code", "Risk Management Engine", "Execution Logging"],
-        tech: ["MQL5", "MetaTrader 5", "WinAPI / C++ Interop"],
-      },
-      {
-        title: "Telegram Alert Automation & Webhooks",
-        description: "Instantaneous signal routing from TradingView webhooks or MT5 bridges directly to private Telegram channels and VIP communities.",
-        deliverables: ["Low-latency Webhook Receiver", "Rich Telegram Message Formats", "Chart Screenshot Dispatch"],
-        tech: ["Telegram Bot API", "FastAPI / Python", "Webhooks"],
-      },
-      {
-        title: "Trading Dashboards & Scanners",
-        description: "Custom market scanners, journaling systems, and multi-asset overview dashboards for systematic market analysis.",
-        deliverables: ["Multi-asset Scanner UI", "Trade Logging & Analytics", "Risk Exposure Monitor"],
-        tech: ["Next.js", "WebSockets", "Financial Market APIs"],
-      },
+    title: "Trading Technology",
+    tagline: "Rule-based custom indicators, Expert Advisors, and alert automation.",
+    icon: "TrendingUp",
+    items: [
+      { name: "TradingView Indicators", description: "Multi-timeframe Pine Script v5 indicators designed around your exact chart rules.", icon: "TrendingUp", tag: "Pine Script" },
+      { name: "Pine Script Development", description: "Bespoke mathematical modeling, signal validation, and visual overlays on TradingView.", icon: "Binary", tag: "Pine v5" },
+      { name: "Custom Strategies", description: "Translating discretionary trading rules into systematic, testable frameworks.", icon: "Target", tag: "Strategy" },
+      { name: "MT5 Indicators", description: "Native MQL5 custom indicators for MetaTrader 5 with low chart latency.", icon: "Activity", tag: "MT5" },
+      { name: "MT5 Expert Advisors", description: "Automated execution robots (EAs) with strict risk management & lot calculations.", icon: "Bot", tag: "MQL5 EA" },
+      { name: "MQL5 Development", description: "High-performance MQL5 code with C++ interop and WebRequest connectivity.", icon: "Code2", tag: "MQL5" },
+      { name: "Custom MT5 Alerts", description: "Instant audio, visual, and webhook triggers when defined market conditions align.", icon: "BellRing", tag: "Alerts" },
+      { name: "Telegram Alerts", description: "Signal routing from TradingView or MT5 directly to private Telegram VIP channels.", icon: "Send", tag: "Telegram" },
+      { name: "Trading Automation", description: "Webhook bridges linking market analysis triggers to automated execution handlers.", icon: "Zap", tag: "Automation" },
+      { name: "Market Scanners", description: "Custom scanners tracking multiple assets for specific structural setups simultaneously.", icon: "Sliders", tag: "Scanners" },
+      { name: "Trading Dashboards", description: "Real-time web dashboards monitoring exposure, live positions, and volatility.", icon: "PieChart", tag: "Dashboards" },
+      { name: "Trading Journaling", description: "Automated trade logging to database for performance verification and analytics.", icon: "FileText", tag: "Journal" },
+      { name: "Strategy Implementation", description: "Engineering rule-based execution parameters without emotional hesitation.", icon: "ShieldCheck", tag: "Rules" },
     ],
   },
 ];
 
-export const TRADING_PIPELINE = [
+export const VISUAL_FLOWS: VisualFlow[] = [
   {
-    step: "01",
-    title: "Strategy Definition",
-    description: "Clear client-specified rules: market structure, session filters, entry conditions, and invalidation criteria.",
-    badge: "Rules",
+    title: "Business Systems Architecture",
+    category: "Business Flow",
+    steps: [
+      { num: "01", label: "Problem", desc: "Identify friction & data silos", icon: "AlertCircle" },
+      { num: "02", label: "Process", desc: "Map optimized SOP workflows", icon: "Sliders" },
+      { num: "03", label: "System", desc: "Architect ERP / CRM software", icon: "Layers" },
+      { num: "04", label: "Automation", desc: "Deploy background sync workers", icon: "Zap" },
+      { num: "05", label: "Reporting", desc: "Real-time executive KPI insights", icon: "BarChart3" },
+    ],
+  },
+  {
+    title: "Trading Technology Pipeline",
+    category: "Trading Flow",
+    steps: [
+      { num: "01", label: "Strategy", desc: "Define rules & invalidation", icon: "Target" },
+      { num: "02", label: "Rules", desc: "Deterministic mathematical logic", icon: "Binary" },
+      { num: "03", label: "Indicator", desc: "Pine Script v5 / MQL5 build", icon: "TrendingUp" },
+      { num: "04", label: "Alert", desc: "Sub-second webhook trigger", icon: "BellRing" },
+      { num: "05", label: "Automation", desc: "Telegram dispatch & MT5 EA", icon: "Send" },
+    ],
+  },
+  {
+    title: "Custom Software Engineering",
+    category: "Software Flow",
+    steps: [
+      { num: "01", label: "Idea", desc: "Core requirements & scope", icon: "Lightbulb" },
+      { num: "02", label: "Design", desc: "Clean UI & schema architecture", icon: "Layout" },
+      { num: "03", label: "Build", desc: "Type-safe Next.js & APIs", icon: "Code2" },
+      { num: "04", label: "Integrate", desc: "Database, auth & webhooks", icon: "Network" },
+      { num: "05", label: "Launch", desc: "Deploy, monitor & scale", icon: "Rocket" },
+    ],
+  },
+];
+
+export const PRICING_PLANS: PricingPlan[] = [
+  // Business
+  {
+    title: "Business Systems Consulting",
+    category: "Business",
+    price: "$199",
+    description: "System & process review with practical architecture recommendations.",
+    deliverables: ["Systems Audit Blueprint", "Bottleneck Identification", "Actionable Roadmap"],
+  },
+  {
+    title: "Business Automation",
+    category: "Business",
+    price: "$399",
+    description: "Multi-step workflow and business process automation across your tools.",
+    deliverables: ["Trigger-Action Pipelines", "Error Handlers & Logging", "Telegram/Email Alerts"],
+    popular: true,
+  },
+  {
+    title: "CRM / ERP Implementation",
+    category: "Business",
+    price: "$699",
+    description: "Custom CRM/ERP deployment tailored to your business operations.",
+    deliverables: ["Custom DocTypes & Modules", "Role-Based Access Control", "Data Schema Setup"],
+  },
+  // Software
+  {
+    title: "Business Website",
+    category: "Software",
+    price: "$299",
+    description: "Premium responsive business website with modern design and fast loading.",
+    deliverables: ["Responsive Architecture", "SEO & OpenGraph Setup", "Lighthouse 95+ Score"],
+  },
+  {
+    title: "Web Application",
+    category: "Software",
+    price: "$599",
+    description: "Custom web application built around your specific product requirements.",
+    deliverables: ["Authentication & DB", "REST API & Webhooks", "Interactive UI Components"],
+    popular: true,
+  },
+  // Trading Tech
+  {
+    title: "TradingView Indicator",
+    category: "Trading Tech",
+    price: "$149",
+    description: "Custom Pine Script v5 indicator based strictly on your defined chart rules.",
+    deliverables: ["Pine Script v5 Source Code", "Multi-Timeframe Logic", "Visual Overlay & Alerts"],
+  },
+  {
+    title: "MT5 Indicator",
+    category: "Trading Tech",
+    price: "$199",
+    description: "Custom MetaTrader 5 indicator engineered for clean execution and zero lag.",
+    deliverables: ["Compiled .ex5 & Source", "Custom Visual Settings", "Chart Alert Triggers"],
+  },
+  {
+    title: "Trading Alerts / Telegram",
+    category: "Trading Tech",
+    price: "$149",
+    description: "Instant signal routing from TradingView or MT5 directly to Telegram.",
+    deliverables: ["Webhook Bridge Setup", "Formatted Message Dispatch", "Channel/Group Integration"],
+  },
+  {
+    title: "MT5 Expert Advisor (EA)",
+    category: "Trading Tech",
+    price: "$399",
+    description: "Custom automated trading robot built around strict risk parameters.",
+    deliverables: ["Risk Lot Calculation", "Stop-Loss & Take-Profit Rules", "Complete MQL5 Code"],
+    popular: true,
+  },
+  {
+    title: "Custom Trading Automation",
+    category: "Trading Tech",
+    price: "$499",
+    description: "End-to-end trading technology setup connecting scanners, alerts, and bots.",
+    deliverables: ["Custom Webhook Pipeline", "Multi-Asset Monitoring", "Execution Bridge"],
+  },
+];
+
+export const EXPERIENCE_TIMELINE = [
+  {
+    year: "2017",
+    label: "Business & Technology",
+    desc: "Started working across business management, operations, and foundational technology systems.",
+  },
+  {
+    year: "2019+",
+    label: "Systems & Software",
+    desc: "Architecting custom software, database schemas, and digital business tools.",
+  },
+  {
+    year: "2021+",
+    label: "Automation & SaaS",
+    desc: "Building multi-tenant applications, API integrations, and enterprise workflow automation.",
+  },
+  {
+    year: "2022+",
+    label: "Trading & Financial Markets",
+    desc: "Developing Pine Script indicators, MT5 Expert Advisors, and low-latency alert routers.",
+  },
+  {
+    year: "2026",
+    label: "Technology Entrepreneur",
+    desc: "2X Founder, ScaleNova CEO, and independent systems & trading technology architect.",
+  },
+];
+
+export const WHY_WORK_WITH_ME = [
+  {
+    title: "Business Understanding",
+    desc: "I understand the operational process and commercial logic behind the technology.",
+    icon: "Briefcase",
+  },
+  {
+    title: "Technical Execution",
+    desc: "From initial concept to production-ready, fully tested working software.",
+    icon: "Code2",
+  },
+  {
+    title: "Practical Solutions",
+    desc: "Engineered around real-world constraints—not unnecessary complexity.",
     icon: "Target",
   },
   {
-    step: "02",
-    title: "Indicator & Logic",
-    description: "Translating price action and mathematical formulas into Pine Script v5 or MQL5 algorithms.",
-    badge: "Code",
-    icon: "Binary",
-  },
-  {
-    step: "03",
-    title: "Confirmation Filters",
-    description: "Multi-timeframe confirmation, spread checks, volatility validation, and risk parameters.",
-    badge: "Filters",
+    title: "Long-Term Thinking",
+    desc: "Clean, scalable, maintainable architectures built to grow with your needs.",
     icon: "ShieldCheck",
-  },
-  {
-    step: "04",
-    title: "Instant Webhook Alert",
-    description: "Low-latency triggering dispatching signal payloads with asset, direction, entry, stop loss, and targets.",
-    badge: "Alerts",
-    icon: "BellRing",
-  },
-  {
-    step: "05",
-    title: "Telegram & MT5 Routing",
-    description: "Instant delivery to Telegram groups or direct automated execution via MT5 Expert Advisor.",
-    badge: "Execution",
-    icon: "Zap",
-  },
-  {
-    step: "06",
-    title: "Journal & Analytics",
-    description: "Automated logging into database for continuous rule verification and post-trade performance analytics.",
-    badge: "Telemetry",
-    icon: "BookOpenCheck",
-  },
-];
-
-export const BUSINESS_ECOSYSTEM = [
-  { name: "Leads & Marketing", icon: "Users", desc: "Inbound channels & capture" },
-  { name: "Sales Pipeline", icon: "TrendingUp", desc: "Deals, quotes & proposals" },
-  { name: "Customer CRM", icon: "HeartHandshake", desc: "Accounts & communication" },
-  { name: "Projects & Tasks", icon: "CheckSquare", desc: "Execution & deliverables" },
-  { name: "Finance & Invoicing", icon: "CreditCard", desc: "Billing & accounting" },
-  { name: "People & HR", icon: "UserCheck", desc: "Teams, roles & access" },
-  { name: "Operations & SOP", icon: "Cpu", desc: "Core business workflows" },
-  { name: "Real-time Reports", icon: "BarChart3", desc: "Executive KPI telemetry" },
-  { name: "AI & Automation", icon: "Sparkles", desc: "Cross-system synchronization" },
-];
-
-export const TECH_STACK: TechItem[] = [
-  { name: "Frappe Framework", category: "Business & ERP", description: "Full-stack Python & JS metadata-driven architecture for rapid business apps.", badge: "Enterprise" },
-  { name: "ERPNext", category: "Business & ERP", description: "Comprehensive open-source ERP customization covering CRM, Accounts, Stock & HR.", badge: "Core Engine" },
-  { name: "Next.js 15 & React", category: "Frontend & Web", description: "Modern React framework with App Router, server components, and dynamic caching.", badge: "Modern Web" },
-  { name: "TypeScript", category: "Frontend & Web", description: "Strict static type system ensuring bulletproof enterprise frontends and APIs.", badge: "Type Safety" },
-  { name: "Tailwind CSS", category: "Frontend & Web", description: "Utility-first design system with semantic design tokens and micro-interactions.", badge: "Design System" },
-  { name: "Python", category: "Backend & Data", description: "Primary backend language for automation, API bridges, data parsing, and microservices.", badge: "Core Lang" },
-  { name: "REST APIs & Webhooks", category: "Backend & Data", description: "High-throughput asynchronous communication between disparate software tools.", badge: "Integration" },
-  { name: "MariaDB & PostgreSQL", category: "Backend & Data", description: "Relational database modeling, indexing strategies, and query performance tuning.", badge: "Databases" },
-  { name: "Redis", category: "Backend & Data", description: "In-memory cache, pub/sub queues, and rate-limiting infrastructure.", badge: "Performance" },
-  { name: "TradingView & Pine Script", category: "Trading Tech", description: "Pine Script v5 multi-timeframe indicators, strategy scripting, and webhook alerts.", badge: "Trading" },
-  { name: "MetaTrader 5 & MQL5", category: "Trading Tech", description: "Custom Expert Advisors (EAs), custom indicators, and automated execution bots.", badge: "Trading" },
-  { name: "Telegram Bot API", category: "Automation & AI", description: "Real-time operational alerts, trading signals, and interactive bot commands.", badge: "Messaging" },
-  { name: "AI Automation / Gemini", category: "Automation & AI", description: "Structured data extraction, multimodal processing, and AI workflow integration.", badge: "AI Engine" },
-  { name: "Git & GitHub", category: "Backend & Data", description: "Version control, CI/CD automated deployment pipelines, and release workflows.", badge: "DevOps" },
-];
-
-export const WORK_PROCESS = [
-  {
-    step: "01",
-    name: "Understand",
-    heading: "Understand the Core Problem",
-    description: "Deep dive into your business operations, trading strategy rules, or operational friction points. We clarify requirements, define constraints, and outline measurable success criteria.",
-    deliverables: ["Requirements Specification", "Scope Definition", "Constraint Analysis"],
-  },
-  {
-    step: "02",
-    name: "Analyse",
-    heading: "Identify Inefficiencies & Risks",
-    description: "Audit current workflows, data flow gaps, manual overhead, and failure points. We eliminate unnecessary complexity before writing a single line of code.",
-    deliverables: ["Systems Audit Report", "Risk Assessment", "Optimization Roadmap"],
-  },
-  {
-    step: "03",
-    name: "Design",
-    heading: "Architect Practical Systems",
-    description: "Create the technical architecture, database schemas, UI wireframes, alert pipelines, or algorithmic logic diagrams designed for real-world reliability.",
-    deliverables: ["Architecture Blueprint", "Data Schema Model", "Workflow Diagrams"],
-  },
-  {
-    step: "04",
-    name: "Build",
-    heading: "Engineer, Test & Integrate",
-    description: "Develop the custom software, ERP modules, automation scripts, Pine Script indicators, or MT5 EAs. Rigorously tested under edge conditions.",
-    deliverables: ["Production Codebase", "Integration Testing", "Deployment Configuration"],
-  },
-  {
-    step: "05",
-    name: "Improve",
-    heading: "Monitor, Refine & Scale",
-    description: "Deploy to production, configure monitoring and error logs, gather real-world usage telemetry, and continuously refine performance.",
-    deliverables: ["Documentation & SOP", "Telemetry Monitoring", "Scalability Optimization"],
-  },
-];
-
-export const EXPERIENCE_TIMELINE: TimelineMilestone[] = [
-  {
-    year: "2017 – Present",
-    period: "Nearly 10 Years Continuous Journey",
-    title: "Technology Entrepreneur & Systems Architect",
-    role: "Founder & Technology Specialist",
-    description:
-      "Nearly a decade of dedicated experience across business management, technology architecture, custom software development, enterprise systems, and entrepreneurship.",
-    highlights: [
-      "2X Founder building digital products and business management systems.",
-      "Architecting end-to-end ERP, CRM, and internal automation for modern organizations.",
-      "Executive education: MBA from University of South Wales & CMI Level 7 in Strategic Management & Leadership.",
-      "Designing resilient software bridges connecting business operations, data, and reporting.",
-    ],
-    tags: ["Entrepreneurship", "Systems Architecture", "SaaS & ERP", "Executive Leadership"],
-  },
-  {
-    year: "2021 – Present",
-    period: "5+ Years Active Market Focus",
-    title: "Trading Technology & Financial Systems",
-    role: "Systems Developer & Strategy Technologist",
-    description:
-      "Over 5 years of rigorous study and practical development in financial markets, market structure, algorithmic strategy translation, and low-latency alert systems.",
-    highlights: [
-      "Specialized in Gold (XAUUSD), Silver (XAGUSD), US500, USTEC/US100, and Forex instruments.",
-      "Engineered bespoke Pine Script v5 indicators and MetaTrader 5 Expert Advisors.",
-      "Built automated webhook-to-Telegram signal routers and trade journaling systems.",
-      "Focused strictly on rule-based algorithmic automation, risk management controls, and technology.",
-    ],
-    tags: ["Financial Markets", "Pine Script", "MetaTrader 5", "Algo Automation", "Risk Controls"],
   },
 ];

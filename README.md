@@ -1,36 +1,43 @@
-# Hemanth Ranam — Personal Technology & Services Platform
+# Hemanth Ranam — Personal Technology & Services Website
 
-> **Business Systems • Technology • Automation • Trading Technology**
+> **Technology Entrepreneur • Business Systems • Automation • Software • Trading Technology**
 > 
-> *I help businesses design, build and optimise digital systems that reduce manual work, improve workflows and increase operational efficiency.*
+> *I design and build practical digital systems, automation, software and trading technology.*
 
 ---
 
 ## 🌟 Executive Overview
 
-This repository houses the official personal technology and services website for **Hemanth Ranam** — a 2X Founder, CEO of **ScaleNova Pvt Ltd**, MBA graduate from the University of South Wales, and CMI Level 7 qualified leader in Strategic Management & Leadership.
+This repository contains the completely redesigned, ultra-modern personal technology studio website for **Hemanth Ranam** — 2X Founder, CEO of **ScaleNova Pvt Ltd**, MBA graduate (University of South Wales), and CMI Level 7 qualified leader in Strategic Management & Leadership.
 
-The platform is engineered as a high-performance, single-page application (SPA) designed to communicate executive business thinking paired with deep technical implementation.
+Engineered with an aesthetic inspired by Apple, Stripe, Linear, and Vercel:
+- **Less text. More visual information.**
+- **White + Blue aesthetic** with subtle lighting and a clean **White Footer**.
+- **Interactive 3D WebGL hero object** powered by Three.js with mouse parallax and graceful fallback.
+- **Visual execution flows** for Business Systems, Trading Technology, and Custom Software.
+- **Transparent project-based USD ($) pricing**.
 
 ---
 
 ## 🚀 Key Website Sections
 
-1. **Hero & Architecture Hub**: High-impact, minimal technical hero featuring dynamic interactive system architecture and algorithmic telemetry switcher.
-2. **Trust & Credibility Strip**: Key metrics (2X Founder, ~10 Years Experience, 5+ Years Trading & Markets, MBA, CMI Level 7, Systems Architecture).
-3. **About & Background**: Executive profile, professional portrait presentation, continuous decade journey timeline (2017 → 2026), and academic credentials.
-4. **Services Grid**: Interactive category filtering across 4 core domains:
-   - *Business Systems & Consulting* (Architecture, BPMN, ERP/CRM, Data Analytics)
-   - *Software & Digital Products* (Custom SaaS, Client Portals, Web Applications, APIs)
-   - *Automation & AI Workflows* (Internal Triggers, Telegram Telemetry, LLM Parsing)
-   - *Trading Technology & Algo Systems* (Pine Script v5, MT5 Custom EAs, Webhook Routing)
-5. **Business Systems Ecosystem**: Interactive 9-node connected business pipeline (Leads → Sales → Customers → Projects → Tasks → Finance → People → Operations → Reports → Automation).
-6. **Trading Technology Pipeline**: Interactive 6-step strategy-to-execution pipeline (Strategy → Rules → Indicator → Confirmation → Alert → Automation → Execution/Journal) with compliance disclaimer.
-7. **Technology Stack**: Curated production tools (Frappe Framework, ERPNext, Next.js 15, TypeScript, Python, REST APIs, MariaDB, PostgreSQL, Redis, Pine Script v5, MetaTrader 5, MQL5, Telegram Bot API).
-8. **5-Stage Engineering Methodology**: 01 Understand → 02 Analyse → 03 Design → 04 Build → 05 Improve.
-9. **Experience Timeline**: Nearly a decade of continuous problem-solving from 2017 to 2026.
-10. **ScaleNova Spotlight**: Feature on the ScaleNova Business Operating System initiative.
-11. **Contact & Consultation Form**: Minimal high-conversion inquiry interface with direct copy-to-clipboard email and LinkedIn connect triggers.
+1. **Minimal Navigation**: Ultra-clean sticky bar with HR Blue monogram, active section spy, LinkedIn shortcut, and "Start a Project" CTA.
+2. **3D Interactive Hero**: Concise headline, positioning pills, primary CTAs, and a floating Three.js glass-like geometric polyhedron with mouse parallax.
+3. **Credibility Numbers Strip**: Key facts at a glance (~10 Years Experience, 5+ Years Trading & Markets, 2X Founder, MBA & CMI Level 7).
+4. **About Me**: Executive portrait presentation, concise profile, decade timeline badge, and MBA/CMI credentials.
+5. **What I Work With (Skills)**: Categorized visual cards with icons across Programming, Frameworks, Backend/Infrastructure, and Trading Technology.
+6. **Services**: 4 structured categories with 1-sentence icon cards (*Business Systems*, *Software*, *Automation*, *Trading Technology*).
+7. **Visual Solutions & Delivery Flows**: Interactive 5-step animated visual pipelines:
+   - *Business Systems*: Problem → Process → System → Automation → Reporting
+   - *Trading Technology*: Strategy → Rules → Indicator → Alert → Automation
+   - *Software*: Idea → Design → Build → Integrate → Launch
+8. **Trading Technology Spotlight**: Dedicated breakdown of TradingView, Pine Script v5, MT5 Custom EAs, Telegram webhooks, and compliance notice.
+9. **Production Tech Stack Wall**: Clean icon cards highlighting core enterprise tools.
+10. **Transparent Project-Based Pricing ($ USD)**: Clear "Starting From" milestone pricing for Websites, Apps, Automations, CRM/ERP, Pine Script indicators, and MT5 EAs.
+11. **Experience Timeline**: Minimal 2017 → 2019+ → 2021+ → 2022+ → 2026 track.
+12. **Why Work With Me**: 4 visual cards on Business Understanding, Technical Execution, Practical Solutions, and Long-Term Thinking.
+13. **Contact & Consultation**: Minimal inquiry form with direct email copy-to-clipboard, LinkedIn link, and celebration confetti.
+14. **Clean White Footer**: Compact, elegant footer with copyright 2026 and trading compliance disclosure.
 
 ---
 
@@ -38,68 +45,15 @@ The platform is engineered as a high-performance, single-page application (SPA) 
 
 - **Framework**: [Next.js 15](https://nextjs.org/) (App Router, Turbopack, React 19)
 - **Language**: [TypeScript](https://www.typescriptlang.org/) (Strict Mode)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) (Custom design tokens, glassmorphism, subtle blue gradients)
-- **Icons**: [Lucide React](https://lucide.dev/) + Custom SVG geometric HR monogram
-- **Animations & Micro-interactions**: Native CSS keyframes, Canvas Confetti
-- **SEO & Performance**: OpenGraph metadata, Twitter cards, Dynamic `sitemap.xml`, `robots.txt`, and Schema.org JSON-LD structured data
-
----
-
-## 📂 Project Structure
-
-```text
-hemanth-ranam-website/
-├── app/
-│   ├── globals.css          # Design system variables, grid patterns, glassmorphism
-│   ├── icon.svg             # Vector geometric HR monogram favicon
-│   ├── layout.tsx           # SEO metadata, Open Graph, JSON-LD Schema
-│   ├── page.tsx             # Main single-page application flow
-│   ├── robots.ts            # Dynamic robots.txt
-│   └── sitemap.ts           # Dynamic sitemap.xml
-├── components/
-│   ├── Navbar.tsx           # Sticky glassmorphic navigation with scroll spy
-│   ├── sections/
-│   │   ├── AboutSection.tsx         # Executive bio, portrait, qualifications
-│   │   ├── BusinessSystemsSection.tsx # Connected business ecosystem map
-│   │   ├── ContactSection.tsx       # Interactive consultation form & email copy
-│   │   ├── ExperienceSection.tsx    # 2017-2026 chronological journey
-│   │   ├── Footer.tsx               # Compliance disclaimer, brand, navigation
-│   │   ├── Hero.tsx                 # Technical hero with interactive architecture preview
-│   │   ├── ProcessSection.tsx       # 5-stage engineering methodology
-│   │   ├── ScaleNovaSection.tsx     # ScaleNova OS spotlight
-│   │   ├── ServicesSection.tsx      # Filterable service capability cards
-│   │   ├── TechStackSection.tsx     # Categorized production technologies
-│   │   ├── TradingTechSection.tsx   # Trading pipeline & market structures
-│   │   └── TrustStrip.tsx           # Key credibility metrics
-│   └── ui/
-│       ├── BackToTop.tsx            # Smooth scroll to top button
-│       ├── FloatingContactCTA.tsx   # Mobile floating inquiry trigger
-│       ├── LinkedinIcon.tsx         # Crisp vector LinkedIn icon
-│       ├── Logo.tsx                 # Geometric HR Monogram component
-│       └── ScrollProgressBar.tsx    # Viewport reading progress indicator
-├── data/
-│   └── siteData.ts          # Structured single source of truth for all content
-├── public/
-│   ├── favicon.svg          # Vector favicon
-│   ├── images/
-│   │   └── hemanth-portrait.jpg # Executive portrait asset
-│   └── logo.svg             # Master HR Monogram vector logo
-├── next.config.ts           # Next.js configuration
-├── package.json             # Dependencies and build scripts
-├── postcss.config.mjs       # PostCSS plugins
-├── tsconfig.json            # TypeScript compiler configuration
-└── README.md                # Project documentation
-```
+- **3D & Graphics**: [Three.js](https://threejs.org/) (WebGL geometric core with mouse parallax)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/) + Custom Vector HR monogram & LinkedIn icons
+- **Micro-Interactions**: Native CSS animations, Canvas Confetti
+- **SEO & Performance**: OpenGraph metadata, Twitter cards, Dynamic `sitemap.xml`, `robots.txt`, Schema.org JSON-LD
 
 ---
 
 ## 💻 Local Development
-
-### Prerequisites
-- Node.js 18.18+ or Node.js 20+ / 22+
-- npm, yarn, or pnpm
-
-### Installation
 
 ```bash
 # Clone the repository
@@ -108,31 +62,16 @@ cd hemanth-ranam-website
 
 # Install dependencies
 npm install
-```
 
-### Running Locally
-
-```bash
+# Run local development server
 npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-### Production Build
-
-```bash
-# Create optimized production build
+# Run optimized production build
 npm run build
 
 # Start production server
 npm run start
 ```
-
----
-
-## 🔒 Security & Privacy Notice
-
-- No environment variables, secret keys, or private tokens are stored in this repository.
-- Trading technology workflows are software engineering services and strictly follow client-defined deterministic logic without providing financial advice.
 
 ---
 

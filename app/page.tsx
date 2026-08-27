@@ -2,13 +2,14 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/sections/Hero";
 import { TrustStrip } from "@/components/sections/TrustStrip";
 import { AboutSection } from "@/components/sections/AboutSection";
+import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
-import { BusinessSystemsSection } from "@/components/sections/BusinessSystemsSection";
+import { VisualFlowsSection } from "@/components/sections/VisualFlowsSection";
 import { TradingTechSection } from "@/components/sections/TradingTechSection";
 import { TechStackSection } from "@/components/sections/TechStackSection";
-import { ProcessSection } from "@/components/sections/ProcessSection";
+import { PricingSection } from "@/components/sections/PricingSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
-import { ScaleNovaSection } from "@/components/sections/ScaleNovaSection";
+import { WhyWorkWithMeSection } from "@/components/sections/WhyWorkWithMeSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
@@ -21,25 +22,26 @@ export default function Home() {
       {/* Scroll Progress Bar */}
       <ScrollProgressBar />
 
-      {/* Primary Sticky Header */}
+      {/* Sticky Header */}
       <Navbar />
 
-      {/* Main Page Flow */}
+      {/* Main Single Page Content */}
       <main id="main-content" className="flex flex-col">
         <Hero />
         <TrustStrip />
         <AboutSection />
+        <SkillsSection />
         <ServicesSection />
-        <BusinessSystemsSection />
+        <VisualFlowsSection />
         <TradingTechSection />
         <TechStackSection />
-        <ProcessSection />
+        <PricingSection />
         <ExperienceSection />
-        <ScaleNovaSection />
+        <WhyWorkWithMeSection />
         <ContactSection />
       </main>
 
-      {/* Primary Footer */}
+      {/* Minimal White Footer */}
       <Footer />
 
       {/* Floating Helpers */}
