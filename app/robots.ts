@@ -10,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://app.hemanth-ranam.workers.dev/sitemap.xml",
+    sitemap: "https://hemanth.ranam.dev/sitemap.xml",
   };
 }

@@ -2,7 +2,7 @@
 
 import { SITE_CONFIG } from "@/data/siteData";
 import { HeroScene3D } from "@/components/3d/HeroScene3D";
-import { ArrowRight, MessageSquare } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export function Hero() {
   return (
@@ -19,7 +19,7 @@ export function Hero() {
           <div className="lg:col-span-7 flex flex-col items-start text-left z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/70 text-blue-700 text-xs font-semibold uppercase tracking-wider mb-4">
               <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-              <span>Hemanth Ranam</span>
+              <span>Business Systems & Tech</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-bold tracking-tight text-slate-900 leading-[1.12]">

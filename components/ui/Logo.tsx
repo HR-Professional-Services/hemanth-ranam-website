@@ -8,17 +8,17 @@ interface LogoProps {
 
 export function Logo({ className = "", size = "md", showText = true }: LogoProps) {
   const sizeMap = {
-    sm: { icon: "w-7 h-7", text: "text-sm", sub: "text-[9px]" },
-    md: { icon: "w-8 h-8", text: "text-base", sub: "text-[10px]" },
-    lg: { icon: "w-11 h-11", text: "text-xl", sub: "text-xs" },
+    sm: { icon: "w-7 h-7", text: "text-xs sm:text-sm", sub: "text-[9px] sm:text-[10px]" },
+    md: { icon: "w-8 h-8", text: "text-sm sm:text-base", sub: "text-[10px] sm:text-[11px]" },
+    lg: { icon: "w-10 h-10", text: "text-base sm:text-lg", sub: "text-xs" },
   };
 
   const { icon, text, sub } = sizeMap[size];
 
   return (
-    <div className={`flex items-center gap-2.5 select-none ${className}`}>
+    <div className={`flex items-center gap-2 select-none ${className}`}>
       {/* Geometric HR Monogram Badge - Blue on White */}
-      <div className={`relative flex items-center justify-center rounded-xl bg-white border border-slate-200/90 shadow-xs group-hover:border-blue-500 group-hover:shadow-sm transition-all duration-200 ${icon}`}>
+      <div className={`relative flex items-center justify-center rounded-xl bg-white border border-slate-200/90 shadow-xs group-hover:border-blue-500 group-hover:shadow-sm transition-all duration-200 shrink-0 ${icon}`}>
         <svg
           viewBox="0 0 100 100"
           className="w-[82%] h-[82%]"
@@ -53,12 +53,12 @@ export function Logo({ className = "", size = "md", showText = true }: LogoProps
       </div>
 
       {showText && (
-        <div className="flex flex-col leading-tight">
+        <div className="flex flex-col leading-none">
           <span className={`font-bold tracking-tight text-slate-900 ${text}`}>
             Hemanth <span className="text-blue-600">Ranam</span>
           </span>
-          <span className={`font-medium tracking-wider text-slate-400 uppercase ${sub}`}>
-            Systems & Tech
+          <span className={`font-semibold text-slate-500 tracking-tight mt-0.5 ${sub}`}>
+            Business Systems & Tech
           </span>
         </div>
       )}
