@@ -1,52 +1,42 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/sections/Hero";
-import { TrustStrip } from "@/components/sections/TrustStrip";
 import { AboutSection } from "@/components/sections/AboutSection";
-import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
-import { VisualFlowsSection } from "@/components/sections/VisualFlowsSection";
-import { TradingTechSection } from "@/components/sections/TradingTechSection";
 import { TechStackSection } from "@/components/sections/TechStackSection";
+import { TradingTechSection } from "@/components/sections/TradingTechSection";
 import { PricingSection } from "@/components/sections/PricingSection";
-import { ExperienceSection } from "@/components/sections/ExperienceSection";
-import { WhyWorkWithMeSection } from "@/components/sections/WhyWorkWithMeSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
+import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { FloatingContactCTA } from "@/components/ui/FloatingContactCTA";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
-      {/* Scroll Progress Bar */}
+    <div className="relative min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
+      {/* Viewport Progress */}
       <ScrollProgressBar />
 
       {/* Sticky Header */}
       <Navbar />
 
-      {/* Main Single Page Content */}
+      {/* Streamlined Main Page Flow */}
       <main id="main-content" className="flex flex-col">
         <Hero />
-        <TrustStrip />
         <AboutSection />
-        <SkillsSection />
         <ServicesSection />
-        <VisualFlowsSection />
-        <TradingTechSection />
         <TechStackSection />
+        <TradingTechSection />
         <PricingSection />
-        <ExperienceSection />
-        <WhyWorkWithMeSection />
         <ContactSection />
       </main>
 
-      {/* Minimal White Footer */}
+      {/* Clean White Footer */}
       <Footer />
 
-      {/* Floating Helpers */}
+      {/* Floating Action Elements */}
+      <WhatsAppButton />
       <BackToTop />
-      <FloatingContactCTA />
     </div>
   );
 }

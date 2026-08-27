@@ -8,7 +8,6 @@ export function HeroScene3D() {
   const [hasWebGL, setHasWebGL] = useState(true);
 
   useEffect(() => {
-    // Check for prefers-reduced-motion
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setHasWebGL(false);
       return;
@@ -17,7 +16,6 @@ export function HeroScene3D() {
     const container = containerRef.current;
     if (!container) return;
 
-    // Scene, Camera, Renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       45,
@@ -25,7 +23,7 @@ export function HeroScene3D() {
       0.1,
       1000
     );
-    camera.position.z = 6;
+    camera.position.z = 5.5;
 
     let renderer: THREE.WebGLRenderer;
     try {
@@ -46,25 +44,24 @@ export function HeroScene3D() {
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
     scene.add(ambientLight);
 
-    const directionalLight1 = new THREE.DirectionalLight(0x3b82f6, 2.5);
-    directionalLight1.position.set(5, 5, 5);
+    const directionalLight1 = new THREE.DirectionalLight(0x3b82f6, 2.2);
+    directionalLight1.position.set(4, 4, 4);
     scene.add(directionalLight1);
 
-    const directionalLight2 = new THREE.DirectionalLight(0x60a5fa, 1.5);
-    directionalLight2.position.set(-5, -5, -2);
+    const directionalLight2 = new THREE.DirectionalLight(0x60a5fa, 1.2);
+    directionalLight2.position.set(-4, -4, -2);
     scene.add(directionalLight2);
 
-    // Group for all rotating elements
     const mainGroup = new THREE.Group();
     scene.add(mainGroup);
 
     // 1. Outer Glass Icosahedron Wireframe
-    const icosahedronGeo = new THREE.IcosahedronGeometry(1.6, 1);
+    const icosahedronGeo = new THREE.IcosahedronGeometry(1.5, 1);
     const wireframeMat = new THREE.MeshStandardMaterial({
       color: 0x2563eb,
       wireframe: true,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.32,
       roughness: 0.2,
       metalness: 0.8,
     });
@@ -72,11 +69,11 @@ export function HeroScene3D() {
     mainGroup.add(wireframeMesh);
 
     // 2. Inner Solid Geometric Core
-    const coreGeo = new THREE.OctahedronGeometry(0.85, 0);
+    const coreGeo = new THREE.OctahedronGeometry(0.8, 0);
     const coreMat = new THREE.MeshPhysicalMaterial({
       color: 0x1d4ed8,
       emissive: 0x1e3a8a,
-      emissiveIntensity: 0.4,
+      emissiveIntensity: 0.35,
       roughness: 0.1,
       metalness: 0.1,
       transparent: true,
@@ -88,25 +85,25 @@ export function HeroScene3D() {
     mainGroup.add(coreMesh);
 
     // 3. Orbital Ring
-    const ringGeo = new THREE.TorusGeometry(2.3, 0.02, 16, 100);
+    const ringGeo = new THREE.TorusGeometry(2.1, 0.018, 16, 80);
     const ringMat = new THREE.MeshBasicMaterial({
       color: 0x93c5fd,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.45,
     });
     const ringMesh = new THREE.Mesh(ringGeo, ringMat);
     ringMesh.rotation.x = Math.PI / 3;
     mainGroup.add(ringMesh);
 
-    // 4. Floating Nodes / Particles
-    const particlesCount = 36;
+    // 4. Floating Particles
+    const particlesCount = 24;
     const particlesGeo = new THREE.BufferGeometry();
     const posArray = new Float32Array(particlesCount * 3);
 
     for (let i = 0; i < particlesCount * 3; i += 3) {
-      posArray[i] = (Math.random() - 0.5) * 5;
-      posArray[i + 1] = (Math.random() - 0.5) * 5;
-      posArray[i + 2] = (Math.random() - 0.5) * 5;
+      posArray[i] = (Math.random() - 0.5) * 4.5;
+      posArray[i + 1] = (Math.random() - 0.5) * 4.5;
+      posArray[i + 2] = (Math.random() - 0.5) * 4.5;
     }
 
     particlesGeo.setAttribute(
@@ -115,10 +112,10 @@ export function HeroScene3D() {
     );
 
     const particlesMat = new THREE.PointsMaterial({
-      size: 0.05,
+      size: 0.045,
       color: 0x3b82f6,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.5,
     });
     const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
     mainGroup.add(particlesMesh);
@@ -137,7 +134,6 @@ export function HeroScene3D() {
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
-    // Handle Resize
     const handleResize = () => {
       if (!container || !renderer) return;
       camera.aspect = container.clientWidth / container.clientHeight;
@@ -147,7 +143,6 @@ export function HeroScene3D() {
 
     window.addEventListener("resize", handleResize);
 
-    // Animation Loop
     let animationFrameId: number;
     const clock = new THREE.Clock();
 
@@ -156,24 +151,22 @@ export function HeroScene3D() {
 
       const elapsedTime = clock.getElapsedTime();
 
-      // Smooth mouse follow
-      targetX += (mouseX * 0.5 - targetX) * 0.05;
-      targetY += (mouseY * 0.5 - targetY) * 0.05;
+      targetX += (mouseX * 0.4 - targetX) * 0.05;
+      targetY += (mouseY * 0.4 - targetY) * 0.05;
 
-      mainGroup.rotation.y = elapsedTime * 0.25 + targetX;
-      mainGroup.rotation.x = Math.sin(elapsedTime * 0.2) * 0.2 + targetY;
+      mainGroup.rotation.y = elapsedTime * 0.22 + targetX;
+      mainGroup.rotation.x = Math.sin(elapsedTime * 0.18) * 0.15 + targetY;
 
-      coreMesh.rotation.y = -elapsedTime * 0.4;
-      coreMesh.rotation.z = elapsedTime * 0.2;
+      coreMesh.rotation.y = -elapsedTime * 0.35;
+      coreMesh.rotation.z = elapsedTime * 0.18;
 
-      ringMesh.rotation.z = elapsedTime * 0.3;
+      ringMesh.rotation.z = elapsedTime * 0.25;
 
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // Cleanup
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
@@ -198,11 +191,11 @@ export function HeroScene3D() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[360px] sm:h-[420px] lg:h-[480px] flex items-center justify-center pointer-events-auto"
+      className="relative w-full h-[280px] sm:h-[340px] lg:h-[400px] flex items-center justify-center pointer-events-auto"
       aria-hidden="true"
     >
       {!hasWebGL && (
-        <div className="w-48 h-48 rounded-full bg-gradient-to-tr from-blue-500/20 via-sky-400/20 to-indigo-500/10 blur-2xl animate-pulse" />
+        <div className="w-36 h-36 rounded-full bg-gradient-to-tr from-blue-500/20 via-sky-400/20 to-indigo-500/10 blur-xl animate-pulse" />
       )}
     </div>
   );

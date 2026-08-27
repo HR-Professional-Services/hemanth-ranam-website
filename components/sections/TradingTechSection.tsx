@@ -1,7 +1,6 @@
 import {
   TrendingUp,
   Binary,
-  Target,
   Activity,
   Bot,
   Send,
@@ -12,108 +11,93 @@ import {
 } from "lucide-react";
 
 export function TradingTechSection() {
-  const steps = [
-    { title: "TradingView", sub: "Chart Platform", icon: TrendingUp },
-    { title: "Pine Script", sub: "Indicator Logic", icon: Binary },
-    { title: "MT5", sub: "Execution Platform", icon: Activity },
-    { title: "Indicators", sub: "Visual Setups", icon: Sliders },
-    { title: "Alerts", sub: "Webhook Events", icon: Zap },
-    { title: "Telegram", sub: "Channel Dispatch", icon: Send },
-    { title: "Automation", sub: "MQL5 EA Robots", icon: Bot },
+  const pipeline = [
+    { title: "Strategy", icon: Sliders },
+    { title: "Indicator", icon: Binary },
+    { title: "Alert", icon: Zap },
+    { title: "Telegram", icon: Send },
+    { title: "MT5 EA", icon: Activity },
+    { title: "Automation", icon: Bot },
   ];
 
-  const capabilities = [
-    { name: "Custom Indicators", desc: "Multi-timeframe Pine Script v5 & MT5 indicators.", icon: Sliders },
-    { name: "Strategy Implementation", desc: "Translating price action rules into deterministic logic.", icon: Target },
-    { name: "MT5 Expert Advisors", desc: "Automated execution robots with strict risk parameters.", icon: Bot },
-    { name: "Telegram Signal Alerts", desc: "Low-latency webhook delivery directly to Telegram.", icon: Send },
-    { name: "Trading Automation", desc: "Seamless bridge between chart signals and MT5.", icon: Zap },
-    { name: "Market Scanners", desc: "Automated multi-asset scanners for specific structure setups.", icon: Activity },
+  const tags = [
+    "Pine Script v5",
+    "TradingView Webhooks",
+    "MT5 Custom Indicators",
+    "MQL5 Expert Advisors",
+    "Telegram Channel Alerts",
+    "Multi-Asset Scanners",
   ];
 
   return (
-    <section id="trading-tech" className="py-16 md:py-24 bg-white relative">
+    <section id="trading-tech" className="py-12 md:py-16 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-2xl mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold uppercase tracking-wider mb-2.5">
-            <TrendingUp className="w-3.5 h-3.5" />
-            <span>Markets & Algo</span>
+        <div className="max-w-xl mb-8">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-[11px] font-semibold uppercase tracking-wider mb-2">
+            <TrendingUp className="w-3 h-3" />
+            <span>Trading Tech</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
             Trading Technology
           </h2>
-          <p className="mt-2 text-sm sm:text-base text-slate-600">
-            Turn trading rules into technology. Custom indicators, alert routers, and automated execution bots.
+          <p className="mt-1 text-xs sm:text-sm text-slate-600">
+            Turn defined trading rules into indicators, alerts and automation.
           </p>
         </div>
 
-        {/* Visual Pipeline Bar */}
-        <div className="p-6 rounded-3xl bg-slate-50 border border-slate-200/90 shadow-xs mb-10">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">
-            The Algorithmic Workflow Pipeline
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
-            {steps.map((item, index) => {
+        {/* Compact Horizontal Pipeline */}
+        <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-center">
+            {pipeline.map((item, index) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.title}
-                  className="p-3.5 rounded-2xl bg-white border border-slate-200/80 text-center flex flex-col items-center justify-between"
+                  className="p-3 rounded-xl bg-white border border-slate-200/90 shadow-xs flex flex-col items-center justify-center relative"
                 >
-                  <div className="p-2 rounded-xl bg-blue-50 text-blue-600 mb-2">
+                  {index < pipeline.length - 1 && (
+                    <span className="hidden lg:block absolute -right-2 top-1/2 -translate-y-1/2 text-blue-400 font-bold text-[10px] z-10 pointer-events-none">
+                      →
+                    </span>
+                  )}
+                  <div className="p-1.5 rounded-lg bg-blue-50 text-blue-600 mb-1.5">
                     <Icon className="w-4 h-4" />
                   </div>
-                  <div>
-                    <p className="text-xs font-bold text-slate-900">{item.title}</p>
-                    <p className="text-[10px] text-slate-400">{item.sub}</p>
-                  </div>
+                  <p className="text-xs font-bold text-slate-900">{item.title}</p>
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* Capabilities Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {capabilities.map((cap) => {
-            const Icon = cap.icon;
-            return (
-              <div
-                key={cap.name}
-                className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs flex items-start gap-3.5"
+        {/* Small Service Tags Strip */}
+        <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs">
+          <div className="flex flex-wrap items-center gap-1.5">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="text-xs font-semibold text-slate-700 bg-slate-100/80 px-2.5 py-1 rounded-lg border border-slate-200/60"
               >
-                <div className="p-2 rounded-xl bg-blue-50 text-blue-600 shrink-0">
-                  <Icon className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900 leading-snug">
-                    {cap.name}
-                  </h3>
-                  <p className="mt-1 text-xs text-slate-600 leading-relaxed">
-                    {cap.desc}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Short Legal Disclaimer */}
-        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between flex-wrap gap-3 text-xs text-slate-500">
-          <div className="flex items-center gap-2">
-            <ShieldAlert className="w-4 h-4 text-slate-400 shrink-0" />
-            <span>
-              <strong>Technology development only.</strong> No guaranteed trading results or investment advice provided.
-            </span>
+                {tag}
+              </span>
+            ))}
           </div>
+
           <a
             href="#contact"
-            className="inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-700"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 shrink-0"
           >
-            <span>Discuss Trading Project</span>
-            <ArrowRight className="w-3 h-3" />
+            <span>Discuss Trading Setup</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </a>
+        </div>
+
+        {/* Tiny Compliance Note */}
+        <div className="mt-4 flex items-center gap-2 text-[11px] text-slate-500">
+          <ShieldAlert className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+          <span>
+            <strong>Technology development only.</strong> No guaranteed trading results or investment advice.
+          </span>
         </div>
       </div>
     </section>
