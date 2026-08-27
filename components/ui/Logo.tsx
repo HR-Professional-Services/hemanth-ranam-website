@@ -8,12 +8,12 @@ interface LogoProps {
 
 export function Logo({ className = "", size = "md", showText = true }: LogoProps) {
   const sizeMap = {
-    sm: { icon: "w-7 h-7", text: "text-xs sm:text-sm", sub: "text-[9px] sm:text-[10px]" },
-    md: { icon: "w-8 h-8", text: "text-sm sm:text-base", sub: "text-[10px] sm:text-[11px]" },
-    lg: { icon: "w-10 h-10", text: "text-base sm:text-lg", sub: "text-xs" },
+    sm: { icon: "w-7 h-7", text: "text-sm" },
+    md: { icon: "w-8 h-8", text: "text-base" },
+    lg: { icon: "w-10 h-10", text: "text-lg" },
   };
 
-  const { icon, text, sub } = sizeMap[size];
+  const { icon, text } = sizeMap[size];
 
   return (
     <div className={`flex items-center gap-2 select-none ${className}`}>
@@ -53,14 +53,9 @@ export function Logo({ className = "", size = "md", showText = true }: LogoProps
       </div>
 
       {showText && (
-        <div className="flex flex-col leading-none">
-          <span className={`font-bold tracking-tight text-slate-900 ${text}`}>
-            Hemanth <span className="text-blue-600">Ranam</span>
-          </span>
-          <span className={`font-semibold text-slate-500 tracking-tight mt-0.5 ${sub}`}>
-            Business Systems & Tech
-          </span>
-        </div>
+        <span className={`font-bold tracking-tight text-slate-900 ${text}`}>
+          Hemanth <span className="text-blue-600">Ranam</span>
+        </span>
       )}
     </div>
   );
