@@ -31,7 +31,7 @@ Personal professional website for Hemanth Ranam.
 
 - **Email**: [hemanth.ranam@gmail.com](mailto:hemanth.ranam@gmail.com)
 - **LinkedIn**: [https://www.linkedin.com/in/hemanth-ranam-41b542253](https://www.linkedin.com/in/hemanth-ranam-41b542253)
-- **Website**: [https://hemanth-ranam-website.hemanth-ranam.workers.dev](https://hemanth-ranam-website.hemanth-ranam.workers.dev)
+- **Website**: [https://hemanth-ranam.dev](https://hemanth-ranam.dev)
 
 ---
 
