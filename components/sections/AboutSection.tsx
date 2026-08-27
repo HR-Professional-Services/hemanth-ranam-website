@@ -35,7 +35,7 @@ export function AboutSection() {
           <div className="lg:col-span-5 flex flex-col items-center">
             <div className="relative w-full max-w-sm">
               <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-lg bg-white">
-                <div className="relative aspect-square w-full">
+                <div className="relative aspect-[4/5] w-full">
                   <Image
                     src="/images/hemanth-portrait.jpg"
                     alt="Hemanth Ranam - Technology Entrepreneur"
