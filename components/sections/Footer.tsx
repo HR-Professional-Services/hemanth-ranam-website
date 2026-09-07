@@ -152,7 +152,7 @@ export function Footer() {
         {/* Bottom Legal & Compliance Strip */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
           <div>
-            <span>© 2026 HR Professional Services &amp; Hemanth Ranam. All rights reserved.</span>
+            <span>© 2026 HR Professional Services. All rights reserved.</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
