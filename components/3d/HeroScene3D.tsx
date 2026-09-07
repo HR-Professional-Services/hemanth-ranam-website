@@ -9,7 +9,6 @@ export function HeroScene3D() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setHasWebGL(false);
       return;
     }
 
@@ -36,7 +35,7 @@ export function HeroScene3D() {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       container.appendChild(renderer.domElement);
     } catch {
-      setHasWebGL(false);
+      setTimeout(() => setHasWebGL(false), 0);
       return;
     }
 

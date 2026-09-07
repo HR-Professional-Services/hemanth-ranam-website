@@ -102,7 +102,7 @@ export function ServiceDetailModal({ service, onClose }: ServiceDetailModalProps
             <div className="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5 mb-2">
                 <Users className="w-3.5 h-3.5 text-blue-600" />
-                <span>Who It's For</span>
+                <span>Who It&apos;s For</span>
               </h4>
               <ul className="space-y-1.5 text-slate-600">
                 {details.suitableFor.map((item) => (

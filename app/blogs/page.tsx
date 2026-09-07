@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BLOG_POSTS, BLOG_CATEGORIES, BlogPost } from "@/data/blogsData";
+import { BLOG_POSTS, BLOG_CATEGORIES } from "@/data/blogsData";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { NewsletterSection } from "@/components/ui/NewsletterSection";
@@ -18,7 +18,6 @@ import {
   TrendingUp,
   Bot,
   Zap,
-  Tag,
 } from "lucide-react";
 
 export default function BlogsPage() {
@@ -178,7 +177,7 @@ export default function BlogsPage() {
             {filteredPosts.length === 0 ? (
               <div className="text-center py-16 p-8 rounded-3xl bg-slate-50 border border-slate-200">
                 <p className="text-sm text-slate-500 font-medium">
-                  No articles found matching "{searchQuery}".
+                  No articles found matching &ldquo;{searchQuery}&rdquo;.
                 </p>
                 <button
                   onClick={() => {

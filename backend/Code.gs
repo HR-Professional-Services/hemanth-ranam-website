@@ -1,598 +1,518 @@
 /**
  * ============================================================================
- * HEMANTH RANAM CRM & AUTOMATION ENGINE (Single .gs Backend)
+ * HR PROFESSIONAL SERVICES — PRODUCTION LEAD CAPTURE & CRM ENGINE
  * ============================================================================
- * Version: 2.0.0
+ * Version: 2.5.0 (Production Release)
  * Environment: Google Apps Script Web App
- * Integrations: Website Webhook -> Google Sheets -> AppSheet CRM -> Email Dispatcher
+ * Architecture Reference: ScaleNova Systems Lead Engine
+ * Target Flow:
+ *   Website Lead Form -> Next.js API / Direct Post -> Apps Script Web App
+ *   -> Google Sheets CRM -> Dual Email Notifications (Management + Client)
  *
- * SPREADSHEET TABS:
- *   1. Leads
- *   2. Clients
- *   3. Newsletter Subscribers
- *   4. Activities
+ * CANONICAL WORKSHEET COLUMNS (12):
+ *   1.  Timestamp
+ *   2.  Lead ID
+ *   3.  Name
+ *   4.  Email
+ *   5.  Phone
+ *   6.  Company
+ *   7.  Service
+ *   8.  Message
+ *   9.  Source
+ *   10. Page
+ *   11. Status
+ *   12. Notes
  * ============================================================================
  */
 
-// Global Configuration
+// ----------------------------------------------------------------------------
+// 1. GLOBAL CONFIGURATION & METADATA
+// ----------------------------------------------------------------------------
 var CONFIG = {
-  API_SECRET_KEY: "HR_SECURE_API_SECRET_2026", // Set via Script Properties in production
-  ADMIN_EMAIL: "hemanth.ranam@gmail.com",
-  ADMIN_NAME: "Hemanth Ranam",
+  VERSION: "2.5.0",
+  SERVICE_NAME: "HR Professional Services CRM Engine",
+  COMPANY_NAME: "HR Professional Services",
+  MANAGER_EMAIL: "hemanth.ranam@gmail.com",
+  MANAGER_NAME: "Hemanth Ranam",
   WEBSITE_URL: "https://hemanth.ranam.dev",
-  COMPANY_NAME: "Hemanth Ranam Systems & Tech",
-  SHEET_NAMES: {
-    LEADS: "Leads",
-    CLIENTS: "Clients",
-    SUBSCRIBERS: "Newsletter Subscribers",
-    ACTIVITIES: "Activities",
-  },
+  TIMEZONE: "GMT", // or Europe/London / GMT
+  
+  // Sheet Settings (Optional: Leave SPREADSHEET_ID empty if bound to active sheet)
+  SPREADSHEET_ID: "", 
+  SHEET_NAME: "Enquiries",
+  
+  // API Security Key (can also be set in Script Properties: API_SECRET_KEY)
+  API_SECRET_KEY: "HR_SECURE_API_SECRET_2026",
+
+  // Canonical Column Schema
+  COLUMNS: [
+    "Timestamp",
+    "Lead ID",
+    "Name",
+    "Email",
+    "Phone",
+    "Company",
+    "Service",
+    "Message",
+    "Source",
+    "Page",
+    "Status",
+    "Notes"
+  ],
+
+  // Valid Workflow Statuses
+  STATUSES: [
+    "New",
+    "Contacted",
+    "Qualified",
+    "In Progress",
+    "Converted",
+    "Closed",
+    "Not Interested"
+  ]
 };
 
-/**
- * Handle incoming GET requests (Health check and read API)
- */
+// ----------------------------------------------------------------------------
+// 2. HTTP GET HANDLER (Health Check & Diagnostics)
+// ----------------------------------------------------------------------------
 function doGet(e) {
   try {
-    var action = e.parameter.action || "health";
+    var params = (e && e.parameter) ? e.parameter : {};
+    var action = params.action || "health";
 
-    if (action === "health") {
+    if (action === "health" || !params.action) {
       return jsonResponse({
         success: true,
-        message: "Hemanth Ranam CRM API is healthy & running.",
-        timestamp: new Date().toISOString(),
+        service: CONFIG.SERVICE_NAME,
+        version: CONFIG.VERSION,
+        status: "operational",
+        timestamp: new Date().toISOString()
       });
     }
 
-    // Authenticate for read actions
-    if (!verifyAuth(e)) {
+    if (!verifyAuth(params)) {
       return jsonResponse({ success: false, error: "Unauthorized access." }, 401);
     }
 
-    switch (action) {
-      case "listLeads":
-        return jsonResponse({ success: true, data: listRecords(CONFIG.SHEET_NAMES.LEADS) });
-      case "listClients":
-        return jsonResponse({ success: true, data: listRecords(CONFIG.SHEET_NAMES.CLIENTS) });
-      case "listSubscribers":
-        return jsonResponse({ success: true, data: listRecords(CONFIG.SHEET_NAMES.SUBSCRIBERS) });
-      case "getLead":
-        return jsonResponse({ success: true, data: getRecordById(CONFIG.SHEET_NAMES.LEADS, "Lead ID", e.parameter.id) });
-      default:
-        return jsonResponse({ success: false, error: "Invalid action requested." }, 400);
+    if (action === "listEnquiries") {
+      return jsonResponse({ success: true, data: listEnquiries() });
     }
+
+    return jsonResponse({ success: false, error: "Invalid action requested." }, 400);
   } catch (error) {
     return jsonResponse({ success: false, error: error.toString() }, 500);
   }
 }
 
-/**
- * Handle incoming POST requests (Lead creation, Subscription, Conversion)
- */
+// ----------------------------------------------------------------------------
+// 3. HTTP POST HANDLER (Lead Capture & Integration)
+// ----------------------------------------------------------------------------
 function doPost(e) {
   try {
     var data = {};
     if (e.postData && e.postData.contents) {
-      data = JSON.parse(e.postData.contents);
-    } else {
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch (jsonErr) {
+        data = parseFormData(e.postData.contents);
+      }
+    } else if (e.parameter) {
       data = e.parameter;
+    }
+
+    // Basic Bot / Honeypot rejection
+    if (data.website_hp || data.honeypot) {
+      return jsonResponse({ success: true, message: "Request received." });
     }
 
     var action = data.action || "createLead";
 
-    // Authenticate token/secret
-    var providedKey = data.apiKey || data.token || (e.parameter && e.parameter.apiKey);
-    var configuredKey = PropertiesService.getScriptProperties().getProperty("API_SECRET_KEY") || CONFIG.API_SECRET_KEY;
-
-    if (providedKey !== configuredKey && action !== "createLead" && action !== "createSubscriber") {
-      return jsonResponse({ success: false, error: "Unauthorized operation." }, 401);
-    }
-
     switch (action) {
       case "createLead":
+      case "submitEnquiry":
         return handleCreateLead(data);
-      case "createSubscriber":
-        return handleCreateSubscriber(data);
-      case "convertLeadToClient":
-        return handleConvertLeadToClient(data);
-      case "updateLeadStatus":
-        return handleUpdateLeadStatus(data);
-      case "runFollowUpTrigger":
-        return handleFollowUpSweep();
+      case "updateStatus":
+        if (!verifyAuth(data)) {
+          return jsonResponse({ success: false, error: "Unauthorized operation." }, 401);
+        }
+        return handleUpdateStatus(data);
       default:
         return jsonResponse({ success: false, error: "Unsupported action." }, 400);
     }
   } catch (error) {
-    logActivity("SYSTEM", "ERROR", "doPost Exception: " + error.toString());
-    return jsonResponse({ success: false, error: "Internal processing error." }, 500);
+    console.error("doPost Exception:", error);
+    return jsonResponse({ success: false, error: "Internal processing error: " + error.toString() }, 500);
   }
 }
 
+// ----------------------------------------------------------------------------
+// 4. CORE SHEET INITIALIZATION & LEAD CREATION
+// ----------------------------------------------------------------------------
+
 /**
- * Ensure all sheets and header columns exist with AppSheet compatibility
+ * Ensures the target sheet and 12-column header row exist with premium formatting
  */
-function initializeSpreadsheet() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+function initializeSheet() {
+  var ss = getSpreadsheet();
+  var sheet = ss.getSheetByName(CONFIG.SHEET_NAME);
 
-  var schemas = [
-    {
-      name: CONFIG.SHEET_NAMES.LEADS,
-      headers: [
-        "Lead ID", "Created At", "Updated At", "Full Name", "Email",
-        "WhatsApp Country Code", "WhatsApp Number", "Normalized WhatsApp Number",
-        "Company", "Service Interested", "Message", "Source",
-        "Status", "Assigned To", "Follow-up Date", "Last Contact Date", "Notes"
-      ]
-    },
-    {
-      name: CONFIG.SHEET_NAMES.CLIENTS,
-      headers: [
-        "Client ID", "Linked Lead ID", "Client Name", "Email",
-        "WhatsApp", "Company", "Services", "Status",
-        "Created At", "Updated At", "Notes"
-      ]
-    },
-    {
-      name: CONFIG.SHEET_NAMES.SUBSCRIBERS,
-      headers: [
-        "Subscriber ID", "Email", "Name", "Source",
-        "Subscription Date", "Status", "Unsubscribe Date", "Notes"
-      ]
-    },
-    {
-      name: CONFIG.SHEET_NAMES.ACTIVITIES,
-      headers: [
-        "Activity ID", "Entity Type", "Entity ID",
-        "Action", "Timestamp", "Details"
-      ]
-    }
-  ];
+  if (!sheet) {
+    sheet = ss.insertSheet(CONFIG.SHEET_NAME);
+    sheet.getRange(1, 1, 1, CONFIG.COLUMNS.length).setValues([CONFIG.COLUMNS]);
+    
+    // Style header row
+    var headerRange = sheet.getRange(1, 1, 1, CONFIG.COLUMNS.length);
+    headerRange.setFontWeight("bold");
+    headerRange.setBackground("#1E293B"); // Slate-800
+    headerRange.setFontColor("#FFFFFF");
+    headerRange.setHorizontalAlignment("center");
+    sheet.setFrozenRows(1);
 
-  schemas.forEach(function(schema) {
-    var sheet = ss.getSheetByName(schema.name);
-    if (!sheet) {
-      sheet = ss.insertSheet(schema.name);
-      sheet.getRange(1, 1, 1, schema.headers.length).setValues([schema.headers]);
-      sheet.getRange(1, 1, 1, schema.headers.length).setFontWeight("bold").setBackground("#F1F5F9");
-      sheet.setFrozenRows(1);
+    // Auto-fit column widths
+    for (var i = 1; i <= CONFIG.COLUMNS.length; i++) {
+      sheet.setColumnWidth(i, 160);
     }
-  });
+    sheet.setColumnWidth(1, 175); // Timestamp
+    sheet.setColumnWidth(2, 160); // Lead ID
+    sheet.setColumnWidth(8, 280); // Message
+  }
+
+  return sheet;
 }
 
 /**
- * Action: Create a new Lead
+ * Creates and records a new enquiry, appending it to Google Sheets
  */
 function handleCreateLead(data) {
-  initializeSpreadsheet();
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.SHEET_NAMES.LEADS);
+  var sheet = initializeSheet();
 
-  var now = new Date();
-  var timestamp = now.toISOString();
-  var leadId = data.leadId || generateUniqueId("LEAD");
+  // Validate Name
+  var name = sanitize(data.name || "");
+  if (!name || name.length < 2) {
+    return jsonResponse({ success: false, error: "Full Name is required (minimum 2 characters)." }, 400);
+  }
 
-  var name = sanitize(data.name);
-  var email = (data.email || "").trim().toLowerCase();
-  var countryCode = sanitize(data.countryCode || "+44");
-  var phone = sanitize(data.phone || "");
-  var normalizedPhone = sanitize(data.normalizedPhone || phone);
+  // Validate Email
+  var email = (data.email || "").toString().trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return jsonResponse({ success: false, error: "A valid email address is required." }, 400);
+  }
+
+  // Sanitize Inputs
+  var phone = sanitize(data.phone || data.normalizedPhone || "");
   var company = sanitize(data.company || "");
-  var service = sanitize(data.service || "Business Systems Consulting");
+  var service = sanitize(data.service || "General HR & Systems Consulting");
   var message = sanitize(data.message || "");
   var source = sanitize(data.source || "Website Form");
+  var page = sanitize(data.page || "/#contact");
 
+  // Generate Unique Collision-Free Lead ID (Format: HRPS-YYYYMMDD-XXXX)
+  var leadId = data.leadId || generateLeadId();
+
+  // Timestamp
+  var now = new Date();
+  var timestamp = Utilities.formatDate(now, CONFIG.TIMEZONE, "yyyy-MM-dd HH:mm:ss");
+
+  // Status is always "New" by default
+  var status = "New";
+  var notes = sanitize(data.notes || "");
+
+  // Append new row matching exact 12-column canonical schema
   var newRow = [
+    timestamp,
     leadId,
-    timestamp,
-    timestamp,
     name,
     email,
-    countryCode,
     phone,
-    normalizedPhone,
     company,
     service,
     message,
     source,
-    "New", // Initial Lead Status
-    CONFIG.ADMIN_NAME,
-    calculateFutureDate(2), // Default follow up in 2 days
-    timestamp,
-    ""
+    page,
+    status,
+    notes
   ];
 
   sheet.appendRow(newRow);
 
-  // 1. Log Activity
-  logActivity("LEAD", leadId, "Lead Created from " + source);
-
-  // 2. Send User Confirmation HTML Email
-  if (email) {
-    sendUserConfirmationEmail({
-      to: email,
-      name: name,
+  // Dispatch Management Alert Email
+  try {
+    sendManagementAlert({
       leadId: leadId,
+      name: name,
+      email: email,
+      phone: phone,
+      company: company,
       service: service,
+      message: message,
+      source: source,
+      page: page,
+      timestamp: timestamp
     });
+  } catch (mailErr) {
+    console.error("Management alert dispatch error:", mailErr);
   }
 
-  // 3. Send Admin Alert Email to Hemanth
-  sendAdminAlertEmail({
-    leadId: leadId,
-    name: name,
-    email: email,
-    phone: normalizedPhone,
-    company: company,
-    service: service,
-    message: message,
-    timestamp: timestamp,
-  });
+  // Dispatch Customer Acknowledgement Email
+  try {
+    sendCustomerAcknowledgement({
+      leadId: leadId,
+      name: name,
+      email: email,
+      service: service
+    });
+  } catch (ackErr) {
+    console.error("Customer acknowledgement dispatch error:", ackErr);
+  }
 
   return jsonResponse({
     success: true,
-    action: "createLead",
+    message: "Enquiry submitted and recorded successfully.",
     data: {
       leadId: leadId,
-      status: "New",
-      message: "Lead recorded and automated emails dispatched.",
-    },
-  });
-}
-
-/**
- * Action: Create Newsletter Subscriber
- */
-function handleCreateSubscriber(data) {
-  initializeSpreadsheet();
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.SHEET_NAMES.SUBSCRIBERS);
-
-  var email = (data.email || "").trim().toLowerCase();
-  if (!email) {
-    return jsonResponse({ success: false, error: "Email is required." }, 400);
-  }
-
-  // Check for duplicates
-  var values = sheet.getDataRange().getValues();
-  for (var i = 1; i < values.length; i++) {
-    if (values[i][1] === email && values[i][5] === "Active") {
-      return jsonResponse({
-        success: true,
-        action: "createSubscriber",
-        data: { message: "Already subscribed." }
-      });
+      status: status,
+      timestamp: timestamp
     }
-  }
-
-  var subscriberId = data.subscriberId || generateUniqueId("SUB");
-  var now = new Date().toISOString();
-  var name = sanitize(data.name || "");
-  var source = sanitize(data.source || "Website Newsletter");
-
-  sheet.appendRow([
-    subscriberId,
-    email,
-    name,
-    source,
-    now,
-    "Active",
-    "",
-    ""
-  ]);
-
-  logActivity("SUBSCRIBER", subscriberId, "Newsletter Subscribed: " + email);
-
-  // Send Welcome Email
-  sendNewsletterWelcomeEmail({ to: email, name: name });
-
-  return jsonResponse({
-    success: true,
-    action: "createSubscriber",
-    data: { subscriberId: subscriberId, message: "Subscription active." }
   });
 }
 
 /**
- * Action: Convert Lead to Client (Idempotent)
+ * Updates status of an existing lead
  */
-function handleConvertLeadToClient(data) {
-  var leadId = data.leadId;
-  if (!leadId) return jsonResponse({ success: false, error: "leadId is required." }, 400);
-
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var leadsSheet = ss.getSheetByName(CONFIG.SHEET_NAMES.LEADS);
-  var clientsSheet = ss.getSheetByName(CONFIG.SHEET_NAMES.CLIENTS);
-
-  var leadData = leadsSheet.getDataRange().getValues();
-  var leadRowIdx = -1;
-  var leadRecord = null;
-
-  for (var i = 1; i < leadData.length; i++) {
-    if (leadData[i][0] === leadId) {
-      leadRowIdx = i + 1;
-      leadRecord = leadData[i];
-      break;
-    }
-  }
-
-  if (!leadRecord) {
-    return jsonResponse({ success: false, error: "Lead ID not found." }, 404);
-  }
-
-  // Prevent duplicate conversion
-  if (leadRecord[12] === "Converted") {
-    return jsonResponse({ success: true, message: "Lead already converted.", leadId: leadId });
-  }
-
-  var clientId = generateUniqueId("CLT");
-  var now = new Date().toISOString();
-
-  // Create Client Record
-  clientsSheet.appendRow([
-    clientId,
-    leadId,
-    leadRecord[3], // Name
-    leadRecord[4], // Email
-    leadRecord[7], // Normalized WhatsApp
-    leadRecord[8], // Company
-    leadRecord[9], // Services
-    "Active",
-    now,
-    now,
-    "Converted from Lead " + leadId
-  ]);
-
-  // Update Lead Status to 'Converted'
-  leadsSheet.getRange(leadRowIdx, 13).setValue("Converted");
-  leadsSheet.getRange(leadRowIdx, 3).setValue(now); // Updated At
-
-  logActivity("CLIENT", clientId, "Lead " + leadId + " successfully converted to Client " + clientId);
-
-  return jsonResponse({
-    success: true,
-    action: "convertLeadToClient",
-    data: { clientId: clientId, leadId: leadId, status: "Converted" }
-  });
-}
-
-/**
- * Action: Update Lead Status
- */
-function handleUpdateLeadStatus(data) {
+function handleUpdateStatus(data) {
   var leadId = data.leadId;
   var status = data.status;
-  if (!leadId || !status) return jsonResponse({ success: false, error: "leadId and status required." }, 400);
 
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.SHEET_NAMES.LEADS);
+  if (!leadId || !status) {
+    return jsonResponse({ success: false, error: "leadId and status are required." }, 400);
+  }
+
+  var sheet = initializeSheet();
   var values = sheet.getDataRange().getValues();
 
   for (var i = 1; i < values.length; i++) {
-    if (values[i][0] === leadId) {
-      var row = i + 1;
-      sheet.getRange(row, 13).setValue(status);
-      sheet.getRange(row, 3).setValue(new Date().toISOString());
-      logActivity("LEAD", leadId, "Status updated to " + status);
-      return jsonResponse({ success: true, leadId: leadId, newStatus: status });
+    if (values[i][1] === leadId) {
+      sheet.getRange(i + 1, 11).setValue(status); // Column 11 = Status
+      if (data.notes) {
+        sheet.getRange(i + 1, 12).setValue(sanitize(data.notes)); // Column 12 = Notes
+      }
+      return jsonResponse({ success: true, leadId: leadId, status: status });
     }
   }
 
   return jsonResponse({ success: false, error: "Lead not found." }, 404);
 }
 
-/**
- * Automated Follow-up Trigger Sweep (Scheduled via Daily Time-Trigger)
- */
-function handleFollowUpSweep() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.SHEET_NAMES.LEADS);
-  var values = sheet.getDataRange().getValues();
-  var today = new Date().toISOString().slice(0, 10);
-  var emailsSent = 0;
-
-  for (var i = 1; i < values.length; i++) {
-    var leadId = values[i][0];
-    var name = values[i][3];
-    var email = values[i][4];
-    var service = values[i][9];
-    var status = values[i][12];
-    var followUpDate = values[i][14];
-
-    // Check if status is still 'New' or 'Follow-up' and date matches today
-    if ((status === "New" || status === "Follow-up") && followUpDate === today && email) {
-      sendFollowUpEmail({ to: email, name: name, service: service, leadId: leadId });
-      sheet.getRange(i + 1, 13).setValue("Follow-up Sent");
-      sheet.getRange(i + 1, 16).setValue(new Date().toISOString());
-      logActivity("EMAIL", leadId, "Automated Follow-up email dispatched to " + email);
-      emailsSent++;
-    }
-  }
-
-  return jsonResponse({ success: true, emailsSent: emailsSent });
-}
+// ----------------------------------------------------------------------------
+// 5. EMAIL NOTIFICATION DISPATCHERS
+// ----------------------------------------------------------------------------
 
 /**
- * ============================================================================
- * EMAIL TEMPLATES & DISPATCHERS
- * ============================================================================
+ * Dispatches an alert email to management
  */
+function sendManagementAlert(params) {
+  var managerEmail = PropertiesService.getScriptProperties().getProperty("MANAGER_EMAIL") || CONFIG.MANAGER_EMAIL;
+  var subject = "🚨 New Enquiry: " + params.name + " (" + params.service + ") [" + params.leadId + "]";
 
-function sendUserConfirmationEmail(params) {
   var htmlBody = `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; overflow: hidden; color: #1E293B;">
-      <div style="background: #2563EB; padding: 28px; text-align: center; color: #FFFFFF;">
-        <h1 style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">Hemanth Ranam</h1>
-        <p style="margin: 6px 0 0 0; font-size: 13px; opacity: 0.9;">Business Systems, Automation & Trading Technology</p>
-      </div>
-      <div style="padding: 32px 28px;">
-        <h2 style="font-size: 18px; color: #0F172A; margin-top: 0;">Thank You for Reaching Out, ${params.name}</h2>
-        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-          We have successfully received your enquiry regarding <strong>${params.service}</strong>. Your reference ID is:
-        </p>
-        <div style="background: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 12px; padding: 14px; text-align: center; margin: 20px 0;">
-          <span style="font-family: monospace; font-size: 16px; font-weight: 700; color: #2563EB;">${params.leadId}</span>
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden; color: #1E293B;">
+      <div style="background: #0F172A; padding: 24px; color: #FFFFFF;">
+        <div style="display: inline-block; background: #2563EB; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+          New Website Lead
         </div>
-        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-          I am reviewing your project requirements and will respond within 24 hours with an architecture proposal or consultation schedule.
-        </p>
-        <div style="margin-top: 28px; text-align: center;">
-          <a href="${CONFIG.WEBSITE_URL}" style="display: inline-block; background: #2563EB; color: #FFFFFF; text-decoration: none; padding: 12px 24px; border-radius: 10px; font-size: 13px; font-weight: 700;">
-            Visit Website & Insights
-          </a>
-        </div>
+        <h1 style="margin: 12px 0 0 0; font-size: 20px; font-weight: 800; line-height: 1.3;">
+          ${params.name} — ${params.service}
+        </h1>
       </div>
-      <div style="background: #F8FAFC; padding: 20px 28px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 11px; color: #94A3B8;">
-        © 2026 Hemanth Ranam. All rights reserved. • United Kingdom
-      </div>
-    </div>
-  `;
-
-  MailApp.sendEmail({
-    to: params.to,
-    subject: `Enquiry Received: ${params.service} [${params.leadId}]`,
-    htmlBody: htmlBody,
-    name: CONFIG.ADMIN_NAME,
-  });
-}
-
-function sendAdminAlertEmail(params) {
-  var htmlBody = `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; overflow: hidden; color: #1E293B;">
-      <div style="background: #0F172A; padding: 20px; color: #FFFFFF;">
-        <span style="background: #2563EB; font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase;">New Project Lead</span>
-        <h2 style="margin: 10px 0 0 0; font-size: 20px;">${params.name} — ${params.service}</h2>
-      </div>
+      
       <div style="padding: 24px;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-          <tr><td style="padding: 8px 0; color: #64748B; width: 120px;">Lead ID:</td><td style="font-weight: 700; color: #2563EB;">${params.leadId}</td></tr>
-          <tr><td style="padding: 8px 0; color: #64748B;">Client Name:</td><td style="font-weight: 600;">${params.name}</td></tr>
-          <tr><td style="padding: 8px 0; color: #64748B;">Email:</td><td><a href="mailto:${params.email}">${params.email}</a></td></tr>
-          <tr><td style="padding: 8px 0; color: #64748B;">WhatsApp:</td><td style="font-weight: 700; color: #059669;">${params.phone}</td></tr>
-          <tr><td style="padding: 8px 0; color: #64748B;">Company:</td><td>${params.company || "N/A"}</td></tr>
-          <tr><td style="padding: 8px 0; color: #64748B;">Service:</td><td style="font-weight: 600;">${params.service}</td></tr>
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.5;">
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; width: 130px; font-weight: 600;">Lead Reference:</td>
+            <td style="padding: 8px 0; font-family: monospace; font-weight: 700; color: #2563EB;">${params.leadId}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Full Name:</td>
+            <td style="padding: 8px 0; font-weight: 600; color: #0F172A;">${params.name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Email:</td>
+            <td style="padding: 8px 0;"><a href="mailto:${params.email}" style="color: #2563EB; text-decoration: none;">${params.email}</a></td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Phone / WhatsApp:</td>
+            <td style="padding: 8px 0; font-weight: 600; color: #0F172A;">${params.phone || "Not provided"}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Company / Org:</td>
+            <td style="padding: 8px 0; color: #0F172A;">${params.company || "Not provided"}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Service Required:</td>
+            <td style="padding: 8px 0; font-weight: 600; color: #0F172A;">${params.service}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Submitted At:</td>
+            <td style="padding: 8px 0; color: #64748B;">${params.timestamp}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Source / Page:</td>
+            <td style="padding: 8px 0; color: #64748B;">${params.source} (${params.page})</td>
+          </tr>
         </table>
-        <div style="margin-top: 16px; padding: 14px; background: #F8FAFC; border-radius: 10px; border-left: 4px solid #2563EB;">
-          <strong style="font-size: 12px; color: #334155;">Project Message:</strong>
-          <p style="font-size: 13px; color: #1E293B; margin: 6px 0 0 0; line-height: 1.5;">${params.message}</p>
+
+        <div style="margin-top: 20px; padding: 16px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; border-left: 4px solid #2563EB;">
+          <strong style="font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Message Content:</strong>
+          <p style="font-size: 13px; color: #1E293B; margin: 8px 0 0 0; line-height: 1.6; white-space: pre-wrap;">${params.message || "No additional message provided."}</p>
         </div>
       </div>
-    </div>
-  `;
 
-  MailApp.sendEmail({
-    to: CONFIG.ADMIN_EMAIL,
-    subject: `🚨 New Lead: ${params.name} (${params.service}) [${params.leadId}]`,
-    htmlBody: htmlBody,
-    name: "CRM Notification Hub",
-  });
-}
-
-function sendFollowUpEmail(params) {
-  var htmlBody = `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 32px 28px; color: #1E293B;">
-      <h2 style="font-size: 18px; color: #0F172A; margin-top: 0;">Hi ${params.name}, Following Up on Your ${params.service} Project</h2>
-      <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-        I wanted to check in regarding your enquiry (Ref: <strong>${params.leadId}</strong>).
-      </p>
-      <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-        Whether you are ready to finalize scope, have additional technical questions, or want to schedule a brief 1-on-1 strategy call, feel free to reply directly to this email or reach out on WhatsApp.
-      </p>
-      <div style="margin-top: 24px;">
-        <p style="font-size: 13px; color: #334155; margin: 0;">Best regards,</p>
-        <p style="font-size: 14px; font-weight: 700; color: #0F172A; margin: 2px 0 0 0;">Hemanth Ranam</p>
-        <p style="font-size: 12px; color: #64748B; margin: 0;">Business Systems & Trading Tech Architect</p>
+      <div style="background: #F1F5F9; padding: 14px 24px; border-top: 1px solid #E2E8F0; font-size: 11px; color: #64748B; text-align: center;">
+        Automated notification from ${CONFIG.COMPANY_NAME} CRM Engine.
       </div>
     </div>
   `;
 
   MailApp.sendEmail({
-    to: params.to,
-    subject: `Following up on your ${params.service} project [${params.leadId}]`,
+    to: managerEmail,
+    subject: subject,
     htmlBody: htmlBody,
-    name: CONFIG.ADMIN_NAME,
-  });
-}
-
-function sendNewsletterWelcomeEmail(params) {
-  var htmlBody = `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; overflow: hidden; color: #1E293B;">
-      <div style="background: #0F172A; padding: 24px; text-align: center; color: #FFFFFF;">
-        <h1 style="margin: 0; font-size: 20px; font-weight: 800;">Welcome to Tech & Systems Dispatch</h1>
-      </div>
-      <div style="padding: 28px;">
-        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-          Thank you for subscribing! You’ll receive practical breakdowns on building unified ERPs, serverless AI workflows, non-repainting TradingView indicators, and MetaTrader 5 Expert Advisors.
-        </p>
-        <div style="margin-top: 20px; text-align: center;">
-          <a href="${CONFIG.WEBSITE_URL}/blogs" style="display: inline-block; background: #2563EB; color: #FFFFFF; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-size: 12px; font-weight: 700;">
-            Explore All Insights
-          </a>
-        </div>
-      </div>
-    </div>
-  `;
-
-  MailApp.sendEmail({
-    to: params.to,
-    subject: "Welcome to Hemanth Ranam Tech & Systems Dispatch",
-    htmlBody: htmlBody,
-    name: CONFIG.ADMIN_NAME,
+    name: CONFIG.COMPANY_NAME + " CRM"
   });
 }
 
 /**
- * ============================================================================
- * UTILITY HELPERS
- * ============================================================================
+ * Dispatches a professional acknowledgement email to the customer
  */
+function sendCustomerAcknowledgement(params) {
+  var subject = "Thank you for contacting " + CONFIG.COMPANY_NAME + " [" + params.leadId + "]";
 
-function generateUniqueId(prefix) {
-  var today = Utilities.formatDate(new Date(), "GMT", "yyyyMMdd");
-  var random = Math.floor(1000 + Math.random() * 9000);
-  return prefix + "-" + today + "-" + random;
+  var htmlBody = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden; color: #1E293B;">
+      <div style="background: #2563EB; padding: 28px; text-align: center; color: #FFFFFF;">
+        <h1 style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">${CONFIG.COMPANY_NAME}</h1>
+        <p style="margin: 6px 0 0 0; font-size: 13px; opacity: 0.9;">Recruitment • HR Consulting • Career Support • Systems Architecture</p>
+      </div>
+
+      <div style="padding: 32px 28px;">
+        <h2 style="font-size: 18px; color: #0F172A; margin-top: 0; font-weight: 700;">
+          Thank you for reaching out, ${params.name}.
+        </h2>
+        
+        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
+          Your enquiry regarding <strong>${params.service}</strong> has been received successfully.
+        </p>
+
+        <div style="background: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 10px; padding: 16px; text-align: center; margin: 24px 0;">
+          <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
+            Your Reference ID
+          </div>
+          <span style="font-family: monospace; font-size: 18px; font-weight: 800; color: #2563EB;">${params.leadId}</span>
+        </div>
+
+        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
+          Our team is reviewing your requirements and will respond within <strong>24 business hours</strong> with clear next steps or scheduling details.
+        </p>
+
+        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
+          If you need urgent assistance, you may reply directly to this email or connect with us on WhatsApp.
+        </p>
+
+        <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #F1F5F9;">
+          <p style="font-size: 13px; color: #334155; margin: 0; font-weight: 600;">Kind regards,</p>
+          <p style="font-size: 14px; font-weight: 700; color: #0F172A; margin: 2px 0 0 0;">${CONFIG.MANAGER_NAME}</p>
+          <p style="font-size: 12px; color: #64748B; margin: 0;">${CONFIG.COMPANY_NAME}</p>
+        </div>
+      </div>
+
+      <div style="background: #F8FAFC; padding: 18px 28px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 11px; color: #94A3B8;">
+        © 2026 ${CONFIG.COMPANY_NAME}. All rights reserved. • United Kingdom
+      </div>
+    </div>
+  `;
+
+  MailApp.sendEmail({
+    to: params.email,
+    subject: subject,
+    htmlBody: htmlBody,
+    name: CONFIG.COMPANY_NAME,
+    replyTo: CONFIG.MANAGER_EMAIL
+  });
 }
 
+// ----------------------------------------------------------------------------
+// 6. UTILITY FUNCTIONS & SANITIZATION
+// ----------------------------------------------------------------------------
+
+/**
+ * Generates unique Lead ID matching standard: HRPS-YYYYMMDD-XXXX
+ */
+function generateLeadId() {
+  var now = new Date();
+  var datePart = Utilities.formatDate(now, CONFIG.TIMEZONE, "yyyyMMdd");
+  var randomSuffix = ("0000" + Math.floor(Math.random() * 10000)).slice(-4);
+  return "HRPS-" + datePart + "-" + randomSuffix;
+}
+
+/**
+ * Sanitizes strings against CSV/Spreadsheet formula injection and whitespace
+ */
 function sanitize(val) {
-  if (!val) return "";
+  if (val === null || val === undefined) return "";
   var str = val.toString().trim();
-  // Prevent spreadsheet formula injection
   if (/^[=+@-]/.test(str)) {
     return "'" + str;
   }
   return str;
 }
 
-function calculateFutureDate(days) {
-  var d = new Date();
-  d.setDate(d.getDate() + days);
-  return Utilities.formatDate(d, "GMT", "yyyy-MM-dd");
-}
+/**
+ * Retrieves the target Google Spreadsheet instance
+ */
+function getSpreadsheet() {
+  var propId = PropertiesService.getScriptProperties().getProperty("SPREADSHEET_ID");
+  var targetId = propId || CONFIG.SPREADSHEET_ID;
 
-function logActivity(entityType, entityId, actionText) {
-  try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName(CONFIG.SHEET_NAMES.ACTIVITIES);
-    if (!sheet) return;
-
-    var actId = generateUniqueId("ACT");
-    sheet.appendRow([
-      actId,
-      entityType,
-      entityId,
-      actionText,
-      new Date().toISOString(),
-      ""
-    ]);
-  } catch (e) {
-    console.error("Failed to log activity:", e);
+  if (targetId && targetId.trim().length > 0) {
+    return SpreadsheetApp.openById(targetId.trim());
   }
+  return SpreadsheetApp.getActiveSpreadsheet();
 }
 
-function listRecords(sheetName) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
-  if (!sheet) return [];
+/**
+ * Verifies API authorization for administrative actions
+ */
+function verifyAuth(params) {
+  var configuredKey = PropertiesService.getScriptProperties().getProperty("API_SECRET_KEY") || CONFIG.API_SECRET_KEY;
+  var providedKey = params.apiKey || params.token || params.key;
+  return providedKey === configuredKey;
+}
+
+/**
+ * Parses urlencoded form payload
+ */
+function parseFormData(body) {
+  var params = {};
+  var pairs = body.split("&");
+  for (var i = 0; i < pairs.length; i++) {
+    var pair = pairs[i].split("=");
+    if (pair.length === 2) {
+      params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1].replace(/\+/g, " "));
+    }
+  }
+  return params;
+}
+
+/**
+ * Lists existing enquiries (secured)
+ */
+function listEnquiries() {
+  var sheet = initializeSheet();
   var data = sheet.getDataRange().getValues();
   if (data.length <= 1) return [];
 
   var headers = data[0];
   var records = [];
-
   for (var i = 1; i < data.length; i++) {
     var row = data[i];
     var obj = {};
@@ -601,26 +521,12 @@ function listRecords(sheetName) {
     }
     records.push(obj);
   }
-
   return records;
 }
 
-function getRecordById(sheetName, idColumnName, idValue) {
-  var records = listRecords(sheetName);
-  for (var i = 0; i < records.length; i++) {
-    if (records[i][idColumnName] === idValue) {
-      return records[i];
-    }
-  }
-  return null;
-}
-
-function verifyAuth(e) {
-  var configuredKey = PropertiesService.getScriptProperties().getProperty("API_SECRET_KEY") || CONFIG.API_SECRET_KEY;
-  var key = e.parameter.apiKey || e.parameter.token;
-  return key === configuredKey;
-}
-
+/**
+ * Creates standardized JSON response with permissive CORS headers
+ */
 function jsonResponse(obj, statusCode) {
   var output = ContentService.createTextOutput(JSON.stringify(obj));
   output.setMimeType(ContentService.MimeType.JSON);

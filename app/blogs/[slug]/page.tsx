@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
-import { BLOG_POSTS, BlogPost } from "@/data/blogsData";
+import { BLOG_POSTS } from "@/data/blogsData";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { NewsletterSection } from "@/components/ui/NewsletterSection";
@@ -9,11 +9,7 @@ import {
   ArrowLeft,
   Calendar,
   Clock,
-  User,
-  Share2,
-  Bookmark,
   ChevronRight,
-  Sparkles,
   ArrowRight,
   MessageSquare,
   BookOpen,

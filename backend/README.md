@@ -1,72 +1,124 @@
-# Hemanth Ranam CRM & Automation Backend Guide
+# HR Professional Services — Google Sheets CRM & Apps Script Engine
 
-This folder contains the complete Google Apps Script CRM and automation engine (`Code.gs`) that powers:
-1. **Website Contact Form Leads** (with automated user confirmation & admin alert emails)
-2. **Newsletter Subscriptions** (with automated welcome emails)
-3. **Lead-to-Client Conversions** (idempotent 1-click conversion)
-4. **Automated Follow-up Sequences**
-5. **Full AppSheet CRM Compatibility**
+This document provides complete instructions for configuring and deploying the **Google Apps Script backend** (`backend/Code.gs`) that powers the lead capture, Google Sheets CRM synchronization, and automated dual-email dispatch for **HR Professional Services**.
 
 ---
 
-## 1. Quick Setup in Google Sheets
-
-1. Go to [Google Sheets](https://sheets.new) and create a new Spreadsheet named **`Hemanth Ranam CRM`**.
-2. In the top menu, click **Extensions → Apps Script**.
-3. Replace any code in `Code.gs` with the code in `backend/Code.gs`.
-4. Click **Save** (💾).
-
----
-
-## 2. Initialize Spreadsheet Tabs & Columns
-
-1. In the Apps Script editor toolbar, select the function **`initializeSpreadsheet`** and click **Run**.
-2. Review your Google Sheet. It will automatically create 4 structured tabs with bold headers:
-   - **`Leads`**: `Lead ID`, `Created At`, `Updated At`, `Full Name`, `Email`, `WhatsApp Country Code`, `WhatsApp Number`, `Normalized WhatsApp Number`, `Company`, `Service Interested`, `Message`, `Source`, `Status`, `Assigned To`, `Follow-up Date`, `Last Contact Date`, `Notes`.
-   - **`Clients`**: `Client ID`, `Linked Lead ID`, `Client Name`, `Email`, `WhatsApp`, `Company`, `Services`, `Status`, `Created At`, `Updated At`, `Notes`.
-   - **`Newsletter Subscribers`**: `Subscriber ID`, `Email`, `Name`, `Source`, `Subscription Date`, `Status`, `Unsubscribe Date`, `Notes`.
-   - **`Activities`**: `Activity ID`, `Entity Type`, `Entity ID`, `Action`, `Timestamp`, `Details`.
+## 1. Architectural Overview
+- **Frontend Form**: Next.js responsive client form with client-side validation and invisible honeypot anti-spam protection.
+- **API Proxy**: `/api/contact` route sanitizing against formula injection, assigning a unique Lead ID (`HRPS-YYYYMMDD-XXXX`), and forwarding to the deployed Apps Script Web App.
+- **Backend Storage**: Google Sheets tab named **`Enquiries`** storing submissions across the exact 12 canonical columns.
+- **Dual Email Notification**:
+  1. **Management Alert**: Dispatched immediately to `hemanth.ranam@gmail.com` with lead breakdown.
+  2. **Customer Acknowledgement**: Dispatched immediately to the customer with branded inline CSS, Lead ID reference, and expected 24-hour turnaround time.
 
 ---
 
-## 3. Deploy as a Web App
+## 2. Google Sheet Structure
 
-1. Click **Deploy → New deployment**.
-2. Select type: **Web app**.
-3. Configuration:
-   - **Description**: `Hemanth Ranam CRM Webhook v2`
-   - **Execute as**: `Me (hemanth.ranam@gmail.com)`
-   - **Who has access**: `Anyone`
-4. Click **Deploy** and grant Google permissions.
-5. Copy the generated **Web App URL** (e.g. `https://script.google.com/macros/s/.../exec`).
+Create a Google Sheet (e.g. named **`HR Professional Services CRM`**) with a tab named **`Enquiries`**. The header row must contain exactly these 12 columns:
+
+| Column # | Column Header | Description | Example Value |
+|---|---|---|---|
+| **A** | `Timestamp` | Submission date & time (GMT/IST) | `2026-09-08 10:30:15` |
+| **B** | `Lead ID` | Unique permanent reference ID | `HRPS-20260908-4821` |
+| **C** | `Name` | Customer full name | `Sarah Jenkins` |
+| **D** | `Email` | Customer contact email | `sarah.jenkins@company.com` |
+| **E** | `Phone` | International phone / WhatsApp | `+44 7700 900123` |
+| **F** | `Company` | Client organization / company | `Jenkins Logistics Ltd` |
+| **G** | `Service` | Requested service category | `Recruitment & Talent Search` |
+| **H** | `Message` | Project requirements / brief | `Looking to hire 3 senior full-stack devs...` |
+| **I** | `Source` | Source channel | `Website Contact Form` |
+| **J** | `Page` | Relative path where submitted | `/#contact` |
+| **K** | `Status` | Operational CRM status | `New` *(Default)* |
+| **L** | `Notes` | Internal team notes & audit log | *(Updated by team)* |
+
+### Status Lifecycle
+The `Status` column defaults to **`New`**. Team members can update this cell in Google Sheets to:
+- `New` (Fresh submission)
+- `Contacted` (Initial outreach sent)
+- `Qualified` (Requirements validated)
+- `In Progress` (Proposal/contract in drafting)
+- `Converted` (Client onboarded)
+- `Closed` (Completed or inactive)
+- `Not Interested` (Unqualified/withdrawn)
 
 ---
 
-## 4. Connect to Website / Cloudflare Worker
+## 3. Step-by-Step Google Apps Script Setup
 
-Add the Web App URL to your website's environment variables:
+### Step 1: Open Apps Script Editor
+1. In your Google Sheet, click **Extensions** → **Apps Script**.
+2. Clear any placeholder code in `Code.gs`.
+3. Copy the entire contents of [`backend/Code.gs`](./Code.gs) and paste it into the editor.
+4. Click **Save Project** (💾 icon or `Cmd + S` / `Ctrl + S`).
+
+### Step 2: Initialize Sheet Schema Automatically
+1. In the Apps Script toolbar, select the function **`initializeSheet`** from the function dropdown.
+2. Click **Run**.
+3. When prompted, click **Review Permissions** and grant access to your Google account.
+4. Check your Google Sheet: the **`Enquiries`** tab will now be automatically generated with styled dark headers and pre-formatted column widths.
+
+### Step 3: Deploy as Web App
+1. Click the blue **Deploy** button in the top right → **New deployment**.
+2. Click the gear icon (⚙️) next to *Select type* and select **Web app**.
+3. Configure the deployment settings:
+   - **Description**: `HR Professional Services Production CRM v2.5`
+   - **Execute as**: `Me (your-email@gmail.com)`
+   - **Who has access**: `Anyone` *(Crucial: allows the website form to submit without requiring Google sign-in)*.
+4. Click **Deploy**.
+5. Copy the generated **Web App URL** (format: `https://script.google.com/macros/s/.../exec`).
+
+---
+
+## 4. Website Configuration
+
+Add the Web App URL to your website's `.env.local` or hosting provider environment variables (e.g. Cloudflare Pages, Vercel):
+
 ```env
-GOOGLE_APPS_SCRIPT_WEBHOOK_URL="https://script.google.com/macros/s/.../exec"
+GOOGLE_APPS_SCRIPT_WEBHOOK_URL="https://script.google.com/macros/s/AKfycbx.../exec"
 APPS_SCRIPT_API_KEY="HR_SECURE_API_SECRET_2026"
 ```
 
 ---
 
-## 5. Setting Up Scheduled Follow-Up Trigger
+## 5. Testing & Validation
 
-To enable automated follow-up emails on Day X:
-1. In Apps Script, click the **Triggers** icon (alarm clock) in the left sidebar.
-2. Click **+ Add Trigger**.
-3. Choose which function to run: `handleFollowUpSweep`.
-4. Select event source: `Time-driven`.
-5. Select type of time based trigger: `Day timer` (e.g., 9am to 10am daily).
-6. Click **Save**.
+### Testing via cURL
+Run the following terminal command to verify end-to-end processing:
 
----
+```bash
+curl -X POST "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "createLead",
+    "name": "Alex Mercer",
+    "email": "alex.mercer@example.com",
+    "phone": "+44 7911 123456",
+    "company": "Mercer Systems",
+    "service": "Business Systems Consulting",
+    "message": "Testing end-to-end Google Sheets CRM integration.",
+    "source": "CLI Test",
+    "page": "/test"
+  }'
+```
 
-## 6. Connecting to AppSheet for Mobile & Desktop CRM
+**Expected Response**:
+```json
+{
+  "success": true,
+  "message": "Enquiry submitted and recorded successfully.",
+  "data": {
+    "leadId": "HRPS-20260908-XXXX",
+    "status": "New",
+    "timestamp": "2026-09-08 10:35:00"
+  }
+}
+```
 
-1. Go to [AppSheet](https://www.appsheet.com/) and sign in with your Google account.
-2. Click **Create → App → Start with existing data**.
-3. Select your Google Sheet **`Hemanth Ranam CRM`**.
-4. AppSheet will automatically detect the **`Leads`**, **`Clients`**, and **`Newsletter Subscribers`** tables with all columns and relationships ready for mobile and desktop lead management!
+### Verification Checklist
+- [ ] New row appeared in the `Enquiries` tab with all 12 columns correctly populated.
+- [ ] Status is set to `New`.
+- [ ] Management email received at `hemanth.ranam@gmail.com`.
+- [ ] Customer confirmation email received at `alex.mercer@example.com`.
+- [ ] Formula injection strings (e.g. `=1+1`) are escaped with a leading apostrophe (`'`).

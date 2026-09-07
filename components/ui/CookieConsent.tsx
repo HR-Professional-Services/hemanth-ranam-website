@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Cookie, Shield, Check, X, SlidersHorizontal } from "lucide-react";
+import { Cookie, SlidersHorizontal } from "lucide-react";
 
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);

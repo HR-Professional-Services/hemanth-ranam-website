@@ -77,6 +77,8 @@ export const SITE_CONFIG = {
 export const NAV_ITEMS: NavItem[] = [
   { label: "About", href: "/#about" },
   { label: "Services", href: "/#services" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "Trust", href: "/#trust" },
   { label: "Tech Stack", href: "/#tech-stack" },
   { label: "Trading Tech", href: "/#trading-tech" },
   { label: "Pricing", href: "/#pricing" },
@@ -1232,3 +1234,96 @@ export const REVISED_PRICING_GROUPS: PricingGroup[] = [
     ],
   },
 ];
+
+export interface ProcessStep {
+  number: string;
+  title: string;
+  shortDesc: string;
+  deliverable: string;
+  icon: string;
+}
+
+export const PROCESS_STEPS: ProcessStep[] = [
+  {
+    number: "01",
+    title: "Understand",
+    shortDesc: "In-depth discovery into your operational bottlenecks, system fragmentation, or talent requirements.",
+    deliverable: "Diagnostic Audit & Technical Brief",
+    icon: "Search",
+  },
+  {
+    number: "02",
+    title: "Plan",
+    shortDesc: "Architecting a lean, high-efficiency blueprint covering workflows, tech stack, data mapping, and timeline.",
+    deliverable: "Architecture Blueprint & Scope",
+    icon: "Compass",
+  },
+  {
+    number: "03",
+    title: "Connect & Build",
+    shortDesc: "Hands-on execution: configuring databases, coding custom controllers, webhooks, or algorithmic models.",
+    deliverable: "Live Staging & Milestone Reviews",
+    icon: "Layers",
+  },
+  {
+    number: "04",
+    title: "Support",
+    shortDesc: "Rigorous quality checks, production deployment, team onboarding, and complete architectural documentation.",
+    deliverable: "Documentation & Deployment Support",
+    icon: "Headphones",
+  },
+  {
+    number: "05",
+    title: "Follow Up",
+    shortDesc: "Scheduled health sweeps, SLA tracking, and ongoing optimization to ensure continuous system reliability.",
+    deliverable: "Performance Reviews & SLA Tracking",
+    icon: "CheckCircle2",
+  },
+];
+
+export interface TrustPillar {
+  title: string;
+  desc: string;
+  badge: string;
+  icon: string;
+}
+
+export const TRUST_PILLARS: TrustPillar[] = [
+  {
+    title: "Direct Founder Accountability",
+    desc: "Work directly with a technology entrepreneur and systems architect. No junior handoffs or unvetted agency layers.",
+    badge: "Direct Contact",
+    icon: "UserCheck",
+  },
+  {
+    title: "Verified Executive Qualifications",
+    desc: "MBA & CMI Level 7 in Strategic Leadership (Univ of South Wales) combined with nearly 10 years in enterprise and SMB tech.",
+    badge: "MBA & CMI Level 7",
+    icon: "GraduationCap",
+  },
+  {
+    title: "100% Data & Code Sovereignty",
+    desc: "Zero proprietary lock-in. You retain full administrative ownership of your cloud accounts, databases, and source code.",
+    badge: "Zero Vendor Lock-In",
+    icon: "ShieldCheck",
+  },
+  {
+    title: "Guaranteed Turnaround SLA",
+    desc: "Every enquiry is recorded with an automated Lead ID and answered with actionable guidance within 24 business hours.",
+    badge: "<24h SLA Response",
+    icon: "Clock",
+  },
+  {
+    title: "Strict Confidentiality Standards",
+    desc: "Standard non-disclosure agreements, sanitized data handling, and industry-standard security across every engagement.",
+    badge: "Confidential & Safe",
+    icon: "Lock",
+  },
+  {
+    title: "Transparent Fixed Milestones",
+    desc: "Clear upfront pricing and deliverable breakdowns. No surprise surcharges, vague billing, or perpetual lock-ins.",
+    badge: "Transparent Scoping",
+    icon: "FileText",
+  },
+];
+

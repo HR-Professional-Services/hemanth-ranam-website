@@ -1,84 +1,178 @@
 import Link from "next/link";
-import { SITE_CONFIG, NAV_ITEMS } from "@/data/siteData";
+import { SITE_CONFIG } from "@/data/siteData";
 import { Logo } from "@/components/ui/Logo";
 import { LinkedinIcon } from "@/components/ui/LinkedinIcon";
-import { Mail, Shield, FileCheck, RefreshCw } from "lucide-react";
+import { Mail, Shield, FileCheck, RefreshCw, MapPin, Phone, MessageSquare } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-white text-slate-500 text-xs border-t border-slate-200/80 py-8 sm:py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-slate-100">
-          {/* Logo & Positioning */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+    <footer className="bg-slate-900 text-slate-400 text-xs border-t border-slate-800 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        {/* Main 4-Column Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-8 border-b border-slate-800">
+          
+          {/* Column 1: Brand & Positioning */}
+          <div className="lg:col-span-4 space-y-3">
             <Link href="/" className="inline-block">
               <Logo size="sm" />
             </Link>
-            <span className="hidden sm:inline text-slate-300">|</span>
-            <p className="text-[11px] text-slate-500 font-medium max-w-sm">
-              {SITE_CONFIG.positioning}
+            <p className="text-xs text-slate-400 leading-relaxed font-normal max-w-sm">
+              Practical HR systems, recruitment infrastructure, workflow automation, and custom software architecture built for founders and growing businesses.
             </p>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-slate-600">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="hover:text-blue-600 transition-colors"
+            <div className="flex items-center gap-2 pt-1">
+              <a
+                href={SITE_CONFIG.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Connect on LinkedIn"
+                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-colors"
               >
-                {item.label}
-              </Link>
-            ))}
+                <LinkedinIcon className="w-4 h-4" />
+              </a>
+              <a
+                href={`mailto:${SITE_CONFIG.email}`}
+                aria-label="Send direct email"
+                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-colors"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
+              <a
+                href={SITE_CONFIG.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat on WhatsApp"
+                className="p-2 rounded-xl text-emerald-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-colors"
+              >
+                <MessageSquare className="w-4 h-4" />
+              </a>
+            </div>
           </div>
 
-          {/* Social & Contact Icons */}
-          <div className="flex items-center gap-2">
-            <a
-              href={SITE_CONFIG.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Connect on LinkedIn"
-              className="p-2 rounded-xl text-slate-400 hover:text-blue-600 hover:bg-slate-50 border border-slate-200/60 transition-colors"
-            >
-              <LinkedinIcon className="w-4 h-4" />
-            </a>
-            <a
-              href={`mailto:${SITE_CONFIG.email}`}
-              aria-label="Send direct email"
-              className="p-2 rounded-xl text-slate-400 hover:text-blue-600 hover:bg-slate-50 border border-slate-200/60 transition-colors"
-            >
-              <Mail className="w-4 h-4" />
-            </a>
+          {/* Column 2: Navigation Links */}
+          <div className="lg:col-span-3 space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+              Quick Navigation
+            </h4>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <Link href="/#about" className="hover:text-blue-400 transition-colors">
+                  About &amp; Background
+                </Link>
+              </li>
+              <li>
+                <Link href="/#services" className="hover:text-blue-400 transition-colors">
+                  Services &amp; Capabilities
+                </Link>
+              </li>
+              <li>
+                <Link href="/#how-it-works" className="hover:text-blue-400 transition-colors">
+                  How It Works (Process)
+                </Link>
+              </li>
+              <li>
+                <Link href="/#trust" className="hover:text-blue-400 transition-colors">
+                  Trust &amp; Accountability
+                </Link>
+              </li>
+              <li>
+                <Link href="/#pricing" className="hover:text-blue-400 transition-colors">
+                  Pricing &amp; Engagement
+                </Link>
+              </li>
+              <li>
+                <Link href="/blogs" className="hover:text-blue-400 transition-colors">
+                  Technical Insights &amp; Blogs
+                </Link>
+              </li>
+            </ul>
           </div>
+
+          {/* Column 3: Core Service Pillars */}
+          <div className="lg:col-span-3 space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+              Core Pillars
+            </h4>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <Link href="/#services" className="hover:text-blue-400 transition-colors">
+                  Recruitment &amp; Talent Search
+                </Link>
+              </li>
+              <li>
+                <Link href="/#services" className="hover:text-blue-400 transition-colors">
+                  HR Consulting &amp; Systems
+                </Link>
+              </li>
+              <li>
+                <Link href="/#services" className="hover:text-blue-400 transition-colors">
+                  CRM &amp; ERPNext Solutions
+                </Link>
+              </li>
+              <li>
+                <Link href="/#services" className="hover:text-blue-400 transition-colors">
+                  Workflow &amp; AI Automation
+                </Link>
+              </li>
+              <li>
+                <Link href="/#trading-tech" className="hover:text-blue-400 transition-colors">
+                  TradingView &amp; MT5 Algo Tools
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Contact & Location */}
+          <div className="lg:col-span-2 space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+              Direct Contact
+            </h4>
+            <ul className="space-y-2.5 text-xs">
+              <li className="flex items-center gap-2 text-slate-300">
+                <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                <span>{SITE_CONFIG.location}</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                <a href={`mailto:${SITE_CONFIG.email}`} className="hover:text-white transition-colors truncate">
+                  {SITE_CONFIG.email}
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <a href={SITE_CONFIG.whatsappUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors font-mono">
+                  {SITE_CONFIG.whatsappNumber}
+                </a>
+              </li>
+            </ul>
+          </div>
+
         </div>
 
-        {/* Legal & Compliance Links */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <span>© 2026 Hemanth Ranam. All rights reserved.</span>
-            <span className="hidden sm:inline text-slate-300">•</span>
-            <Link href="/privacy" className="hover:text-blue-600 transition-colors flex items-center gap-1">
+        {/* Bottom Legal & Compliance Strip */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
+          <div>
+            <span>© 2026 HR Professional Services &amp; Hemanth Ranam. All rights reserved.</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href="/privacy" className="hover:text-white transition-colors flex items-center gap-1">
               <Shield className="w-3 h-3 text-slate-400" />
               <span>Privacy Policy</span>
             </Link>
-            <span className="text-slate-300">•</span>
-            <Link href="/terms" className="hover:text-blue-600 transition-colors flex items-center gap-1">
+            <span>•</span>
+            <Link href="/terms" className="hover:text-white transition-colors flex items-center gap-1">
               <FileCheck className="w-3 h-3 text-slate-400" />
-              <span>Terms & Conditions</span>
+              <span>Terms of Service</span>
             </Link>
-            <span className="text-slate-300">•</span>
-            <Link href="/refund" className="hover:text-blue-600 transition-colors flex items-center gap-1">
+            <span>•</span>
+            <Link href="/refund" className="hover:text-white transition-colors flex items-center gap-1">
               <RefreshCw className="w-3 h-3 text-slate-400" />
               <span>Refund Policy</span>
             </Link>
           </div>
-
-          <p className="text-center sm:text-right text-[10px] text-slate-400">
-            Technology & automation engineering. No investment advice or profit guarantees.
-          </p>
         </div>
+
       </div>
     </footer>
   );

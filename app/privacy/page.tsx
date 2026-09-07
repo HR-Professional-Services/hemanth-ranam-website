@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/sections/Footer";
-import { Shield, ArrowLeft, Lock, FileText, CheckCircle2 } from "lucide-react";
+import { Shield, ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Hemanth Ranam",
@@ -34,7 +34,7 @@ export default function PrivacyPage() {
             <section className="space-y-2">
               <h2 className="text-base font-bold text-slate-900">1. Overview</h2>
               <p>
-                Hemanth Ranam ("we", "us", or "our") operates this website and provides custom software development, business systems consulting, workflow automation, and trading technology tools. We respect your privacy and are committed to protecting any personal information you share with us.
+                Hemanth Ranam (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) operates this website and provides custom software development, business systems consulting, workflow automation, and trading technology tools. We respect your privacy and are committed to protecting any personal information you share with us.
               </p>
             </section>
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/sections/Footer";
-import { RefreshCw, ArrowLeft, ShieldAlert, CheckCircle2 } from "lucide-react";
+import { RefreshCw, ArrowLeft, ShieldAlert } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Refund Policy | Hemanth Ranam",

@@ -4,9 +4,6 @@ import {
   GraduationCap,
   Sparkles,
   ArrowUpRight,
-  Briefcase,
-  TrendingUp,
-  Award,
 } from "lucide-react";
 
 export function AboutSection() {

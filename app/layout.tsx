@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   },
   description: SITE_CONFIG.description,
   keywords: [
+    "HR Professional Services",
+    "Recruitment and Talent Search",
+    "HR Consulting",
+    "Career Support",
     "Business Systems Consultant",
     "Business Automation",
     "Business Technology Consultant",
@@ -125,6 +129,9 @@ export default function RootLayout({
           "@id": "https://hemanth.ranam.dev/#person",
         },
         serviceType: [
+          "Recruitment & Talent Search",
+          "HR Consulting & Workplace Systems",
+          "Career Support & Progression",
           "Business Systems Consulting",
           "Business Automation",
           "Custom Software Development",
