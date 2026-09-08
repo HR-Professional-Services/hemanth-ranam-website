@@ -1,16 +1,16 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/sections/Hero";
-import { TrustSection } from "@/components/sections/TrustSection";
 import { CoreCategoriesSection } from "@/components/sections/CoreCategoriesSection";
+import { WhatWeSolveSection } from "@/components/sections/WhatWeSolveSection";
+import { HowItWorksSection as HowWeWorkSection } from "@/components/sections/HowItWorksSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
-import { HowItWorksSection } from "@/components/sections/HowItWorksSection";
+import { SystemWorkflowVisualsSection } from "@/components/sections/SystemWorkflowVisualsSection";
 import { StandardVsCustomSection } from "@/components/sections/StandardVsCustomSection";
 import { PricingSection } from "@/components/sections/PricingSection";
-import { MonthlySupportSection } from "@/components/sections/MonthlySupportSection";
+import { SupportAndTrainingSection } from "@/components/sections/SupportAndTrainingSection";
 import { LifecycleSection } from "@/components/sections/LifecycleSection";
-import { DoMoreBusinessSection } from "@/components/sections/DoMoreBusinessSection";
-import { SmallBizEntrySection } from "@/components/sections/SmallBizEntrySection";
 import { FAQSection } from "@/components/sections/FAQSection";
+import { FinalCTASection } from "@/components/sections/FinalCTASection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
@@ -28,44 +28,46 @@ export default function Home() {
 
       {/* Production Homepage Flow (ScaleNova-Level Systems Architecture) */}
       <main id="main-content" className="flex flex-col">
-        {/* 1. Hero: Short Value Proposition & Direct CTAs */}
+        {/* 1. Hero: Business Systems, Software, Automation, Trading Technology */}
         <Hero />
 
-        {/* 2. Trust & Verified Qualifications: Zero Fabricated Metrics */}
-        <TrustSection />
-
-        {/* 3. Three Core Commercial Categories */}
+        {/* 2. Three Core Categories: Business & Consulting, Software & Web, Trading Technology */}
         <CoreCategoriesSection />
 
-        {/* 4. Compact Horizontal Service Cards */}
+        {/* 3. What We Solve: Manual Work, Disconnected Tools, Lead Leakage, Repetitive Work */}
+        <WhatWeSolveSection />
+
+        {/* 4. How We Work: Problem -> Plan -> Build -> Automate -> Train -> Support */}
+        <HowWeWorkSection />
+
+        {/* 5. Services: Compact Horizontal Icon + Heading Layout */}
         <ServicesSection />
 
-        {/* 5. How We Work: 5-Step Delivery Sequence */}
-        <HowItWorksSection />
+        {/* 6. System Workflow Visuals: Real Pipelines & Interactive Examples */}
+        <SystemWorkflowVisualsSection />
 
-        {/* 6. Standard vs Custom Architecture */}
+        {/* 7. Standard vs Custom Architecture */}
         <StandardVsCustomSection />
 
-        {/* 7. Project Pricing: Transparent Rates in USD ($) */}
+        {/* 8. Project Pricing: Locked Rates in USD ($), Was Price Subtle */}
         <PricingSection />
 
-        {/* 8. Monthly Support Plans: "Your system should not be abandoned" */}
-        <MonthlySupportSection />
+        {/* 9. Monthly Support & Improvement: Configurable Post-Launch Support Tiers */}
+        <SupportAndTrainingSection />
 
-        {/* 9. More Than a Handover: 7-Stage Lifecycle */}
+        {/* 10. More Than a Handover: 7-Stage Support & Training Lifecycle */}
         <LifecycleSection />
 
-        {/* 10. Do More Business: Connected Systems Multiplier */}
-        <DoMoreBusinessSection />
-
-        {/* 11. Website + Lead Capture + Basic CRM: Small Biz Flow */}
-        <SmallBizEntrySection />
-
-        {/* 12. Transparent FAQs Accordion */}
+        {/* 11. FAQ: Transparent, Practical Answers */}
         <FAQSection />
 
-        {/* 13. Production Lead Capture / Contact Section */}
-        <ContactSection />
+        {/* 12. Final CTA: "Your business doesn't need more tools. It needs better systems." */}
+        <FinalCTASection />
+
+        {/* 13. Production Lead Capture / Contact Section with Service Context */}
+        <div id="contact">
+          <ContactSection />
+        </div>
       </main>
 
       {/* Production Footer */}

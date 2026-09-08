@@ -33,11 +33,28 @@ export interface ServiceGroup {
 export interface PricingItem {
   id: string;
   service: string;
+  originalPrice?: string;
+  price: string;
+  currency?: string;
+  description: string;
+  bullets: string[];
+  serviceId?: string;
+  slug?: string;
+  categoryLabel?: string;
+  isCustomScope?: boolean;
+}
+
+export interface LockedPricingPlan {
+  id: string;
+  slug: string;
+  service: string;
   originalPrice: string;
   price: string;
+  currency: string;
   description: string;
   bullets: string[];
   serviceId: string;
+  badge: string;
 }
 
 export interface PricingGroup {
@@ -1005,233 +1022,186 @@ export const TECH_ICONS = [
   { name: "AI Automation", icon: "Sparkles" },
 ];
 
+export const LOCKED_PRICING_PLANS: LockedPricingPlan[] = [
+  {
+    id: "plan-biz-consultation",
+    slug: "business-consultation",
+    service: "Business Consultation",
+    originalPrice: "$49",
+    price: "$35",
+    currency: "USD",
+    description: "1-on-1 strategic session to audit operational bottlenecks and map solutions.",
+    bullets: [
+      "60-minute deep-dive architecture consultation",
+      "Tool stack & workflow bottleneck analysis",
+      "Actionable roadmap with clear ROI recommendations",
+    ],
+    serviceId: "business-consultation",
+    badge: "28% Off",
+  },
+  {
+    id: "plan-proc-audit",
+    slug: "process-tech-audit",
+    service: "Process / Tech Audit",
+    originalPrice: "$79",
+    price: "$59",
+    currency: "USD",
+    description: "Comprehensive review of existing software, subscriptions, and team friction.",
+    bullets: [
+      "Complete audit of current software stack & costs",
+      "Identification of redundant tools & manual steps",
+      "Formal PDF audit report with optimization blueprint",
+    ],
+    serviceId: "process-tech-audit",
+    badge: "25% Off",
+  },
+  {
+    id: "plan-biz-systems",
+    slug: "business-systems-consulting",
+    service: "Business Systems Consulting",
+    originalPrice: "$99",
+    price: "$75",
+    currency: "USD",
+    description: "End-to-end architecture specification for connected business operations.",
+    bullets: [
+      "Full digital workflow & database schema specification",
+      "Standard operating procedure (SOP) digital mapping",
+      "Vendor & platform selection advisory",
+    ],
+    serviceId: "business-systems-consulting",
+    badge: "24% Off",
+  },
+  {
+    id: "plan-workflow-auto",
+    slug: "workflow-automation",
+    service: "Workflow Automation",
+    originalPrice: "$149",
+    price: "$109",
+    currency: "USD",
+    description: "Multi-step automated trigger-action pipeline connecting web, CRM, and tools.",
+    bullets: [
+      "Automated webhook pipeline across up to 3 platforms",
+      "Data validation, error logging & automated retry logic",
+      "Immediate lead & transaction notification alerts",
+    ],
+    serviceId: "apps-script-automation",
+    badge: "27% Off",
+  },
+  {
+    id: "plan-crm-erp",
+    slug: "crm-erp-implementation",
+    service: "CRM / ERP Implementation",
+    originalPrice: "$499",
+    price: "$369",
+    currency: "USD",
+    description: "Customized Frappe & ERPNext business management system deployment.",
+    bullets: [
+      "Custom DocTypes, role permissions & transaction flows",
+      "Financial accounting, CRM & inventory setup",
+      "Data migration & team onboarding walkthrough",
+    ],
+    serviceId: "frappe-erpnext",
+    badge: "26% Off",
+  },
+];
+
 export const REVISED_PRICING_GROUPS: PricingGroup[] = [
   {
     category: "business",
     title: "Business & Consulting",
     badge: "25%–30% Reduced",
-    items: [
-      {
-        id: "plan-biz-consultation",
-        service: "Business Consultation",
-        originalPrice: "$49",
-        price: "$35",
-        description: "1-on-1 strategic session to audit operational bottlenecks and map solutions.",
-        bullets: [
-          "60-minute deep-dive architecture consultation",
-          "Tool stack & workflow bottleneck analysis",
-          "Actionable roadmap with clear ROI recommendations",
-        ],
-        serviceId: "biz-consulting",
-      },
-      {
-        id: "plan-proc-audit",
-        service: "Process / Tech Audit",
-        originalPrice: "$79",
-        price: "$59",
-        description: "Comprehensive review of existing software, subscriptions, and team friction.",
-        bullets: [
-          "Complete audit of current software stack & costs",
-          "Identification of redundant tools & manual steps",
-          "Formal PDF audit report with optimization blueprint",
-        ],
-        serviceId: "process-opt",
-      },
-      {
-        id: "plan-biz-systems",
-        service: "Business Systems Consulting",
-        originalPrice: "$99",
-        price: "$75",
-        description: "End-to-end architecture specification for connected business operations.",
-        bullets: [
-          "Full digital workflow & database schema specification",
-          "Standard operating procedure (SOP) digital mapping",
-          "Vendor & platform selection advisory",
-        ],
-        serviceId: "biz-consulting",
-      },
-      {
-        id: "plan-workflow-auto",
-        service: "Workflow Automation",
-        originalPrice: "$149",
-        price: "$109",
-        description: "Multi-step automated trigger-action pipeline connecting web, CRM, and tools.",
-        bullets: [
-          "Automated webhook pipeline across up to 3 platforms",
-          "Data validation, error logging & automated retry logic",
-          "Immediate lead & transaction notification alerts",
-        ],
-        serviceId: "workflow-automation",
-      },
-      {
-        id: "plan-crm-erp",
-        service: "CRM / ERP Implementation",
-        originalPrice: "$499",
-        price: "$369",
-        description: "Customized Frappe & ERPNext business management system deployment.",
-        bullets: [
-          "Custom DocTypes, role permissions & transaction flows",
-          "Financial accounting, CRM & inventory setup",
-          "Data migration & team onboarding walkthrough",
-        ],
-        serviceId: "crm-erp",
-      },
-    ],
+    items: LOCKED_PRICING_PLANS.map((p) => ({
+      id: p.id,
+      service: p.service,
+      originalPrice: p.originalPrice,
+      price: p.price,
+      currency: p.currency,
+      description: p.description,
+      bullets: p.bullets,
+      serviceId: p.serviceId,
+      slug: p.slug,
+      categoryLabel: "Business & Consulting",
+    })),
   },
   {
     category: "software",
     title: "Software & Web",
-    badge: "25%–30% Reduced",
+    badge: "Standard & Custom",
     items: [
       {
-        id: "plan-biz-website",
-        service: "Business Website",
-        originalPrice: "$199",
-        price: "$149",
-        description: "Fast, responsive executive website with modern SEO & WhatsApp lead capture.",
+        id: "plan-standard-web-crm",
+        service: "Website + Lead Capture + Basic CRM",
+        originalPrice: "Discovery Scope",
+        price: "Milestone",
+        currency: "USD",
+        description: "Standard, affordable ready-to-deploy web system with Google Sheets CRM and automated alerts.",
         bullets: [
-          "100/100 Lighthouse speed score & mobile-first UI",
-          "Structured SEO schema, OpenGraph & dynamic sitemap",
-          "International WhatsApp & email CRM integration",
+          "High-speed responsive web engine & lead form",
+          "Google Sheets backend with collision-free Lead IDs",
+          "Dual management & customer email alert automations",
         ],
-        serviceId: "biz-websites",
+        serviceId: "website-lead-capture-crm",
+        slug: "website-lead-capture-crm",
+        categoryLabel: "Software & Web",
+        isCustomScope: true,
       },
       {
-        id: "plan-client-portal",
-        service: "Client Portal / Dashboard",
-        originalPrice: "$349",
-        price: "$259",
-        description: "Branded customer self-service hub with secure logins and document sharing.",
+        id: "plan-custom-systems",
+        service: "Custom Business Systems",
+        originalPrice: "Discovery Scope",
+        price: "Milestone",
+        currency: "USD",
+        description: "Custom ERP, finance, booking, and operations portals built around your business rules.",
         bullets: [
-          "Secure authentication & role-based client views",
-          "Milestone progress tracking & document repository",
-          "Automated email notifications on status updates",
+          "Tailored database schema & relational data models",
+          "Multi-role user portals with secure permissions",
+          "Milestone-based delivery with no hourly billing",
         ],
-        serviceId: "client-portals",
-      },
-      {
-        id: "plan-custom-app",
-        service: "Custom Web Application",
-        originalPrice: "$399",
-        price: "$289",
-        description: "Tailored full-stack cloud application with PostgreSQL database & authentication.",
-        bullets: [
-          "TypeScript, Next.js 15 & responsive modern UI",
-          "Relational database design & REST/GraphQL APIs",
-          "Global edge deployment with automated SSL & backups",
-        ],
-        serviceId: "custom-software",
-      },
-      {
-        id: "plan-api-integration",
-        service: "API & Webhook Integration",
-        originalPrice: "$149",
-        price: "$109",
-        description: "Secure real-time bridge connecting third-party services and legacy databases.",
-        bullets: [
-          "Fault-tolerant REST API middleware & webhook listeners",
-          "HMAC signature validation & payload transformation",
-          "Detailed execution audit logs & failure recovery",
-        ],
-        serviceId: "api-integrations",
+        serviceId: "custom-business-systems",
+        slug: "custom-business-systems",
+        categoryLabel: "Software & Web",
+        isCustomScope: true,
       },
     ],
   },
   {
     category: "trading",
     title: "Trading Technology",
-    badge: "25%–30% Reduced",
+    badge: "Engineering & Automation",
     items: [
       {
-        id: "plan-tv-indicator",
-        service: "TradingView Indicator",
-        originalPrice: "$99",
-        price: "$75",
-        description: "Custom Pine Script v5 indicator built to your exact chart rules.",
+        id: "plan-tradingview-tech",
+        service: "TradingView Indicators & Strategies",
+        originalPrice: "Discovery Scope",
+        price: "Milestone",
+        currency: "USD",
+        description: "Standard & custom non-repainting Pine Script v5 indicators and systematic backtesting scripts.",
         bullets: [
-          "100% non-repainting Pine Script v5 code",
-          "Visual on-chart dashboard with customizable inputs",
-          "Built-in webhook alert triggers for automation",
+          "100% non-repainting mathematical logic & alerts",
+          "Visual on-chart parameter controls & dashboard",
+          "Pure technology engineering with zero profit claims",
         ],
         serviceId: "tradingview-indicators",
+        slug: "tradingview-indicators",
+        categoryLabel: "Trading Technology",
+        isCustomScope: true,
       },
       {
-        id: "plan-pine-strategy",
-        service: "Pine Script Strategy",
-        originalPrice: "$149",
-        price: "$109",
-        description: "Rule-based systematic strategy script with realistic backtest metrics.",
+        id: "plan-mt5-scanners-alerts",
+        service: "MT5 Scanners & Telegram Alerts",
+        originalPrice: "Discovery Scope",
+        price: "Milestone",
+        currency: "USD",
+        description: "Multi-symbol MQL5 scanners and sub-second webhook notifications to private Telegram channels.",
         bullets: [
-          "Comprehensive Strategy Tester backtesting metrics",
-          "Slippage, spread & commission modeling",
-          "Multi-condition entries, exits & session filters",
+          "Multi-timeframe condition detection across 28+ symbols",
+          "Sub-second formatted Telegram channel broadcasts",
+          "Automated webhook bridge to execution systems",
         ],
-        serviceId: "pine-strategies",
-      },
-      {
-        id: "plan-mt5-indicator",
-        service: "MT5 Custom Indicator",
-        originalPrice: "$149",
-        price: "$109",
-        description: "Native MetaTrader 5 indicator with custom visual buffers & alerts.",
-        bullets: [
-          "Low-latency MQL5 code with zero lag",
-          "Multi-timeframe (MTF) calculation logic",
-          "On-screen alerts & push notifications",
-        ],
-        serviceId: "mt5-indicators-eas",
-      },
-      {
-        id: "plan-telegram-alerts",
-        service: "Trading Alerts / Telegram",
-        originalPrice: "$99",
-        price: "$75",
-        description: "Sub-second webhook delivery directly to private Telegram channels.",
-        bullets: [
-          "Instant broadcast to Telegram groups or channels",
-          "Formatted cards with entry, stop-loss & take-profit",
-          "Zero server maintenance with serverless edge router",
-        ],
-        serviceId: "trading-alerts",
-      },
-      {
-        id: "plan-mt5-ea",
-        service: "MT5 Expert Advisor (EA)",
-        originalPrice: "$299",
-        price: "$219",
-        description: "Automated trading robot with strict equity risk & drawdown guardrails.",
-        bullets: [
-          "Sub-millisecond automated order execution in MQL5",
-          "Dynamic lot sizing, trailing stops & max drawdown stops",
-          "Backtested on 99.9% quality tick data",
-        ],
-        serviceId: "mt5-indicators-eas",
-      },
-      {
-        id: "plan-trading-automation",
-        service: "Trading Automation Setup",
-        originalPrice: "$399",
-        price: "$289",
-        description: "End-to-end webhook bridge from TradingView alerts to MT5 broker.",
-        bullets: [
-          "Under 300ms execution bridge from TradingView to MT5",
-          "Automated risk percentage calculation per trade",
-          "Safety guards: spread checks & connection recovery",
-        ],
-        serviceId: "trading-automation",
-      },
-      {
-        id: "plan-custom-trading-system",
-        service: "Custom Trading System",
-        originalPrice: "$499",
-        price: "$369",
-        description: "Complete custom architecture with multi-asset scanner, alerts & bot.",
-        bullets: [
-          "Multi-pair scanner + Pine indicator + MT5 execution bridge",
-          "Telegram VIP channel alerts + trade management EA",
-          "Full VPS setup, documentation & 30-day technical support",
-        ],
-        serviceId: "trading-automation",
+        serviceId: "mt5-scanner-alerts",
+        slug: "mt5-scanner-alerts",
+        categoryLabel: "Trading Technology",
+        isCustomScope: true,
       },
     ],
   },
@@ -1248,40 +1218,49 @@ export interface ProcessStep {
 export const PROCESS_STEPS: ProcessStep[] = [
   {
     number: "01",
-    title: "Understand",
-    shortDesc: "In-depth discovery into your operational bottlenecks, system fragmentation, or talent requirements.",
-    deliverable: "Diagnostic Audit & Technical Brief",
+    title: "Problem",
+    shortDesc: "Audit current operational friction and identify the core bottleneck.",
+    deliverable: "Operational Assessment & Friction Matrix",
     icon: "Search",
   },
   {
     number: "02",
     title: "Plan",
-    shortDesc: "Architecting a lean, high-efficiency blueprint covering workflows, tech stack, data mapping, and timeline.",
-    deliverable: "Architecture Blueprint & Scope",
+    shortDesc: "Design system architecture, database schema, and milestone scope.",
+    deliverable: "Milestone Architecture Blueprint",
     icon: "Compass",
   },
   {
     number: "03",
-    title: "Connect & Build",
-    shortDesc: "Hands-on execution: configuring databases, coding custom controllers, webhooks, or algorithmic models.",
-    deliverable: "Live Staging & Milestone Reviews",
-    icon: "Layers",
+    title: "Build",
+    shortDesc: "Develop clean, high-performance web systems and automation pipelines.",
+    deliverable: "Tested Production Software",
+    icon: "Code2",
   },
   {
     number: "04",
-    title: "Support",
-    shortDesc: "Rigorous quality checks, production deployment, team onboarding, and complete architectural documentation.",
-    deliverable: "Documentation & Deployment Support",
-    icon: "Headphones",
+    title: "Automate",
+    shortDesc: "Connect webhooks, Apps Script, and automated notifications.",
+    deliverable: "Active Automation Pipelines",
+    icon: "Zap",
   },
   {
     number: "05",
-    title: "Follow Up",
-    shortDesc: "Scheduled health sweeps, SLA tracking, and ongoing optimization to ensure continuous system reliability.",
-    deliverable: "Performance Reviews & SLA Tracking",
-    icon: "CheckCircle2",
+    title: "Train",
+    shortDesc: "Walk your team through recorded videos and step-by-step digital SOPs.",
+    deliverable: "Digital SOPs & Training Video",
+    icon: "GraduationCap",
+  },
+  {
+    number: "06",
+    title: "Support",
+    shortDesc: "Maintain system health, security, and continuous workflow improvements.",
+    deliverable: "SLA Support & Continuous Optimisation",
+    icon: "Headphones",
   },
 ];
+
+export const HOW_IT_WORKS_STEPS = PROCESS_STEPS;
 
 export interface TrustPillar {
   title: string;
@@ -1292,40 +1271,171 @@ export interface TrustPillar {
 
 export const TRUST_PILLARS: TrustPillar[] = [
   {
-    title: "Direct Founder Accountability",
-    desc: "Work directly with a technology entrepreneur and systems architect. No junior handoffs or unvetted agency layers.",
-    badge: "Direct Contact",
+    title: "Founder-Led Accountability",
+    desc: "Direct systems architecture by Hemanth Ranam (MBA Univ of South Wales, CMI Level 7, ScaleNova Founder). No junior handoffs.",
+    badge: "Direct Execution",
     icon: "UserCheck",
   },
   {
-    title: "Verified Executive Qualifications",
-    desc: "MBA & CMI Level 7 in Strategic Leadership (Univ of South Wales) combined with nearly 10 years in enterprise and SMB tech.",
-    badge: "MBA & CMI Level 7",
-    icon: "GraduationCap",
-  },
-  {
-    title: "100% Data & Code Sovereignty",
-    desc: "Zero proprietary lock-in. You retain full administrative ownership of your cloud accounts, databases, and source code.",
-    badge: "Zero Vendor Lock-In",
+    title: "Zero Exaggerated Claims",
+    desc: "Genuine engineering specifications only. No fabricated client counts, fake awards, or guaranteed profit promises.",
+    badge: "100% Genuine",
     icon: "ShieldCheck",
   },
   {
-    title: "Guaranteed Turnaround SLA",
-    desc: "Every enquiry is recorded with an automated Lead ID and answered with actionable guidance within 24 business hours.",
-    badge: "<24h SLA Response",
-    icon: "Clock",
+    title: "Transparent Milestone Pricing",
+    desc: "Affordable, fixed milestone rates in USD ($) with no hourly billing, surprise retainers, or hidden surcharges.",
+    badge: "Predictable Cost",
+    icon: "Tag",
   },
   {
-    title: "Strict Confidentiality Standards",
-    desc: "Standard non-disclosure agreements, sanitized data handling, and industry-standard security across every engagement.",
-    badge: "Confidential & Safe",
+    title: "100% Data Sovereignty",
+    desc: "You own all code, databases, and assets completely. We use open platforms with zero proprietary vendor lock-in.",
+    badge: "Full Ownership",
     icon: "Lock",
   },
   {
-    title: "Transparent Fixed Milestones",
-    desc: "Clear upfront pricing and deliverable breakdowns. No surprise surcharges, vague billing, or perpetual lock-ins.",
-    badge: "Transparent Scoping",
+    title: "More Than a Handover",
+    desc: "We don't build software and disappear. We train your staff, document processes, and provide ongoing improvements.",
+    badge: "Continuous Support",
+    icon: "HeartHandshake",
+  },
+  {
+    title: "Fast & Responsive SLA",
+    desc: "Guaranteed business-day response times, direct communication channels, and clear progress milestone tracking.",
+    badge: "<24h Response",
+    icon: "Clock",
+  },
+];
+
+/* =========================================================================
+   "WHAT WE SOLVE" SECTION DATA
+   ========================================================================= */
+
+export interface WhatWeSolveItem {
+  id: string;
+  question: string;
+  problem: string;
+  system: string;
+  automation: string;
+  result: string;
+  icon: string;
+}
+
+export const WHAT_WE_SOLVE_ITEMS: WhatWeSolveItem[] = [
+  {
+    id: "slow",
+    question: "WHAT IS SLOW?",
+    problem: "Manual lead collection, delayed email replies, and multi-day deal onboarding.",
+    system: "Website + Instant Lead Capture Engine",
+    automation: "Sub-second Google Sheets sync & dual notification alerts.",
+    result: "Enquiries answered within minutes, dramatically increasing conversions.",
+    icon: "Clock",
+  },
+  {
+    id: "manual",
+    question: "WHAT IS MANUAL?",
+    problem: "Copy-pasting data between spreadsheets, email clients, and billing portals.",
+    system: "Google Apps Script & Serverless Webhook Pipeline",
+    automation: "Automated trigger-action event routing across applications.",
+    result: "Zero data-entry errors and 10+ hours saved per staff member weekly.",
+    icon: "FileSpreadsheet",
+  },
+  {
+    id: "disconnected",
+    question: "WHAT IS DISCONNECTED?",
+    problem: "Isolated team chat, unlinked customer records, and fragmented invoices.",
+    system: "Frappe / ERPNext or Custom Business System",
+    automation: "Unified database bridging CRM, Finance, Inventory & Operations.",
+    result: "Single source of truth with instant cross-department visibility.",
+    icon: "Network",
+  },
+  {
+    id: "tracking",
+    question: "WHAT IS HARD TO TRACK?",
+    problem: "Unclear sales pipeline status, untracked customer issues, and hidden bottlenecks.",
+    system: "Centralized Visual Kanban CRM & Ticketing",
+    automation: "Automated status escalation and milestone progress alerts.",
+    result: "Complete transparency across active deals and operational fulfillment.",
+    icon: "Activity",
+  },
+  {
+    id: "repeated",
+    question: "WHAT IS REPEATED?",
+    problem: "Sending the same onboarding emails, invoice PDFs, and payment reminders.",
+    system: "Template Automation Engine",
+    automation: "Scheduled batch triggers and automated PDF generation.",
+    result: "Routine operations execute automatically in the background 24/7.",
+    icon: "Repeat",
+  },
+  {
+    id: "cost",
+    question: "WHAT IS COSTING TIME?",
+    problem: "'Everyone does it differently' because process knowledge is inside people's heads.",
+    system: "Digital SOPs & Standardized Checklists",
+    automation: "Step-by-step digital process gates and verification checklists.",
+    result: "Rapid employee onboarding and consistent, repeatable execution.",
     icon: "FileText",
+  },
+];
+
+/* =========================================================================
+   REAL SYSTEM WORKFLOW VISUALS DATA
+   ========================================================================= */
+
+export interface SystemWorkflowVisual {
+  id: string;
+  title: string;
+  category: string;
+  steps: { label: string; icon: string; desc: string }[];
+}
+
+export const SYSTEM_WORKFLOW_VISUALS: SystemWorkflowVisual[] = [
+  {
+    id: "lead-flow",
+    title: "Small Business Lead-to-Customer Pipeline",
+    category: "Software & Web",
+    steps: [
+      { label: "Visitor", icon: "Users", desc: "Arrives on mobile-first website" },
+      { label: "Lead Form", icon: "FileText", desc: "Submits validated enquiry" },
+      { label: "Google Sheet", icon: "Database", desc: "Logged with Lead ID (HRPS-XXXX)" },
+      { label: "Email Alert", icon: "Mail", desc: "Management & client alerted instantly" },
+      { label: "Customer", icon: "CheckCircle2", desc: "Fast follow-up closes the deal" },
+    ],
+  },
+  {
+    id: "hr-flow",
+    title: "Automated HR Operations Pipeline",
+    category: "Business & Consulting",
+    steps: [
+      { label: "Employee", icon: "UserCheck", desc: "Submits leave / claim portal request" },
+      { label: "Approval", icon: "CheckSquare", desc: "Manager reviews via 1-click notification" },
+      { label: "Payroll Sync", icon: "BarChart3", desc: "Deduction auto-calculated in ledger" },
+      { label: "HR Record", icon: "FileText", desc: "Permanent audit log updated automatically" },
+    ],
+  },
+  {
+    id: "erp-flow",
+    title: "Connected ERP Operations Pipeline",
+    category: "Business & Consulting",
+    steps: [
+      { label: "Sales Order", icon: "ShoppingBag", desc: "Customer order confirmed in CRM" },
+      { label: "Inventory", icon: "Layers", desc: "Stock reserved & fulfillment dispatched" },
+      { label: "Finance", icon: "CreditCard", desc: "Invoice auto-generated & ledger balanced" },
+      { label: "Executive KPIs", icon: "Activity", desc: "Real-time dashboard reflection" },
+    ],
+  },
+  {
+    id: "trading-flow",
+    title: "Trading Technology Execution Pipeline",
+    category: "Trading Technology",
+    steps: [
+      { label: "Market Data", icon: "TrendingUp", desc: "Tick data streamed in real-time" },
+      { label: "Scanner / Script", icon: "Search", desc: "28+ pairs scanned for confluence" },
+      { label: "Signal Event", icon: "Zap", desc: "Rule-based non-repainting trigger" },
+      { label: "Telegram Alert", icon: "Send", desc: "Sub-second formatted card broadcast" },
+      { label: "Risk Execution", icon: "Shield", desc: "Automated trade with strict guardrails" },
+    ],
   },
 ];
 
@@ -1337,7 +1447,7 @@ export interface CategoryServiceSummary {
   name: string;
   tagline: string;
   icon: string;
-  slug?: string;
+  slug: string;
 }
 
 export interface CoreCategory {
@@ -1346,6 +1456,7 @@ export interface CoreCategory {
   title: string;
   badge: string;
   tagline: string;
+  problemStatement: string;
   description: string;
   icon: string;
   accentColor: string;
@@ -1357,19 +1468,20 @@ export const CORE_CATEGORIES: CoreCategory[] = [
     id: "business-consulting",
     categoryNumber: "01",
     title: "Business & Consulting",
-    badge: "Operations & Advisory",
-    tagline: "Simplify operations, eliminate spreadsheets, and architect scalable systems.",
-    description: "Practical advisory and systems implementation that connect disconnected workflows, digitize SOPs, and automate daily administration.",
+    badge: "Operations & Systems",
+    tagline: "Understand the problem. Fix the process. Build the right system.",
+    problemStatement: "I have tools, people and processes, but everything feels disconnected.",
+    description: "Practical business systems advisory and open-source implementation that connect disconnected workflows, digitize SOPs, and automate repetitive administration.",
     icon: "Briefcase",
     accentColor: "blue",
     services: [
-      { name: "Business Consultation", tagline: "60-min bottleneck audit and pragmatic systems roadmap.", icon: "HelpCircle", slug: "business-systems-consulting" },
-      { name: "Process / Tech Audit", tagline: "Comprehensive review of subscriptions, tools, and friction.", icon: "Search", slug: "process-optimisation" },
-      { name: "Business Systems Consulting", tagline: "End-to-end architecture connecting disconnected tools.", icon: "Workflow", slug: "business-systems-consulting" },
-      { name: "Frappe / ERPNext Systems Implementation", tagline: "Custom open-source ERP & CRM deployment with zero seat fees.", icon: "Layers", slug: "crm-erp-implementation" },
-      { name: "Website + Lead Capture + Basic CRM", tagline: "Integrated lead generation pipeline connecting form to Google Sheets.", icon: "Mail", slug: "website-lead-capture-crm" },
-      { name: "Business Apps Script Automations", tagline: "Serverless webhooks, automated PDF invoices, and Gmail triggers.", icon: "Zap", slug: "workflow-automation" },
-      { name: "Documentation & SOPs", tagline: "Interactive team checklists and digital standard operating procedures.", icon: "FileText", slug: "business-operations-sop" },
+      { name: "Business Consultation", tagline: "60-min bottleneck audit and practical technology roadmap.", icon: "HelpCircle", slug: "business-consultation" },
+      { name: "Process / Tech Audit", tagline: "Identify software duplication, manual work, and subscription waste.", icon: "Search", slug: "process-tech-audit" },
+      { name: "Business Systems Consulting", tagline: "End-to-end architecture specification for connected operations.", icon: "Workflow", slug: "business-systems-consulting" },
+      { name: "Frappe / ERPNext Systems Implementation", tagline: "Customized open-source business management with zero per-seat fees.", icon: "Layers", slug: "frappe-erpnext" },
+      { name: "Website + Lead Capture + Basic CRM", tagline: "The entry system: capture every lead into Google Sheets with email alerts.", icon: "Mail", slug: "website-lead-capture-crm" },
+      { name: "Business Apps Script Automations", tagline: "Connect tools, generate PDF invoices, and eliminate manual tasks.", icon: "Zap", slug: "apps-script-automation" },
+      { name: "Documentation & SOPs", tagline: "Turn internal knowledge into repeatable digital execution and checklists.", icon: "FileText", slug: "documentation-sops" },
     ],
   },
   {
@@ -1377,21 +1489,15 @@ export const CORE_CATEGORIES: CoreCategory[] = [
     categoryNumber: "02",
     title: "Software & Web",
     badge: "Engineering & Cloud",
-    tagline: "High-performance web applications, customer portals, and internal tools.",
-    description: "Custom and standardized full-stack software built on Next.js, TypeScript, and modern cloud infrastructure. Start simple, scale when needed.",
+    tagline: "Build websites and business software that actually work together.",
+    problemStatement: "We need websites and systems that generate business without enterprise bloat.",
+    description: "High-performance websites and custom business software built on modern cloud architecture. Start simple with standard blueprints, scale to custom systems when needed.",
     icon: "Code2",
     accentColor: "indigo",
     services: [
-      { name: "Website Basic", tagline: "Fast, responsive business landing page with lead capture.", icon: "Globe", slug: "website-lead-capture-crm" },
-      { name: "Website Premium", tagline: "Multi-page corporate website with CMS, blog, and SEO schema.", icon: "Layout", slug: "custom-software" },
-      { name: "Fully Automated & Secured Websites", tagline: "Automated webhook dispatch, edge security, and CRM sync.", icon: "ShieldCheck", slug: "custom-software" },
-      { name: "Custom CRM Systems", tagline: "Bespoke pipeline tracking tailored to your exact deal stages.", icon: "Users", slug: "crm-erp-implementation" },
-      { name: "Finance & Accounts Systems", tagline: "Automated multi-currency billing, ledger sync, and invoice dispatch.", icon: "BarChart3", slug: "crm-erp-implementation" },
-      { name: "HR & People Systems", tagline: "Employee lifecycle management, attendance, and leave approvals.", icon: "Users", slug: "hr-management-systems" },
-      { name: "ERP Systems", tagline: "Complete inventory, manufacturing, procurement, and billing.", icon: "Layers", slug: "crm-erp-implementation" },
-      { name: "Booking Systems", tagline: "Automated appointment scheduling, calendar sync, and client reminders.", icon: "Clock", slug: "custom-software" },
-      { name: "Custom Business Applications", tagline: "Full-stack tailored portals solving unique operational rules.", icon: "Code2", slug: "custom-software" },
-      { name: "Integrated Business Systems", tagline: "Unified ecosystem connecting web, database, finance, and support.", icon: "Network", slug: "business-systems-consulting" },
+      { name: "Website Basic → Premium", tagline: "Fast, responsive business landing pages and corporate websites.", icon: "Globe", slug: "websites" },
+      { name: "Fully Automated & Secured Websites", tagline: "Websites with automated lead capture, CRM sync, and edge security.", icon: "ShieldCheck", slug: "websites" },
+      { name: "Custom Business Systems", tagline: "Tailored CRM, Finance, HR, ERP, Booking & Operations software.", icon: "Cpu", slug: "custom-business-systems" },
     ],
   },
   {
@@ -1399,20 +1505,19 @@ export const CORE_CATEGORIES: CoreCategory[] = [
     categoryNumber: "03",
     title: "Trading Technology",
     badge: "Quant & Automation",
-    tagline: "Rule-based algorithmic tools, indicators, and low-latency execution bridges.",
-    description: "Professional technical engineering for traders. We build custom TradingView indicators, Pine Script strategies, and MT5 automation without exaggerated claims.",
+    tagline: "Build indicators, strategies, scanners, alerts and trading automation.",
+    problemStatement: "We need precise rule-based charting tools and automated market alerts.",
+    description: "Dedicated trading technology engineering. We develop custom TradingView indicators, Pine Script strategies, MT5 scanners, and Telegram alert systems with zero profit guarantees.",
     icon: "TrendingUp",
     accentColor: "emerald",
     services: [
-      { name: "Standard TradingView Indicators", tagline: "Clean, non-repainting technical indicators with visual signals.", icon: "TrendingUp", slug: "trading-technology" },
-      { name: "Custom TradingView Indicators", tagline: "Bespoke Pine Script v5 indicators reflecting your proprietary rules.", icon: "Code2", slug: "trading-technology" },
-      { name: "Standard TradingView Strategies", tagline: "Deterministic backtest scripts with slippage and commission models.", icon: "Binary", slug: "trading-technology" },
-      { name: "Custom TradingView Strategies", tagline: "Advanced multi-condition entry/exit engines with session filters.", icon: "Cpu", slug: "trading-technology" },
-      { name: "MT5 Custom Scanner & Alert Systems", tagline: "Multi-symbol screener monitoring 28+ pairs simultaneously.", icon: "Sliders", slug: "trading-technology" },
-      { name: "MT5 Custom Auto-Trading Systems", tagline: "Native MQL5 Expert Advisors with strict equity protection limits.", icon: "Bot", slug: "trading-technology" },
-      { name: "MT5 Alerts & Notifications", tagline: "Instant push notifications sent to mobile phones on trade events.", icon: "Activity", slug: "trading-technology" },
-      { name: "Custom Trading Alerts to Telegram", tagline: "Sub-second webhook signal broadcast to private VIP channels.", icon: "Send", slug: "trading-technology" },
-      { name: "Trading Automation Systems", tagline: "TradingView-to-MT5 automated order execution bridge in under 300ms.", icon: "Zap", slug: "trading-technology" },
+      { name: "Standard TradingView Indicators", tagline: "Non-repainting rule-based indicators with clean visual signals.", icon: "TrendingUp", slug: "tradingview-indicators" },
+      { name: "Custom TradingView Indicators", tagline: "Bespoke Pine Script v5 indicators reflecting your exact chart logic.", icon: "Code2", slug: "tradingview-indicators" },
+      { name: "Standard TradingView Strategies", tagline: "Rule-based systematic backtesting scripts with realistic parameters.", icon: "Binary", slug: "tradingview-strategies" },
+      { name: "Custom TradingView Strategies", tagline: "Advanced multi-condition entry/exit engines with session filters.", icon: "Cpu", slug: "tradingview-strategies" },
+      { name: "MT5 Custom Scanner & Alert System", tagline: "Multi-symbol market scanner monitoring conditions across 28+ pairs.", icon: "Sliders", slug: "mt5-scanner-alerts" },
+      { name: "MT5 Custom Auto-Trading System with Alerts", tagline: "Native MQL5 execution automation with strict equity risk rules.", icon: "Bot", slug: "mt5-auto-trading" },
+      { name: "Custom Trading Alerts to Telegram Channel", tagline: "Sub-second webhook delivery of trade signals directly to Telegram.", icon: "Send", slug: "telegram-trading-alerts" },
     ],
   },
 ];
@@ -1433,31 +1538,31 @@ export interface SystemModelComparison {
 
 export const STANDARD_VS_CUSTOM: { standard: SystemModelComparison; custom: SystemModelComparison } = {
   standard: {
-    title: "Standard Systems",
-    badge: "Fast & Affordable",
-    description: "Ready-to-deploy, battle-tested software blueprints engineered for rapid launch with minimal overhead.",
-    idealFor: "Startups and small businesses looking for fast, proven solutions without long development cycles.",
+    title: "STANDARD",
+    badge: "Affordable & Fast",
+    description: "Ready-to-deploy software blueprints with predictable scope, proven architecture, and low upfront costs.",
+    idealFor: "Startups and small businesses needing rapid operational capabilities without long development cycles.",
     points: [
-      "Rapid deployment (measured in days, not months)",
-      "Low upfront investment with transparent fixed pricing",
-      "Built on proven, documented architecture",
-      "Essential integrations ready out-of-the-box",
-      "Zero vendor lock-in; easily upgradeable to custom later",
+      "Fast deployment (days, not months)",
+      "Affordable milestone pricing in USD",
+      "Ready, battle-tested structure",
+      "Predictable scope with zero hourly billing",
+      "Upgrade seamlessly to custom systems later",
     ],
     ctaText: "Explore Standard Systems",
     ctaHref: "#pricing",
   },
   custom: {
-    title: "Custom Systems",
-    badge: "Tailored & Scalable",
-    description: "Bespoke software architecture engineered specifically around your company's proprietary operational rules.",
-    idealFor: "Established operations, high-volume workflows, and companies requiring bespoke logic and tight API integrations.",
+    title: "CUSTOM",
+    badge: "Flexible & Integrated",
+    description: "Tailored software and systems architecture engineered specifically around your company's unique operational rules.",
+    idealFor: "Growing and established businesses requiring bespoke workflows, specialized CRM modules, or advanced trading technology.",
     points: [
-      "100% tailored to your unique internal processes",
-      "Deep bidirectional integrations with third-party software",
-      "Custom role hierarchies, permissions, and audit trails",
-      "High-throughput automation with automated error handling",
-      "Includes comprehensive staff training and dedicated SLA",
+      "100% tailored to your business rules",
+      "Flexible multi-platform API & webhook integrations",
+      "Advanced automation & role-based security",
+      "Full source code ownership with zero licensing fees",
+      "Dedicated technical support and ongoing optimization",
     ],
     ctaText: "Discuss Custom Architecture",
     ctaHref: "#contact",
@@ -1465,74 +1570,68 @@ export const STANDARD_VS_CUSTOM: { standard: SystemModelComparison; custom: Syst
 };
 
 /* =========================================================================
-   MONTHLY SUPPORT PLANS
+   SUPPORT & TRAINING ARCHITECTURE (NO INVENTED PRICES)
    ========================================================================= */
 
-export interface MonthlySupportPlan {
+export interface SupportTier {
   id: string;
   name: string;
   badge: string;
-  wasPrice: string;
-  price: string;
-  frequency: string;
+  tagline: string;
   description: string;
   deliverables: string[];
   recommended?: boolean;
 }
 
-export const MONTHLY_SUPPORT_PLANS: MonthlySupportPlan[] = [
+export const SUPPORT_AND_TRAINING_TIERS: SupportTier[] = [
   {
-    id: "starter-support",
-    name: "Starter Support",
-    badge: "Essential Maintenance",
-    wasPrice: "$149",
-    price: "$99",
-    frequency: "/ month",
-    description: "Affordable ongoing peace-of-mind keeping your core website, forms, and basic webhooks healthy.",
+    id: "starter",
+    name: "STARTER SUPPORT",
+    badge: "Essential Systems Care",
+    tagline: "For small businesses that need reliable basic support.",
+    description: "Affordable ongoing peace-of-mind keeping your core website, lead forms, and basic webhooks healthy.",
     deliverables: [
-      "Weekly system health and uptime sweeps",
+      "Scheduled system health sweeps & uptime checks",
       "Form submission monitoring & spam mitigation",
-      "Minor content and link adjustments (up to 2h/mo)",
-      "Email support with <48h SLA response",
+      "Minor content, link, and configuration adjustments",
+      "Standard email support with fast SLA response",
       "Cloudflare security & SSL certificate maintenance",
     ],
   },
   {
-    id: "growth-support",
-    name: "Growth Support",
-    badge: "Most Popular",
-    wasPrice: "$299",
-    price: "$199",
-    frequency: "/ month",
+    id: "growth",
+    name: "GROWTH SUPPORT",
+    badge: "Continuous Improvement",
+    tagline: "For businesses that need ongoing improvements and automation.",
     description: "Active system improvements, webhook adjustments, and continuous workflow automation as business scales.",
     deliverables: [
       "Everything in Starter Support",
       "Continuous automation monitoring & error recovery",
       "Google Apps Script & Zapier/Webhook updates",
-      "Up to 6 hours of monthly feature and UI enhancements",
-      "Priority WhatsApp & email support (<24h SLA)",
-      "Monthly performance and analytics summary",
+      "Monthly allocation for feature & UI enhancements",
+      "Priority messaging & email support channel",
+      "Operational performance & analytics reviews",
     ],
     recommended: true,
   },
   {
-    id: "business-systems-support",
-    name: "Business Systems Support",
+    id: "systems",
+    name: "SYSTEMS SUPPORT",
     badge: "Enterprise SLA",
-    wasPrice: "$499",
-    price: "$349",
-    frequency: "/ month",
-    description: "Dedicated systems engineering partner for complex CRM, ERPNext, and trading technology setups.",
+    tagline: "For businesses with larger ongoing technology requirements.",
+    description: "Dedicated systems engineering and training partner for complex CRM, ERPNext, and trading technology infrastructure.",
     deliverables: [
       "Everything in Growth Support",
-      "ERPNext/Frappe server maintenance and database backups",
+      "ERPNext/Frappe server updates & database backups",
       "TradingView/MT5 webhook bridge reliability monitoring",
-      "Up to 12 hours of dedicated development & scripting",
-      "Same-day emergency escalation (<4h response)",
-      "Direct consultation calls with founder/architect",
+      "Dedicated development hours & team training sessions",
+      "High-priority incident escalation SLA",
+      "Direct technical consultation calls with systems architect",
     ],
   },
 ];
+
+export const MONTHLY_SUPPORT_PLANS = SUPPORT_AND_TRAINING_TIERS;
 
 /* =========================================================================
    SYSTEM LIFECYCLE ("MORE THAN A HANDOVER")
@@ -1546,42 +1645,13 @@ export interface LifecycleStage {
 }
 
 export const SYSTEM_LIFECYCLE: LifecycleStage[] = [
-  { step: "01", title: "PLAN", desc: "Audit manual friction and map clear, milestone-based technical requirements.", icon: "Compass" },
-  { step: "02", title: "BUILD", desc: "Construct clean, high-performance software with zero bloated libraries.", icon: "Code2" },
-  { step: "03", title: "LAUNCH", desc: "Deploy with automated SSL, backups, and validated data pipelines.", icon: "Rocket" },
-  { step: "04", title: "TRAIN", desc: "Walk your staff through hands-on video tutorials and digital SOPs.", icon: "GraduationCap" },
-  { step: "05", title: "SUPPORT", desc: "Monitor live operations with proactive error checks and SLA guarantees.", icon: "Headphones" },
-  { step: "06", title: "IMPROVE", desc: "Refine user flows based on real operational feedback and analytics.", icon: "TrendingUp" },
-  { step: "07", title: "AUTOMATE", desc: "Layer intelligent automation to eliminate repetitive manual work as you scale.", icon: "Zap" },
-];
-
-/* =========================================================================
-   "DO MORE BUSINESS" CONNECTED PIPELINE
-   ========================================================================= */
-
-export const DO_MORE_BUSINESS_NODES = [
-  { name: "Website", role: "Attracts Visitors", icon: "Globe" },
-  { name: "Lead", role: "Captures Enquiries", icon: "Mail" },
-  { name: "CRM", role: "Qualifies Deals", icon: "Layers" },
-  { name: "Operations", role: "Fulfills Orders", icon: "Workflow" },
-  { name: "Finance", role: "Auto-Invoices & Collects", icon: "BarChart3" },
-  { name: "HR", role: "Coordinates Teams", icon: "Users" },
-  { name: "Reports", role: "Live Executive KPIs", icon: "Activity" },
-  { name: "Automation", role: "Runs 24/7 in Background", icon: "Zap" },
-];
-
-/* =========================================================================
-   SMALL BUSINESS ENTRY SYSTEM FLOW
-   ========================================================================= */
-
-export const SMALL_BIZ_FLOW = [
-  { step: "1", title: "Visitor", desc: "Potential client visits your fast, mobile-optimized website.", icon: "UserCheck" },
-  { step: "2", title: "Website", desc: "Displays clear services, transparent pricing, and instant credibility.", icon: "Globe" },
-  { step: "3", title: "Lead Form", desc: "Enquiry collected with honeypot spam filtering and data validation.", icon: "FileText" },
-  { step: "4", title: "Google Sheet", desc: "Row saved instantly with a unique Lead ID (HRPS-YYYYMMDD-XXXX).", icon: "Database" },
-  { step: "5", title: "Email Alert", desc: "Manager receives full lead dossier; client receives professional receipt.", icon: "Send" },
-  { step: "6", title: "Follow-Up", desc: "Team responds within 24 hours with organized deal context.", icon: "Clock" },
-  { step: "7", title: "Customer", desc: "Delighted client onboarded with zero manual administration friction.", icon: "CheckCircle2" },
+  { step: "01", title: "DISCOVER", desc: "Understand current operational bottlenecks, tools, and business objectives.", icon: "Search" },
+  { step: "02", title: "BUILD", desc: "Construct clean, high-performance web systems and software without bloated code.", icon: "Code2" },
+  { step: "03", title: "LAUNCH", desc: "Deploy with validated data pipelines, SSL security, and automated error logging.", icon: "Rocket" },
+  { step: "04", title: "TRAIN", desc: "Walk your staff through hands-on video tutorials and digital SOP documentation.", icon: "GraduationCap" },
+  { step: "05", title: "SUPPORT", desc: "Provide ongoing systems assistance and ensure software is never abandoned.", icon: "Headphones" },
+  { step: "06", title: "IMPROVE", desc: "Refine user flows and features based on real operational feedback.", icon: "TrendingUp" },
+  { step: "07", title: "AUTOMATE", desc: "Layer intelligent automation to eliminate repetitive manual work as you grow.", icon: "Zap" },
 ];
 
 /* =========================================================================
@@ -1600,11 +1670,11 @@ export const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: "Can you integrate with our existing software?",
-    answer: "Absolutely. We routinely bridge modern web applications with existing tools—including legacy databases, ERPNext, Frappe, Google Sheets, WhatsApp, Telegram, Stripe, and third-party REST APIs.",
+    answer: "Yes. We routinely bridge modern web applications with existing tools—including legacy databases, ERPNext, Frappe, Google Sheets, WhatsApp, Telegram, Stripe, and third-party REST APIs.",
   },
   {
     question: "Do you provide support after launch?",
-    answer: "Yes. We operate on the principle of 'More Than a Handover.' We don't build and vanish. We offer structured monthly support plans covering proactive health checks, security patches, minor UI tweaks, and workflow improvements.",
+    answer: "Yes. Our core principle is 'More Than a Handover.' We don't simply build your system and leave. We provide ongoing support, bug fixes, and continuous improvements through flexible support tiers.",
   },
   {
     question: "Do you provide training for our team?",
@@ -1612,11 +1682,11 @@ export const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: "Can small businesses use your services?",
-    answer: "Definitely. Our core positioning is 'Small Price. Big Work.' We designed our offerings to give startups and small businesses enterprise-grade software capabilities—like lead capture pipelines connecting to Google Sheets—without enterprise agency price tags.",
+    answer: "Definitely. Our core positioning is 'Small Price. Big Work.' We designed our offerings so small businesses can get professional websites, lead capture pipelines, and automated Google Sheets backends without enterprise agency costs.",
   },
   {
     question: "Do you provide monthly support?",
-    answer: "Yes. We offer three transparent monthly support tiers: Starter Support ($99/mo), Growth Support ($199/mo), and Business Systems Support ($349/mo) with guaranteed SLAs and no long-term lock-in.",
+    answer: "Yes. We provide ongoing support across three tiers: Starter, Growth, and Systems Support. These are configured per project scope so your system is actively maintained and improved over time.",
   },
   {
     question: "Can you automate our existing workflows?",
@@ -1624,480 +1694,1050 @@ export const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: "Do you work with Frappe and ERPNext?",
-    answer: "Yes. We have extensive experience customizing and deploying Frappe Framework and ERPNext v14/v15 across CRM, Accounting, HRMS, Stock, and Custom DocTypes with complete cloud data ownership.",
+    answer: "Yes. We deploy, customize, and configure Frappe Framework and ERPNext instances, including custom DocTypes, transaction workflows, role-based security, and REST API integrations.",
   },
   {
     question: "Can you build trading technology?",
-    answer: "Yes. We develop Pine Script v5 indicators, backtestable trading strategies on TradingView, native MQL5 Expert Advisors, multi-symbol scanners, and webhook alert routers to Telegram and MT5. We position these strictly as trading technology tools with zero exaggerated profit guarantees.",
+    answer: "Yes. We engineer TradingView indicators, Pine Script v5 strategies, MT5 market screeners, and automated alert systems to Telegram channels. We focus strictly on technical engineering and automation with zero financial return guarantees.",
   },
   {
-    question: "Can websites connect directly to Google Sheets?",
-    answer: "Yes. We build custom serverless Google Apps Script backends that store website form submissions in Google Sheets with automatic Lead ID generation, spam protection, and dual email alerts without exposing API credentials in frontend code.",
+    question: "Can websites connect to Google Sheets?",
+    answer: "Yes. Our entry-level Website + Lead Capture + Basic CRM architecture connects your contact forms directly to Google Sheets via Google Apps Script with automated email alerts, giving you a powerful, zero-cost CRM.",
   },
   {
     question: "Can you customize standard systems?",
-    answer: "Yes. You can start with an affordable standard system (such as our Website + Lead Capture blueprint) and seamlessly customize and expand it with custom CRM modules or automated integrations as your business scales.",
+    answer: "Yes. You can start small with an affordable standard system and seamlessly customize and expand it with custom CRM modules or automated integrations as your business scales.",
   },
 ];
 
 /* =========================================================================
-   DEDICATED SERVICE SUBPAGES DATA
+   DEDICATED SERVICE SUBPAGES DATA (ALL 14 SERVICES)
    ========================================================================= */
 
 export interface ServiceSubpageData {
   slug: string;
   name: string;
   category: string;
+  categoryKey: "business" | "software" | "trading";
   badge: string;
   icon: string;
-  shortDescription: string;
-  whatItSolves: string[];
-  whatWeDo: string[];
-  whatsIncluded: string[];
-  workflow: { step: string; label: string; desc: string }[];
-  deliverables: string[];
-  benefits: string[];
+  shortStatement: string;
+  shortDescription?: string;
+  whatItSolves?: string[];
+  whatWeDo?: string[];
+  whatsIncluded?: string[];
+  workflow?: { step: string; label: string; desc: string }[];
+  deliverables?: string[];
+  benefits?: string[];
+  problem: {
+    title: string;
+    statement: string;
+    bullets: string[];
+  };
+  solution: {
+    title: string;
+    statement: string;
+    bullets: string[];
+  };
+  howItWorks: { step: string; label: string; desc: string }[];
+  whatWeBuild: { title: string; desc: string; icon: string }[];
+  visualWorkflow: { from: string; to: string; label: string }[];
+  whatYouGet: string[];
+  whoItsFor: { tier: string; desc: string }[];
+  standardVsCustom: {
+    standard: string[];
+    custom: string[];
+  };
+  supportAndTraining: string[];
+  faqs: { q: string; a: string }[];
+  relatedPricingPlan?: string;
+  defaultPrice?: string;
 }
 
 export const DEDICATED_SERVICES: ServiceSubpageData[] = [
+  // 1. Business Consultation
+  {
+    slug: "business-consultation",
+    name: "Business Consultation",
+    category: "Business & Consulting",
+    categoryKey: "business",
+    badge: "Strategy & Assessment",
+    icon: "HelpCircle",
+    shortStatement: "1-on-1 strategic session to audit operational bottlenecks and map practical solutions.",
+    problem: {
+      title: "Disconnected Operations & Unclear Roadmaps",
+      statement: "I have tools, people and processes, but everything feels disconnected.",
+      bullets: [
+        "Unclear which software to keep, replace, or automate",
+        "Team spending hours daily on manual data re-entry",
+        "Overwhelmed by vendor sales pitches and enterprise costs",
+      ],
+    },
+    solution: {
+      title: "Pragmatic Technology Roadmap",
+      statement: "Review current operations and create an actionable, high-ROI technology blueprint.",
+      bullets: [
+        "60-minute deep-dive architecture consultation with systems founder",
+        "Direct identification of operational bottlenecks and manual drag",
+        "Clear step-by-step roadmap prioritizing high-impact improvements",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Intake", desc: "Share your current tools, team structure, and primary bottlenecks." },
+      { step: "02", label: "Session", desc: "60-minute live deep-dive diagnosing system disconnects." },
+      { step: "03", label: "Roadmap", desc: "Receive written architecture action plan with clear platform choices." },
+      { step: "04", label: "Next Steps", desc: "Decide whether to execute internally or engage our milestone build." },
+    ],
+    whatWeBuild: [
+      { title: "Operational Assessment", desc: "Clear breakdown of bottlenecks and friction points.", icon: "Search" },
+      { title: "Tool Stack Matrix", desc: "Evaluation of active software and redundant costs.", icon: "Layers" },
+      { title: "Action Roadmap", desc: "Step-by-step implementation blueprint with ROI priority.", icon: "Compass" },
+    ],
+    visualWorkflow: [
+      { from: "Current Process", to: "Audit Call", label: "Deep-Dive" },
+      { from: "Audit Call", to: "Bottlenecks", label: "Diagnosis" },
+      { from: "Bottlenecks", to: "Solutions", label: "Architecture" },
+      { from: "Solutions", to: "Action Plan", label: "Execution" },
+    ],
+    whatYouGet: [
+      "60-minute live video consultation with recording",
+      "Written Operational Assessment & Bottleneck Matrix",
+      "Prioritized Technology Action Roadmap",
+      "7 days of follow-up email Q&A support",
+    ],
+    whoItsFor: [
+      { tier: "Small Business", desc: "Founders needing clarity before investing in expensive software." },
+      { tier: "Growing Business", desc: "Teams struggling with fragmented data across multiple apps." },
+      { tier: "Established Business", desc: "Leaders seeking unbiased technology and platform advice." },
+    ],
+    standardVsCustom: {
+      standard: ["Fixed 60-minute strategic scope", "Proven assessment methodology", "Transparent $35 USD milestone rate"],
+      custom: ["Follow-on bespoke systems engineering", "Tailored database architecture design", "Custom integration specification"],
+    },
+    supportAndTraining: [
+      "Recorded video copy of your consultation session",
+      "Written executive summary of recommendations",
+      "Direct email access for follow-up roadmap questions",
+    ],
+    faqs: [
+      { q: "What should I prepare before the call?", a: "A list of software subscriptions you use and 2-3 biggest operational bottlenecks." },
+      { q: "Do you push specific proprietary software?", a: "No. We evaluate open-source, standard, and custom options based strictly on what's best for your business." },
+    ],
+    relatedPricingPlan: "Business Consultation",
+    defaultPrice: "$35 USD",
+  },
+
+  // 2. Process / Tech Audit
+  {
+    slug: "process-tech-audit",
+    name: "Process / Tech Audit",
+    category: "Business & Consulting",
+    categoryKey: "business",
+    badge: "Efficiency & Cost Reduction",
+    icon: "Search",
+    shortStatement: "Comprehensive review of existing software, subscriptions, and team friction.",
+    problem: {
+      title: "Software Bloat & Redundant Costs",
+      statement: "Too many tools. Too much manual work. Too little visibility.",
+      bullets: [
+        "Paying for overlapping software subscriptions with low utilization",
+        "Staff manually copying data from one tool to another daily",
+        "Zero central visibility into tool performance and true operational costs",
+      ],
+    },
+    solution: {
+      title: "Technology Environment Audit",
+      statement: "Audit the existing tech stack, identify duplication, and deliver an optimization blueprint.",
+      bullets: [
+        "Line-by-line inventory of all software tools, seats, and costs",
+        "Mapping of manual data-entry steps that can be eliminated",
+        "Formal PDF audit report with software consolidation roadmap",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Data Ingestion", desc: "Submit current software list, billing receipts, and workflow descriptions." },
+      { step: "02", label: "Analysis", desc: "We map tool overlaps, manual handoffs, and data leaks." },
+      { step: "03", label: "Blueprint", desc: "Deliver formal PDF audit report with prioritized recommendations." },
+      { step: "04", label: "Debrief", desc: "30-minute walkthrough call reviewing findings and next steps." },
+    ],
+    whatWeBuild: [
+      { title: "Software Cost Matrix", desc: "Detailed breakdown of current SaaS spend and redundancies.", icon: "BarChart3" },
+      { title: "Process Friction Map", desc: "Visual diagram of manual handoffs costing team time.", icon: "Workflow" },
+      { title: "Consolidation Blueprint", desc: "Actionable plan to eliminate tools and save $100s monthly.", icon: "FileText" },
+    ],
+    visualWorkflow: [
+      { from: "Current Tools", to: "Audit Analysis", label: "Review" },
+      { from: "Audit Analysis", to: "Duplication", label: "Isolate" },
+      { from: "Duplication", to: "Manual Work", label: "Identify" },
+      { from: "Manual Work", to: "Blueprint", label: "Optimize" },
+    ],
+    whatYouGet: [
+      "Comprehensive Software Inventory & Spend Audit",
+      "Process Bottleneck & Manual Friction Map",
+      "Formal PDF Optimization Blueprint",
+      "30-minute debrief call explaining recommendations",
+    ],
+    whoItsFor: [
+      { tier: "Small Business", desc: "Businesses wanting to eliminate $100s in forgotten software subscriptions." },
+      { tier: "Growing Business", desc: "Teams frustrated by disconnected apps and repeated data entry." },
+    ],
+    standardVsCustom: {
+      standard: ["Fixed 5-day audit timeline", "Comprehensive PDF report", "Transparent $59 USD milestone rate"],
+      custom: ["In-depth multi-department workflow mapping", "Direct vendor contract renegotiation advisory"],
+    },
+    supportAndTraining: [
+      "Detailed step-by-step tool cancellation and data export checklist",
+      "14 days of post-audit email support for clarification",
+    ],
+    faqs: [
+      { q: "Do you need password access to our software?", a: "No. A list of active tools, invoices, and workflow descriptions is all that is required." },
+      { q: "How much money does this typically save?", a: "Most companies uncover $100 to $400/month in redundant subscriptions." },
+    ],
+    relatedPricingPlan: "Process / Tech Audit",
+    defaultPrice: "$59 USD",
+  },
+
+  // 3. Business Systems Consulting
   {
     slug: "business-systems-consulting",
     name: "Business Systems Consulting",
     category: "Business & Consulting",
-    badge: "Architecture & Advisory",
+    categoryKey: "business",
+    badge: "Architecture & Systems Design",
     icon: "Workflow",
-    shortDescription: "End-to-end architecture connecting disconnected software and manual operations into a unified system.",
-    whatItSolves: [
-      "Fragmented data scattered across spreadsheets, chat apps, and disconnected tools",
-      "Manual data re-entry leading to costly administrative errors and delays",
-      "Lack of executive visibility over team progress and operational bottlenecks",
-      "High monthly SaaS subscription overhead with overlapping features",
+    shortStatement: "End-to-end architecture specification for connected business operations.",
+    problem: {
+      title: "Uncoordinated Growth & Data Silos",
+      statement: "Fragmented software and manual operations leading to costly delays.",
+      bullets: [
+        "Unclear how different company tools should share data",
+        "Discussions about software lack technical architecture and database schemas",
+        "Team members reinventing workflows because systems aren't connected",
+      ],
+    },
+    solution: {
+      title: "Connected Systems Architecture",
+      statement: "Design unified digital operating systems connecting web, CRM, operations, finance, and HR.",
+      bullets: [
+        "Full digital workflow & database schema specification",
+        "Standard operating procedure (SOP) digital mapping",
+        "Platform and vendor selection advisory with clear specifications",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Discovery", desc: "Review complete operational lifecycle from inquiry to delivery." },
+      { step: "02", label: "Schema Design", desc: "Architect data relationships, entities, and flow boundaries." },
+      { step: "03", label: "SOP Mapping", desc: "Document step-by-step digital processes for each team role." },
+      { step: "04", label: "Specification", desc: "Deliver full architecture document ready for build." },
     ],
-    whatWeDo: [
-      "Conduct a comprehensive technical audit of your existing software and processes",
-      "Map out unified data flows and eliminate redundant subscription tools",
-      "Design standard operating procedures (SOPs) embedded into digital software",
-      "Select and configure scalable technology stacks tailored to your budget",
+    whatWeBuild: [
+      { title: "Systems Architecture", desc: "Complete visual diagram of connected business tools.", icon: "Network" },
+      { title: "Database Schema", desc: "Entity relationships, field definitions, and validation rules.", icon: "Database" },
+      { title: "Digital SOP Spec", desc: "Role-by-role execution guides embedded into system flows.", icon: "FileText" },
     ],
-    whatsIncluded: [
-      "60-minute in-depth discovery and bottleneck analysis session",
-      "Complete operational architecture blueprint document (PDF)",
-      "SOP digital mapping and software consolidation roadmap",
-      "Recommended vendor and platform matrix with ROI analysis",
-      "Two follow-up milestone review sessions",
+    visualWorkflow: [
+      { from: "Website", to: "Lead Capture", label: "Traffic" },
+      { from: "Lead Capture", to: "CRM Engine", label: "Ingestion" },
+      { from: "CRM Engine", to: "Operations", label: "Fulfillment" },
+      { from: "Operations", to: "Finance & HR", label: "Reports" },
     ],
-    workflow: [
-      { step: "01", label: "Current Business", desc: "Audit existing tools, spreadsheets, and manual team handoffs." },
-      { step: "02", label: "Audit", desc: "Identify operational lag, data silos, and redundant subscription costs." },
-      { step: "03", label: "Architecture", desc: "Draft a unified systems blueprint with clear database and workflow specs." },
-      { step: "04", label: "Workflow Design", desc: "Map digital SOPs and automated handoffs between departments." },
-      { step: "05", label: "Implementation", desc: "Deploy platforms, configure role permissions, and migrate existing data." },
-      { step: "06", label: "Automation", desc: "Layer serverless webhooks, triggers, and automated notification alerts." },
-      { step: "07", label: "Support", desc: "Deliver staff video training, reference documentation, and SLA support." },
-    ],
-    deliverables: [
-      "Comprehensive Architecture Blueprint Document",
+    whatYouGet: [
+      "Complete Systems Architecture Specification Document",
+      "Entity Relationship & Database Schema Spec",
       "Digital Standard Operating Procedure (SOP) Map",
-      "Software Stack Rationalization & Cost Reduction Plan",
-      "Phased Implementation & Data Migration Roadmap",
+      "Vendor & Technology Selection Evaluation",
     ],
-    benefits: [
-      "Over 40% reduction in manual administrative hours",
-      "Single source of truth for company operations",
-      "Zero vendor lock-in with 100% data ownership",
-      "Predictable milestone pricing with no surprise hourly bills",
+    whoItsFor: [
+      { tier: "Growing Business", desc: "Companies transitioning from spreadsheets to structured systems." },
+      { tier: "Established Business", desc: "Organizations planning major software builds who need clear specs first." },
     ],
+    standardVsCustom: {
+      standard: ["Proven connected business architecture", "Standardized database patterns", "Transparent $75 USD milestone rate"],
+      custom: ["Multi-branch database modeling", "Specialized compliance and regulatory requirements"],
+    },
+    supportAndTraining: [
+      "Walkthrough session explaining technical blueprints to management",
+      "14 days of technical guidance for your developers or contractors",
+    ],
+    faqs: [
+      { q: "Does this include building the software?", a: "This produces the complete blueprint. Implementation can be added via our CRM/ERP or automation milestones." },
+    ],
+    relatedPricingPlan: "Business Systems Consulting",
+    defaultPrice: "$75 USD",
   },
+
+  // 4. Frappe / ERPNext Systems Implementation
   {
-    slug: "process-optimisation",
-    name: "Process Optimisation",
+    slug: "frappe-erpnext",
+    name: "Frappe / ERPNext Systems Implementation",
     category: "Business & Consulting",
-    badge: "Efficiency & Speed",
-    icon: "Sparkles",
-    shortDescription: "Eliminate operational bottlenecks, streamline manual handoffs, and accelerate business delivery.",
-    whatItSolves: [
-      "Multi-day delays in client onboarding and service delivery",
-      "Tasks falling through cracks during department handoffs",
-      "Lack of accountability and standardized execution across team members",
-    ],
-    whatWeDo: [
-      "Trace step-by-step lifecycles of deals, orders, and support tickets",
-      "Isolate delay points, handoff friction, and redundant approval gates",
-      "Standardize digital checkpoints with automated escalation rules",
-      "Implement real-time dashboards to track turnaround times",
-    ],
-    whatsIncluded: [
-      "Process flow diagram mapping all touchpoints",
-      "Bottleneck root-cause diagnosis report",
-      "Automated SLA tracking and escalation configuration",
-      "Team training on streamlined handoff protocols",
-    ],
-    workflow: [
-      { step: "01", label: "Discovery", desc: "Map existing fulfillment and approval lifecycles." },
-      { step: "02", label: "Friction Audit", desc: "Measure turnaround times and pinpoint manual delays." },
-      { step: "03", label: "Redesign", desc: "Strip out redundant steps and design lean handoff protocols." },
-      { step: "04", label: "Digitalization", desc: "Configure tracking software and automated handoff triggers." },
-      { step: "05", label: "Review", desc: "Validate performance against historic baseline metrics." },
-    ],
-    deliverables: [
-      "As-Is vs To-Be Process Flowcharts",
-      "Operational Friction Elimination Blueprint",
-      "Automated SLA Alert Configuration",
-      "Team Onboarding & Checkpoint Checklist",
-    ],
-    benefits: [
-      "Turnaround time reduced from days to hours",
-      "Zero missed tasks with automated accountability logs",
-      "Happier clients with transparent real-time status updates",
-    ],
-  },
-  {
-    slug: "crm-erp-implementation",
-    name: "CRM / ERP Implementation",
-    category: "Software & Web",
-    badge: "Enterprise Capability",
+    categoryKey: "business",
+    badge: "Open-Source ERP",
     icon: "Layers",
-    shortDescription: "Customized Frappe & ERPNext deployments engineered around your exact business rules with zero per-user licensing fees.",
-    whatItSolves: [
-      "Skyrocketing monthly per-user licensing fees on Salesforce, HubSpot, or SAP",
-      "Disconnected accounting, CRM, and inventory databases",
-      "Inflexible off-the-shelf software that forces you to change your business rules",
+    shortStatement: "Customized Frappe & ERPNext business management system deployment.",
+    problem: {
+      title: "Crippling Per-Seat License Fees",
+      statement: "Enterprise ERP solutions like Salesforce and SAP cost thousands in monthly user fees.",
+      bullets: [
+        "Paying per-user licensing prevents team-wide software adoption",
+        "Disconnected CRM, inventory, and accounting software causing reconciliation errors",
+        "Inability to customize software without expensive vendor consultants",
+      ],
+    },
+    solution: {
+      title: "Zero-Seat-Fee Open-Source ERP",
+      statement: "Deploy tailored Frappe & ERPNext systems uniting CRM, accounting, inventory, and HR.",
+      bullets: [
+        "100% open-source with zero per-user recurring license fees",
+        "Custom DocTypes, transaction workflows, and role permissions",
+        "Data migration, configuration, and team onboarding walkthrough",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Scoping", desc: "Map your company workflows into ERPNext modules." },
+      { step: "02", label: "Configure", desc: "Setup chart of accounts, CRM pipelines, and custom fields." },
+      { step: "03", label: "Migrate", desc: "Import existing customer, vendor, and product spreadsheets." },
+      { step: "04", label: "Launch & Train", desc: "Live team walkthrough and step-by-step recorded tutorials." },
     ],
-    whatWeDo: [
-      "Deploy self-hosted or private cloud Frappe and ERPNext instances",
-      "Configure custom DocTypes, fields, server scripts, and print formats",
-      "Integrate sales pipelines with billing, stock, and ledger modules",
-      "Safely migrate legacy customer and financial records",
+    whatWeBuild: [
+      { title: "Frappe/ERPNext Setup", desc: "Fully configured cloud or self-hosted business management hub.", icon: "Layers" },
+      { title: "Tailored DocTypes", desc: "Custom fields, validation rules, and automated status triggers.", icon: "Code2" },
+      { title: "Team Permissions", desc: "Role-based access ensuring staff only see what they need.", icon: "ShieldCheck" },
     ],
-    whatsIncluded: [
-      "Complete cloud instance setup with automated daily backups",
-      "Customized Lead-to-Invoice pipeline configuration",
-      "Role-based permission hierarchy for management and staff",
-      "Data migration from CSV/Excel or legacy software",
-      "Staff onboarding training sessions with video documentation",
+    visualWorkflow: [
+      { from: "CRM Deals", to: "Sales Order", label: "Convert" },
+      { from: "Sales Order", to: "Stock Allocation", label: "Fulfill" },
+      { from: "Stock Allocation", to: "Invoice & Ledger", label: "Bill" },
+      { from: "Invoice & Ledger", to: "P&L Report", label: "Balance" },
     ],
-    workflow: [
-      { step: "01", label: "Scope", desc: "Define exact DocTypes, approval flows, and transaction rules." },
-      { step: "02", label: "Environment", desc: "Provision secure cloud instance with automated SSL and backups." },
-      { step: "03", label: "Customization", desc: "Develop custom controllers, webhooks, and automated email prints." },
-      { step: "04", label: "Migration", desc: "Cleanse, validate, and import historical customer and ledger data." },
-      { step: "05", label: "Go-Live", desc: "Execute production rollout with parallel verification and staff support." },
+    whatYouGet: [
+      "Configured Frappe / ERPNext instance ready for production",
+      "Custom DocTypes and transaction workflow hooks",
+      "Historical data migration (customers, items, accounting)",
+      "Team video walkthrough and digital SOP documentation",
+      "30 days of post-launch configuration support",
     ],
-    deliverables: [
-      "Fully Configured Frappe / ERPNext Cloud Instance",
-      "Custom DocTypes & Automated Role Permissions",
-      "Sanitized Historical Data Migration",
-      "Administrator & User Operational Guides",
+    whoItsFor: [
+      { tier: "Growing Business", desc: "Companies outgrowing basic invoicing tools and disjointed spreadsheets." },
+      { tier: "Medium Enterprise", desc: "Organizations needing full inventory, procurement, and HR under one roof." },
     ],
-    benefits: [
-      "Zero monthly per-user software licensing fees forever",
-      "100% private data ownership and GDPR compliance",
-      "Unified operations from first sales lead to final tax filing",
+    standardVsCustom: {
+      standard: ["Core CRM, Invoicing, and Stock modules", "Standard role permissions", "Transparent $369 USD milestone rate"],
+      custom: ["Bespoke Frappe apps", "Multi-company consolidation", "Complex manufacturing BOMs"],
+    },
+    supportAndTraining: [
+      "Recorded video walkthroughs covering daily operations",
+      "Digital SOP documentation tailored to your company setup",
+      "30 days of technical configuration adjustments",
     ],
+    faqs: [
+      { q: "Are there any recurring license fees?", a: "No. Frappe and ERPNext are 100% open source. You only pay for standard server hosting." },
+      { q: "Can we connect our website lead forms to ERPNext?", a: "Yes. We integrate REST APIs and webhooks directly to capture leads automatically." },
+    ],
+    relatedPricingPlan: "CRM / ERP Implementation",
+    defaultPrice: "$369 USD",
   },
-  {
-    slug: "hr-management-systems",
-    name: "HR Management Systems",
-    category: "Software & Web",
-    badge: "People Operations",
-    icon: "Users",
-    shortDescription: "Digital employee lifecycle management covering onboarding, leave approvals, compliant payroll, and self-service portals.",
-    whatItSolves: [
-      "Manual leave calculation spreadsheets leading to payroll disputes",
-      "Scattered employee contracts, ID documents, and visa expiry records",
-      "Time-consuming monthly payroll generation and payslip emailing",
-    ],
-    whatWeDo: [
-      "Implement centralized employee directory with secure digital file storage",
-      "Configure multi-tier leave approval hierarchies and automatic accruals",
-      "Automate salary structure computation and PDF payslip generation",
-      "Deploy self-service employee mobile portals",
-    ],
-    whatsIncluded: [
-      "Leave policy and company holiday calendar setup",
-      "Salary component configuration with tax deduction rules",
-      "Role-based permission matrix for employees, managers, and HR leads",
-      "Automated document expiry reminder alerts",
-    ],
-    workflow: [
-      { step: "01", label: "Policy Audit", desc: "Review employment terms, leave allowances, and payroll structures." },
-      { step: "02", label: "Setup", desc: "Configure salary slabs, leave types, and organizational charts." },
-      { step: "03", label: "Portal", desc: "Deploy employee self-service interface for web and mobile." },
-      { step: "04", label: "Testing", desc: "Simulate monthly payroll run and leave approval test cycle." },
-      { step: "05", label: "Rollout", desc: "Onboard staff with straightforward mobile login walkthroughs." },
-    ],
-    deliverables: [
-      "Centralized Digital Employee Database",
-      "Automated Leave & Attendance Tracking System",
-      "One-Click Monthly Payroll Engine with PDF Payslips",
-      "Employee Self-Service Portal Access",
-    ],
-    benefits: [
-      "90% reduction in monthly payroll processing time",
-      "Elimination of leave tracking disputes",
-      "Bank-grade security for sensitive employee records",
-    ],
-  },
-  {
-    slug: "business-operations-sop",
-    name: "Business Operations & SOPs",
-    category: "Business & Consulting",
-    badge: "Standardization",
-    icon: "Sliders",
-    shortDescription: "Turn static PDF manuals and organizational knowledge into interactive, timestamped digital checklists.",
-    whatItSolves: [
-      "Inconsistent service quality when different team members handle tasks",
-      "Slow onboarding times for new hires having to read 100-page static PDFs",
-      "Zero audit trail when tasks are delayed or skipped",
-    ],
-    whatWeDo: [
-      "Convert complex procedures into bite-sized digital workflows",
-      "Embed checklists directly into daily software tools",
-      "Configure automated compliance alerts for missed deadlines",
-      "Build executive oversight scorecards tracking process adherence",
-    ],
-    whatsIncluded: [
-      "Digitalization of up to 5 core operational procedures",
-      "Interactive checklist software deployment",
-      "Automated recurrence schedules for routine maintenance & compliance",
-      "Team training on checklist completion protocols",
-    ],
-    workflow: [
-      { step: "01", label: "Procedure Audit", desc: "Review existing training documents and team execution habits." },
-      { step: "02", label: "Digitalization", desc: "Convert narrative manuals into step-by-step digital checklists." },
-      { step: "03", label: "Integration", desc: "Embed checklists into daily workflow dashboards." },
-      { step: "04", label: "Automation", desc: "Set up overdue alerts and exception reporting to leadership." },
-      { step: "05", label: "Handover", desc: "Train team leads on updating and maintaining SOP templates." },
-    ],
-    deliverables: [
-      "Interactive Digital SOP Checklists",
-      "Automated Recurrence & Audit Log Engine",
-      "Executive Compliance Dashboard",
-      "SOP Authoring & Maintenance Guide",
-    ],
-    benefits: [
-      "Consistent, high-quality execution across all branches or staff",
-      "Halved onboarding time for new team members",
-      "Immediate auditability for compliance and certification reviews",
-    ],
-  },
-  {
-    slug: "data-business-analytics",
-    name: "Data & Business Analytics",
-    category: "Software & Web",
-    badge: "Executive Visibility",
-    icon: "BarChart3",
-    shortDescription: "Transform scattered transactional data into clean, real-time executive dashboards that answer strategic revenue questions.",
-    whatItSolves: [
-      "Waiting weeks for month-end reports to know if the business is profitable",
-      "Scattered financial data across bank portals, Stripe, CRM, and accounting",
-      "Missing sudden margin drops or cash runway risks until it is too late",
-    ],
-    whatWeDo: [
-      "Connect automated data pipelines to your CRM, payment, and accounting tools",
-      "Build fast, responsive executive KPI dashboards with real-time filters",
-      "Configure automated weekly PDF digests emailed to owners and directors",
-      "Implement anomaly alerts for sudden revenue dips or expense spikes",
-    ],
-    whatsIncluded: [
-      "Data pipeline setup connecting up to 3 business data sources",
-      "Custom responsive KPI dashboard (Revenue, Cash, Orders, Pipeline)",
-      "Automated weekly executive email summary",
-      "Threshold anomaly alert configuration",
-    ],
-    workflow: [
-      { step: "01", label: "Metrics Review", desc: "Identify the critical 5–10 KPIs that actually drive your business." },
-      { step: "02", label: "Data Pipeline", desc: "Build automated, secure connectors to databases and payment APIs." },
-      { step: "03", label: "UI Design", desc: "Develop clean, scannable dashboard views for desktop and mobile." },
-      { step: "04", label: "Verification", desc: "Cross-check dashboard figures against verified bank and ledger totals." },
-      { step: "05", label: "Automated Reports", desc: "Schedule weekly email digests and alert triggers." },
-    ],
-    deliverables: [
-      "Live Executive KPI Dashboard",
-      "Automated Multi-Source Data Synchronization Pipeline",
-      "Scheduled Executive Email Digest Engine",
-      "Key Metrics Data Dictionary & Maintenance Manual",
-    ],
-    benefits: [
-      "Instant, real-time visibility into profit margins and cash runway",
-      "Zero hours spent compiling manual weekly spreadsheets",
-      "Data-backed decision making for founders and department heads",
-    ],
-  },
+
+  // 5. Website + Lead Capture + Basic CRM
   {
     slug: "website-lead-capture-crm",
     name: "Website + Lead Capture + Basic CRM",
     category: "Business & Consulting",
-    badge: "Small Price. Big Work.",
+    categoryKey: "business",
+    badge: "Entry System",
     icon: "Mail",
-    shortDescription: "The essential small business growth system: fast website, honeypot lead capture, instant Google Sheets CRM, and dual email notifications.",
-    whatItSolves: [
-      "Losing potential clients because website contact forms are broken or unmonitored",
-      "Expensive monthly subscriptions for complex CRMs that small teams never use",
-      "Slow response times allowing warm leads to reach out to competitors",
+    shortStatement: "The entry system: capture every lead into Google Sheets with email alerts.",
+    problem: {
+      title: "Lost Enquiries & Slow Follow-Ups",
+      statement: "Small businesses lose 50%+ of potential customers due to slow follow-up and lost emails.",
+      bullets: [
+        "Inquiries buried in disorganized email inboxes",
+        "No centralized record of who contacted you and when",
+        "Traditional CRM software is too expensive and complicated for day one",
+      ],
+    },
+    solution: {
+      title: "Simple, Automated Lead Pipeline",
+      statement: "A practical entry system combining responsive web design, Google Sheets CRM, and instant alerts.",
+      bullets: [
+        "Fast, mobile-first website with conversion-focused lead form",
+        "Google Sheets backend tracking 15 fields with unique Lead IDs",
+        "Instant dual email alerts (management dossier + customer receipt)",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Visitor", desc: "Client arrives on your fast, mobile-friendly landing page." },
+      { step: "02", label: "Submission", desc: "Enquiry submitted with honeypot spam protection." },
+      { step: "03", label: "Google Sheet", desc: "Data saved automatically with unique ID (HRPS-YYYYMMDD-XXXX)." },
+      { step: "04", label: "Alert & Reply", desc: "You receive full details via email; customer receives instant receipt." },
     ],
-    whatWeDo: [
-      "Build a modern, lightning-fast business website optimized for mobile conversion",
-      "Implement secure lead capture with honeypot spam traps and validation",
-      "Connect submissions directly to a formatted Google Sheet acting as a lightweight CRM",
-      "Dispatch immediate alerts to the owner and professional receipts to the client",
+    whatWeBuild: [
+      { title: "Lead Form System", desc: "Validated submission form with spam prevention.", icon: "FileText" },
+      { title: "Google Sheet CRM", desc: "Organized 15-column pipeline with status tracking.", icon: "Database" },
+      { title: "Apps Script Engine", desc: "Serverless code handling storage and email dispatches.", icon: "Zap" },
     ],
-    whatsIncluded: [
-      "High-performance website engineered with modern typography and branding",
-      "Unique Lead ID generation (HRPS-YYYYMMDD-XXXX) on every enquiry",
-      "Google Apps Script serverless engine with canonical 13-column sheet formatting",
-      "Branded HTML customer acknowledgement and management notification emails",
-      "Complete deployment documentation and ownership handover",
+    visualWorkflow: [
+      { from: "Website Visitor", to: "Lead Form", label: "Enquire" },
+      { from: "Lead Form", to: "Google Sheet", label: "Save HRPS-ID" },
+      { from: "Google Sheet", to: "Email Alert", label: "Notify" },
+      { from: "Email Alert", to: "Customer", label: "Close Deal" },
     ],
-    workflow: [
-      { step: "01", label: "Visitor", desc: "Prospect visits your responsive, high-credibility business website." },
-      { step: "02", label: "Enquiry Form", desc: "Submits project details with lightweight honeypot spam protection." },
-      { step: "03", label: "Lead ID", desc: "Backend generates timestamped collision-free tracking code." },
-      { step: "04", label: "Google Sheet", desc: "New row automatically appended with lead details and 'New' status." },
-      { step: "05", label: "Dual Emails", desc: "Owner receives full dossier; client receives professional receipt." },
-      { step: "06", label: "Conversion", desc: "Team conducts fast, informed outreach to close the deal." },
+    whatYouGet: [
+      "Responsive, conversion-focused website lead form",
+      "Configured Google Sheet with 15 canonical columns",
+      "Production Google Apps Script (Code.gs) webhook backend",
+      "Dual email notification templates with Lead ID tracking",
     ],
-    deliverables: [
-      "Production-Ready Business Website",
-      "Working Google Apps Script Webhook Engine (Code.gs)",
-      "Formatted 13-Column Google Sheet CRM Pipeline",
-      "Custom Branded Email Notification Templates",
+    whoItsFor: [
+      { tier: "Small Business", desc: "Startups and service providers needing an affordable, rock-solid lead system." },
+      { tier: "Consultants", desc: "Professionals who want every client inquiry safely tracked without paid CRM tools." },
     ],
-    benefits: [
-      "Sub-second page speeds with 100/100 Core Web Vitals",
-      "Zero monthly CRM software subscription fees",
-      "Guaranteed lead capture with zero missed enquiries",
+    standardVsCustom: {
+      standard: ["15-column Google Sheets schema", "Pre-built dual email triggers", "Milestone-based delivery"],
+      custom: ["WhatsApp notifications", "Multi-stage pipeline routing", "Integration with payment gateways"],
+    },
+    supportAndTraining: [
+      "Video walkthrough demonstrating how to manage leads in Google Sheets",
+      "Setup guide for managing Lead Statuses (New, Contacted, Converted)",
     ],
+    faqs: [
+      { q: "Do I have to pay monthly fees for Google Sheets?", a: "No. Google Sheets and Google Apps Script are completely free with any Google account." },
+    ],
+    defaultPrice: "Milestone Scoped",
   },
+
+  // 6. Business Apps Script Automations
   {
-    slug: "trading-technology",
-    name: "Trading Technology & Automation",
-    category: "Trading Technology",
-    badge: "Rule-Based Engineering",
-    icon: "TrendingUp",
-    shortDescription: "Professional Pine Script v5 indicators, backtestable strategies, MT5 Expert Advisors, and sub-second Telegram/MT5 alert bridges.",
-    whatItSolves: [
-      "Emotional execution errors, revenge trading, and hesitation on trade entries",
-      "Repainting indicator signals that look profitable historically but fail in live trading",
-      "Missing high-probability chart setups due to inability to watch 30+ charts manually",
-    ],
-    whatWeDo: [
-      "Code 100% non-repainting Pine Script v5 indicators and strategy scripts",
-      "Engineer native MQL5 Expert Advisors with strict equity protection limits",
-      "Build multi-pair scanners monitoring 28+ currency pairs or crypto assets",
-      "Deploy sub-second webhook routers bridging TradingView alerts to Telegram & MT5",
-    ],
-    whatsIncluded: [
-      "Clean, documented source code with configurable chart inputs",
-      "Strict realistic backtesting models with spread, commission, and slippage",
-      "Custom lot calculation adhering to fixed percentage risk rules",
-      "VPS setup walkthrough and ongoing technical support",
-    ],
-    workflow: [
-      { step: "01", label: "Rules", desc: "Document precise mathematical entry, exit, and risk criteria." },
-      { step: "02", label: "Coding", desc: "Develop clean, non-repainting Pine Script v5 or native MQL5 code." },
-      { step: "03", label: "Modeling", desc: "Verify historical performance on tick data with realistic slippage." },
-      { step: "04", label: "Webhook Bridge", desc: "Configure low-latency router forwarding signals to Telegram or MT5." },
-      { step: "05", label: "Live Validation", desc: "Forward-test execution on demo account before live deployment." },
-    ],
-    deliverables: [
-      "Custom Pine Script v5 Indicator or Strategy Code",
-      "Native MQL5 Expert Advisor (.mq5 & .ex5 binaries)",
-      "Serverless Webhook Alert Router on Cloudflare / VPS",
-      "Comprehensive Input Configuration & Strategy Guide",
-    ],
-    benefits: [
-      "Strict rule-based consistency with zero emotional interference",
-      "Save 4+ hours of manual chart-checking every trading day",
-      "Sub-second execution bridge bridging TradingView directly to MT5",
-    ],
-  },
-  {
-    slug: "workflow-automation",
-    name: "Workflow & Apps Script Automation",
+    slug: "apps-script-automation",
+    name: "Business Apps Script Automations",
     category: "Business & Consulting",
-    badge: "Repetitive Work Eliminated",
+    categoryKey: "business",
+    badge: "Serverless Automation",
     icon: "Zap",
-    shortDescription: "Custom trigger-action pipelines, serverless webhooks, and automated document generation that run 24/7 in the background.",
-    whatItSolves: [
-      "Staff spending hours manually copying data between forms, spreadsheets, and emails",
-      "Delayed follow-ups to inbound proposals and invoices",
-      "Expensive Zapier or Make subscription tiers for simple webhook triggers",
+    shortStatement: "Connect tools, generate PDF invoices, and eliminate manual tasks.",
+    problem: {
+      title: "Repetitive Copy-Pasting & Manual Tasks",
+      statement: "Teams wasting valuable hours daily creating documents, sending emails, and moving rows.",
+      bullets: [
+        "Manually typing invoices and customer confirmation emails",
+        "Data stuck in forms without automated routing to team members",
+        "Expensive Zapier/Make subscription bills that increase as you grow",
+      ],
+    },
+    solution: {
+      title: "Serverless Google Apps Script",
+      statement: "Custom automation layer built on Google Apps Script and native webhooks with zero subscription fees.",
+      bullets: [
+        "Automated multi-step pipelines connecting web forms, Sheets, and Gmail",
+        "Automatic PDF invoice and contract generation from spreadsheet triggers",
+        "Data validation, error logging, and failure recovery logic",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Trigger", desc: "Identify event (form submit, spreadsheet change, scheduled timer)." },
+      { step: "02", label: "Process", desc: "Apps Script cleanses, validates, and transforms the payload." },
+      { step: "03", label: "Action", desc: "Writes to Sheets, creates Docs/PDFs, and sends emails." },
+      { step: "04", label: "Notify", desc: "Alerts team channel or management inbox with execution confirmation." },
     ],
-    whatWeDo: [
-      "Write custom Google Apps Script and Cloudflare Worker automations",
-      "Build automated PDF invoice and contract generators triggered by form events",
-      "Connect payment gateways (Stripe, PayPal) to customer databases",
-      "Implement robust error logging and automated retry mechanisms",
+    whatWeBuild: [
+      { title: "Custom Code.gs", desc: "Clean, documented Apps Script backend tailored to your tools.", icon: "Code2" },
+      { title: "PDF Generators", desc: "Automated invoice and report generation from Sheet templates.", icon: "FileText" },
+      { title: "Webhook Bridges", desc: "Serverless listeners receiving data from external software.", icon: "Zap" },
     ],
-    whatsIncluded: [
-      "Automated multi-step pipeline connecting up to 3 applications",
-      "Custom Apps Script (Code.gs) or serverless webhook listener",
-      "Data validation and formula injection sanitization",
-      "Complete code documentation and maintenance walkthrough",
+    visualWorkflow: [
+      { from: "Form Submission", to: "Apps Script", label: "Trigger" },
+      { from: "Apps Script", to: "Google Sheet", label: "Append Row" },
+      { from: "Google Sheet", to: "PDF Generator", label: "Create Doc" },
+      { from: "PDF Generator", to: "Client Email", label: "Dispatch" },
     ],
-    workflow: [
-      { step: "01", label: "Trigger Audit", desc: "Identify the manual trigger event and required downstream actions." },
-      { step: "02", label: "Code", desc: "Write lean, serverless script with validation and error traps." },
-      { step: "03", label: "Test", desc: "Run sandbox test payloads covering all possible edge cases." },
-      { step: "04", label: "Deploy", desc: "Publish as authenticated web app or edge worker." },
-      { step: "05", label: "Monitor", desc: "Configure automated error alerts sent to management inbox." },
+    whatYouGet: [
+      "Production Google Apps Script source code",
+      "Configured trigger triggers (onFormSubmit, onEdit, time-driven)",
+      "Error handling and failure notification alerts",
+      "Administrator documentation and deployment runbook",
     ],
-    deliverables: [
-      "Clean, Documented Backend Automation Script (Code.gs / Worker)",
-      "Configured Trigger-Action Webhook Endpoints",
-      "Payload Schema & API Contract Documentation",
-      "Administrator Maintenance & Troubleshooting Guide",
+    whoItsFor: [
+      { tier: "Small Business", desc: "Companies wanting to automate without expensive monthly SaaS fees." },
+      { tier: "Operations Teams", desc: "Staff tired of generating manual PDF quotes and email updates." },
     ],
-    benefits: [
-      "Eliminates hours of daily repetitive copy-pasting",
-      "Instant response times to transactions and customer requests",
-      "Zero third-party subscription costs using native Google Apps Script",
+    standardVsCustom: {
+      standard: ["Up to 3-step automation pipeline", "Email & Sheet triggers", "Transparent $109 USD milestone rate"],
+      custom: ["Multi-system webhook orchestration", "Custom API authentications", "Complex data transformation"],
+    },
+    supportAndTraining: [
+      "Video walkthrough on how to view execution logs and manage triggers",
+      "30 days of post-deployment error monitoring and bug fixes",
     ],
+    faqs: [
+      { q: "Are there any monthly fees for Apps Script?", a: "No. Google Apps Script runs entirely inside Google Cloud at no charge for standard business volume." },
+    ],
+    relatedPricingPlan: "Workflow Automation",
+    defaultPrice: "$109 USD",
   },
+
+  // 7. Documentation & SOPs
   {
-    slug: "custom-software",
-    name: "Custom Software & Web Applications",
+    slug: "documentation-sops",
+    name: "Documentation & SOPs",
+    category: "Business & Consulting",
+    categoryKey: "business",
+    badge: "Process Standardization",
+    icon: "FileText",
+    shortStatement: "Turn internal knowledge into repeatable digital execution and checklists.",
+    problem: {
+      title: "'Everyone Does It Differently'",
+      statement: "Knowledge is locked in key individuals' heads, causing operational errors whenever they are absent.",
+      bullets: [
+        "Inconsistent quality and service delivery across team members",
+        "New employee onboarding takes weeks of hand-holding",
+        "No written standard operating procedures or verification checklists",
+      ],
+    },
+    solution: {
+      title: "Repeatable Digital Execution",
+      statement: "Document company processes into clear, step-by-step digital SOPs, checklists, and workflows.",
+      bullets: [
+        "Structured standard operating procedures for daily operations",
+        "Digital checklists embedded directly into software workflows",
+        "Clear accountability: 'Before: Everyone does it differently → After: Everyone follows the same process'",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Knowledge", desc: "Interview key team members and observe operational routines." },
+      { step: "02", label: "Process", desc: "Map sequential milestones, dependencies, and quality checks." },
+      { step: "03", label: "Digital SOP", desc: "Write concise, illustrated standard operating procedure guides." },
+      { step: "04", label: "Checklists", desc: "Embed digital checklists and tracking verification for daily use." },
+    ],
+    whatWeBuild: [
+      { title: "Standard Operating Procedures", desc: "Structured, illustrated procedure documentation.", icon: "FileText" },
+      { title: "Digital Checklists", desc: "Step-by-step task verification templates.", icon: "CheckSquare" },
+      { title: "Role Handbooks", desc: "Clear responsibility matrices and task handoffs.", icon: "Users" },
+    ],
+    visualWorkflow: [
+      { from: "Knowledge", to: "Process", label: "Structure" },
+      { from: "Process", to: "Digital SOP", label: "Document" },
+      { from: "Digital SOP", to: "Checklist", label: "Standardize" },
+      { from: "Checklist", to: "Tracking", label: "Repeat" },
+    ],
+    whatYouGet: [
+      "Standard Operating Procedure (SOP) documentation manual",
+      "Digital verification checklists for team execution",
+      "Process flow diagrams for training new employees",
+      "Editable Google Docs / Markdown templates",
+    ],
+    whoItsFor: [
+      { tier: "Small Business", desc: "Founders seeking to delegate daily tasks without losing quality." },
+      { tier: "Growing Teams", desc: "Companies onboarding multiple staff members who need clear guidelines." },
+    ],
+    standardVsCustom: {
+      standard: ["Core operational SOPs (Lead handling, fulfillment, invoicing)", "Standard checklist templates"],
+      custom: ["Comprehensive departmental manuals", "Compliance & regulatory procedures"],
+    },
+    supportAndTraining: [
+      "Team review call walking staff through new standard operating procedures",
+      "Quarterly template review guidance",
+    ],
+    faqs: [
+      { q: "How long does it take to document our SOPs?", a: "Core operational SOPs are typically documented and delivered within 5–7 business days." },
+    ],
+    defaultPrice: "Milestone Scoped",
+  },
+
+  // 8. Websites (Basic -> Premium & Automated)
+  {
+    slug: "websites",
+    name: "Business Websites (Basic → Premium)",
     category: "Software & Web",
-    badge: "Tailored Architecture",
-    icon: "Code2",
-    shortDescription: "Bespoke full-stack cloud applications, customer portals, and internal consoles engineered with TypeScript and Next.js.",
-    whatItSolves: [
-      "Outgrowing off-the-shelf software and spreadsheet hacks",
-      "Requiring custom business logic that generic SaaS tools cannot accommodate",
-      "Needing branded customer-facing self-service portals with secure logins",
+    categoryKey: "software",
+    badge: "Web Engineering",
+    icon: "Globe",
+    shortStatement: "Fast, responsive business landing pages and corporate websites that convert.",
+    problem: {
+      title: "Slow, Outdated Websites That Don't Convert",
+      statement: "Most business websites look pretty but load slowly, fail on mobile, and lose leads.",
+      bullets: [
+        "Cluttered templates with poor mobile responsiveness",
+        "Slow load speeds hurting Google SEO rankings and visitor trust",
+        "No automated lead capture or integration with business operations",
+      ],
+    },
+    solution: {
+      title: "Modern, Conversion-Focused Web Architecture",
+      statement: "High-performance websites built on Next.js, mobile-first design, and built-in lead automation.",
+      bullets: [
+        "Basic to Premium: from single-page landing engines to corporate websites",
+        "100/100 performance optimization with sub-second page loads",
+        "Automated lead capture syncing directly with Google Sheets and email alerts",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Design", desc: "Select structure: Basic landing page or Premium multi-section website." },
+      { step: "02", label: "Develop", desc: "Engineer with clean Next.js, mobile-first styling, and SEO tags." },
+      { step: "03", label: "Integrate", desc: "Wire lead forms to Google Sheets CRM and notification webhooks." },
+      { step: "04", label: "Deploy", desc: "Launch on global edge CDN with automated SSL and backups." },
     ],
-    whatWeDo: [
-      "Architect relational database models (PostgreSQL, MariaDB) with role permissions",
-      "Build responsive modern web applications with sub-second page loads",
-      "Implement secure authentication, document vaults, and payment gateways",
-      "Deploy globally with edge caching, automated SSL, and monitoring",
+    whatWeBuild: [
+      { title: "Mobile-First UI", desc: "Flawless layout across smartphones, tablets, and desktop displays.", icon: "Smartphone" },
+      { title: "SEO Foundations", desc: "Structured data, OpenGraph, sitemaps, and semantic headings.", icon: "Search" },
+      { title: "Lead Engine", desc: "Built-in form validation, honeypot protection, and CRM sync.", icon: "Mail" },
     ],
-    whatsIncluded: [
-      "Interactive UI wireframes and technical architecture specification",
-      "Clean TypeScript & Next.js full-stack code repository",
-      "Role-based authentication with session management",
-      "Production deployment with CI/CD automation and documentation",
+    visualWorkflow: [
+      { from: "Visitor", to: "Landing Page", label: "Browse" },
+      { from: "Landing Page", to: "Lead Capture", label: "Engage" },
+      { from: "Lead Capture", to: "Google Sheet", label: "Log" },
+      { from: "Google Sheet", to: "Notification", label: "Follow Up" },
     ],
-    workflow: [
-      { step: "01", label: "Requirements", desc: "Map exact user personas, data models, and business logic." },
-      { step: "02", label: "Prototype", desc: "Design interactive wireframes and validate user journeys." },
-      { step: "03", label: "Engineering", desc: "Build full-stack app with TypeScript, Next.js, and relational DB." },
-      { step: "04", label: "Security", desc: "Audit permissions, input sanitization, and edge SSL." },
-      { step: "05", label: "Launch", desc: "Deploy to production with automated backups and team training." },
+    whatYouGet: [
+      "Production Next.js website with full source code",
+      "Mobile-optimized responsive layouts tested across 320px–1920px",
+      "Configured lead capture connected to Google Sheets",
+      "Technical SEO configuration (sitemap.xml, robots.txt, metadata)",
     ],
-    deliverables: [
-      "Full Production Web Application Source Code",
-      "Relational Database Schema & Migration Scripts",
-      "API Documentation & Security Boundary Spec",
-      "User & Administrator Video Training Guides",
+    whoItsFor: [
+      { tier: "Basic Website", desc: "Affordable starting point for startups needing instant online credibility." },
+      { tier: "Premium Website", desc: "Corporate sites with advanced animations, service subpages, and conversion UX." },
     ],
-    benefits: [
-      "100% intellectual property ownership with zero licensing fees",
-      "Built specifically around your competitive advantages",
-      "Scales seamlessly from 10 to 100,000+ users",
+    standardVsCustom: {
+      standard: ["Single-page conversion landing page", "Fast deployment", "Affordable milestone pricing"],
+      custom: ["Multi-page corporate website", "Custom CMS & blog modules", "Advanced 3D interactions"],
+    },
+    supportAndTraining: [
+      "Video walkthrough on how to update content and review incoming leads",
+      "30 days of post-launch technical support and maintenance",
     ],
+    faqs: [
+      { q: "Can I upgrade my Basic website to a Premium system later?", a: "Yes. Our code architecture is modular, so you can expand anytime without rebuilding." },
+    ],
+    defaultPrice: "Milestone Scoped",
+  },
+
+  // 9. Custom Business Systems
+  {
+    slug: "custom-business-systems",
+    name: "Custom Business Systems",
+    category: "Software & Web",
+    categoryKey: "software",
+    badge: "Tailored Software",
+    icon: "Cpu",
+    shortStatement: "Tailored CRM, Finance, HR, ERP, Booking & Operations software.",
+    problem: {
+      title: "Outgrowing Generic SaaS Tools",
+      statement: "Generic off-the-shelf software forces your business to adapt to its rigid limitations.",
+      bullets: [
+        "Paying high monthly subscriptions for software full of unused features",
+        "Critical business logic cannot be handled by off-the-shelf apps",
+        "Staff wasting time maintaining separate tools that don't speak to each other",
+      ],
+    },
+    solution: {
+      title: "Tailored Business Software",
+      statement: "Build only what the business needs: standard where possible, custom where necessary.",
+      bullets: [
+        "Modular architecture: CRM, Finance, HR, ERP, Booking, Operations, Reports",
+        "Relational database design tailored to your specific transaction lifecycle",
+        "Full intellectual property ownership with zero recurring per-user fees",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Scope", desc: "Identify exact modules needed: CRM, Booking, HR, or Finance." },
+      { step: "02", label: "Architect", desc: "Design database relationships and role-based access rules." },
+      { step: "03", label: "Engineer", desc: "Build full-stack cloud system with TypeScript and Next.js." },
+      { step: "04", label: "Launch", desc: "Deploy with automated backups, monitoring, and team training." },
+    ],
+    whatWeBuild: [
+      { title: "Custom CRM & Deals", desc: "Track opportunities, customer records, and milestones.", icon: "Users" },
+      { title: "Finance & Invoicing", desc: "Automated quotes, payment tracking, and ledger balancing.", icon: "BarChart3" },
+      { title: "Operations & Booking", desc: "Automated appointment scheduling, project fulfillment, and alerts.", icon: "Clock" },
+    ],
+    visualWorkflow: [
+      { from: "CRM", to: "Operations", label: "Fulfill" },
+      { from: "Operations", to: "Finance", label: "Bill" },
+      { from: "Finance", to: "HR & Payroll", label: "Balance" },
+      { from: "HR & Payroll", to: "Executive Reports", label: "Analyze" },
+    ],
+    whatYouGet: [
+      "Complete custom web application with source code ownership",
+      "Relational database schema and migration scripts",
+      "Role-based authentication (Admin, Manager, Staff)",
+      "Recorded video training tutorials and operational runbooks",
+    ],
+    whoItsFor: [
+      { tier: "Growing Business", desc: "Companies needing unified systems without enterprise agency cost." },
+      { tier: "Established Business", desc: "Operations with unique proprietary workflows that generic SaaS cannot solve." },
+    ],
+    standardVsCustom: {
+      standard: ["Pre-built module blueprints (CRM, Invoicing, Bookings)", "Low initial cost"],
+      custom: ["Bespoke transaction logic", "Custom legacy database bridges", "Tailored reporting dashboards"],
+    },
+    supportAndTraining: [
+      "Comprehensive admin and staff walkthrough sessions",
+      "Ongoing monthly support tiers covering new features and continuous improvements",
+    ],
+    faqs: [
+      { q: "Do we own the source code?", a: "Yes. You own 100% of the intellectual property and code upon project completion." },
+    ],
+    defaultPrice: "Milestone Scoped",
+  },
+
+  // 10. Standard & Custom TradingView Indicators
+  {
+    slug: "tradingview-indicators",
+    name: "TradingView Indicators (Standard & Custom)",
+    category: "Trading Technology",
+    categoryKey: "trading",
+    badge: "Pine Script v5",
+    icon: "TrendingUp",
+    shortStatement: "Clean, non-repainting technical indicators with visual chart signals.",
+    problem: {
+      title: "Repainting & Unreliable Chart Indicators",
+      statement: "Public indicators often repaint, lag, or fail to trigger clean alerts when conditions occur.",
+      bullets: [
+        "Repainting indicators that show false historical perfection",
+        "Inability to combine multiple conditions into a single clean visual signal",
+        "Cluttered charts with too many lines instead of clear execution zones",
+      ],
+    },
+    solution: {
+      title: "100% Non-Repainting Pine Script v5",
+      statement: "Engineered Pine Script v5 indicators reflecting your exact chart rules with zero lag.",
+      bullets: [
+        "Strict non-repainting calculation logic adhering to confirmed candle closes",
+        "Visual dashboard with customizable inputs and clean on-chart plots",
+        "Built-in webhook alert triggers formatted for automation",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Rules", desc: "Provide your indicators, timeframe, parameters, and entry/exit criteria." },
+      { step: "02", label: "Code", desc: "We write clean, efficient Pine Script v5 code." },
+      { step: "03", label: "Verify", desc: "Test across historical charts to ensure zero repainting and clean signals." },
+      { step: "04", label: "Handoff", desc: "Deliver open-source script with installation guide and alert setup." },
+    ],
+    whatWeBuild: [
+      { title: "Non-Repainting Logic", desc: "Calculations fixed strictly on candle close.", icon: "ShieldCheck" },
+      { title: "Visual Dashboard", desc: "On-chart summary table showing trend, momentum, and volume.", icon: "Activity" },
+      { title: "Alert Triggers", desc: "Custom alert messages formatted for webhooks or Telegram.", icon: "Send" },
+    ],
+    visualWorkflow: [
+      { from: "Market Data", to: "Indicator Logic", label: "Calculate" },
+      { from: "Indicator Logic", to: "Signal Event", label: "Confirm" },
+      { from: "Signal Event", to: "Chart Plot", label: "Visualize" },
+      { from: "Chart Plot", to: "Alert Trigger", label: "Dispatch" },
+    ],
+    whatYouGet: [
+      "Full Pine Script v5 source code (.pine file)",
+      "Installation and setup guide for TradingView",
+      "Webhook alert message template configuration",
+      "Technical adjustments and parameter verification",
+    ],
+    whoItsFor: [
+      { tier: "Standard Indicators", desc: "Traders needing proven, non-repainting indicator combinations." },
+      { tier: "Custom Indicators", desc: "Traders with proprietary mathematical rules and custom visual requirements." },
+    ],
+    standardVsCustom: {
+      standard: ["Single-indicator rule-set", "Standard visual signals", "Predictable milestone pricing"],
+      custom: ["Multi-condition confluence logic", "Multi-timeframe (MTF) analysis", "Custom visual table dashboards"],
+    },
+    supportAndTraining: [
+      "Video guide showing how to add the indicator and set up TradingView alerts",
+      "Verification that alerts fire accurately in real-time",
+    ],
+    faqs: [
+      { q: "Do you guarantee trading profits?", a: "No. We provide pure technology engineering and automation. We never make guaranteed profit or return claims." },
+      { q: "Will the indicator repaint?", a: "No. All our indicators are strictly written with non-repainting logic on bar confirmation." },
+    ],
+    defaultPrice: "Milestone Scoped",
+  },
+
+  // 11. Standard & Custom TradingView Strategies
+  {
+    slug: "tradingview-strategies",
+    name: "TradingView Strategies (Standard & Custom)",
+    category: "Trading Technology",
+    categoryKey: "trading",
+    badge: "Backtesting & Rules",
+    icon: "Binary",
+    shortStatement: "Rule-based systematic strategy scripts with realistic backtest metrics.",
+    problem: {
+      title: "Unrealistic Backtests & Curve Fitting",
+      statement: "Most public strategies ignore commissions, slippage, and spread, showing fake results.",
+      bullets: [
+        "Unrealistic Strategy Tester metrics that fail immediately in live trading",
+        "Lack of realistic slippage and commission modeling",
+        "Disorganized execution logic that cannot be automated via webhooks",
+      ],
+    },
+    solution: {
+      title: "Deterministic Pine Script Strategies",
+      statement: "Systematic strategy scripts modeled with realistic fees, slippage, and session filters.",
+      bullets: [
+        "Deterministic entry and exit logic with strict risk parameters",
+        "Realistic Strategy Tester modeling (commissions, slippage, trade sizes)",
+        "Strategy alerts formatted for sub-second webhook execution",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Rules", desc: "Define entry triggers, stop-loss, take-profit, and session filters." },
+      { step: "02", label: "Develop", desc: "Code systematic strategy in Pine Script v5." },
+      { step: "03", label: "Backtest", desc: "Run Strategy Tester with realistic commissions and slippage." },
+      { step: "04", label: "Alerts", desc: "Configure alert() functions for automated webhook routing." },
+    ],
+    whatWeBuild: [
+      { title: "Systematic Strategy", desc: "Deterministic Pine Script v5 strategy engine.", icon: "Binary" },
+      { title: "Risk Parameters", desc: "Dynamic position sizing, fixed points, or percentage risk.", icon: "Shield" },
+      { title: "Automated Triggers", desc: "Order entries and exits formatted for external brokers.", icon: "Zap" },
+    ],
+    visualWorkflow: [
+      { from: "Market Data", to: "Conditions", label: "Evaluate" },
+      { from: "Conditions", to: "Entry/Exit Logic", label: "Trigger" },
+      { from: "Entry/Exit Logic", to: "Backtest Metrics", label: "Verify" },
+      { from: "Backtest Metrics", to: "Alert Dispatch", label: "Automate" },
+    ],
+    whatYouGet: [
+      "Complete Pine Script v5 Strategy Source Code",
+      "Strategy Tester performance verification report",
+      "Webhook alert payload syntax for automated bots",
+      "Documentation on parameters and session adjustments",
+    ],
+    whoItsFor: [
+      { tier: "Systematic Traders", desc: "Traders seeking mathematically verifiable, backtested rule-sets." },
+      { tier: "Automators", desc: "Traders wanting strategies ready to connect to MT5 or broker bridges." },
+    ],
+    standardVsCustom: {
+      standard: ["Standard moving average, RSI, or breakout strategy with risk controls"],
+      custom: ["Multi-condition confluence, trailing stops, dynamic lot sizing, session filters"],
+    },
+    supportAndTraining: [
+      "Step-by-step video on configuring strategy parameters and backtesting",
+      "14 days of technical adjustments to rules",
+    ],
+    faqs: [
+      { q: "Can this strategy place live trades automatically?", a: "Yes. Pine Script strategies trigger alert webhooks which connect to MT5 or broker execution bridges." },
+    ],
+    defaultPrice: "Milestone Scoped",
+  },
+
+  // 12. MT5 Custom Scanner & Alert System
+  {
+    slug: "mt5-scanner-alerts",
+    name: "MT5 Custom Scanner & Alert System",
+    category: "Trading Technology",
+    categoryKey: "trading",
+    badge: "MQL5 Screener",
+    icon: "Sliders",
+    shortStatement: "Multi-symbol market scanner monitoring conditions across 28+ pairs.",
+    problem: {
+      title: "Chart Fatigue & Missed Setups",
+      statement: "Traders manually clicking through 30+ charts miss high-probability trade setups.",
+      bullets: [
+        "Hours wasted manually scrolling through charts across timeframes",
+        "Slow reaction times leading to poor entry prices",
+        "High CPU consumption from opening dozens of simultaneous MT5 charts",
+      ],
+    },
+    solution: {
+      title: "Native MQL5 Market Screener",
+      statement: "Single-chart scanner monitoring dozens of instruments and notifying you the second a setup forms.",
+      bullets: [
+        "Monitors 28+ Forex, Crypto, or Index pairs simultaneously from 1 chart",
+        "Multi-timeframe (MTF) condition detection and clean on-screen dashboard",
+        "Instant multi-channel alerts (MT5 popups, push notifications, Telegram)",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Condition", desc: "Define rules (e.g. RSI divergence, trend confluence, EMA cross)." },
+      { step: "02", label: "Scanner Code", desc: "We write efficient MQL5 screener with low CPU usage." },
+      { step: "03", label: "Visual Dashboard", desc: "Clean table displaying status of all symbols on one chart." },
+      { step: "04", label: "Alert Routing", desc: "Dispatches mobile push notification or Telegram message." },
+    ],
+    whatWeBuild: [
+      { title: "Multi-Symbol Scanner", desc: "Native MQL5 scanner monitoring your complete watchlist.", icon: "Sliders" },
+      { title: "Visual Matrix Table", desc: "On-chart green/red status grid for instant scanning.", icon: "Activity" },
+      { title: "Multi-Alert Dispatch", desc: "Popups, audio chimes, mobile push, and Telegram alerts.", icon: "Send" },
+    ],
+    visualWorkflow: [
+      { from: "28+ Instruments", to: "MQL5 Scanner", label: "Scan Ticks" },
+      { from: "MQL5 Scanner", to: "Condition Match", label: "Evaluate" },
+      { from: "Condition Match", to: "Matrix Dashboard", label: "Display" },
+      { from: "Matrix Dashboard", to: "Instant Alert", label: "Broadcast" },
+    ],
+    whatYouGet: [
+      "Compiled MT5 Indicator/Expert (.ex5) + MQL5 Source Code (.mq5)",
+      "Installation and setup guide for MetaTrader 5",
+      "Push notification and Telegram webhook integration guide",
+      "Technical verification on live market feed",
+    ],
+    whoItsFor: [
+      { tier: "Watchlist Traders", desc: "Traders monitoring multiple currency pairs, metals, or indices." },
+      { tier: "Swing Traders", desc: "Traders wanting to be alerted only when higher timeframe confluence occurs." },
+    ],
+    standardVsCustom: {
+      standard: ["Standard 28-pair screener with RSI, MACD, or MA rules"],
+      custom: ["Complex proprietary indicators, multi-timeframe matrix, Telegram integration"],
+    },
+    supportAndTraining: [
+      "Installation video showing how to place files in MQL5/Indicators folder",
+      "Configuration guide for setting up MetaTrader 5 mobile push notifications",
+    ],
+    faqs: [
+      { q: "Will the scanner slow down my computer?", a: "No. Our MQL5 code is highly optimized to run smoothly on a single chart with minimal memory footprint." },
+    ],
+    defaultPrice: "Milestone Scoped",
+  },
+
+  // 13. MT5 Custom Auto-Trading System with Alerts
+  {
+    slug: "mt5-auto-trading",
+    name: "MT5 Custom Auto-Trading System with Alerts",
+    category: "Trading Technology",
+    categoryKey: "trading",
+    badge: "MQL5 Expert Advisor",
+    icon: "Bot",
+    shortStatement: "Native MQL5 execution automation with strict equity risk rules.",
+    problem: {
+      title: "Emotional Discipline & Execution Delay",
+      statement: "Human emotions, hesitations, and execution delays cause traders to violate their own rules.",
+      bullets: [
+        "Hesitating on valid signals or chasing poor entries",
+        "Failure to enforce strict stop-loss and maximum daily drawdown limits",
+        "Inability to monitor markets 24 hours a day during market hours",
+      ],
+    },
+    solution: {
+      title: "Algorithmic MQL5 Execution Automation",
+      statement: "Custom MetaTrader 5 Expert Advisor (EA) executing strictly to your programmed rules with risk protection.",
+      bullets: [
+        "Sub-millisecond automated order execution in native MQL5",
+        "Dynamic position sizing, trailing stops, and daily maximum loss guardrails",
+        "Full trade event notifications sent to your phone or Telegram",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Rule Design", desc: "Document entry conditions, stop-loss, take-profit, and risk rules." },
+      { step: "02", label: "EA Coding", desc: "We write robust MQL5 Expert Advisor with risk protection." },
+      { step: "03", label: "Tick Test", desc: "Verify execution in Strategy Tester on real tick data." },
+      { step: "04", label: "Deployment", desc: "Deploy on demo account or VPS with safety guardrails active." },
+    ],
+    whatWeBuild: [
+      { title: "Native MQL5 EA", desc: "Automated trading robot executing with sub-second latency.", icon: "Bot" },
+      { title: "Risk Guardrails", desc: "Max spread checks, daily drawdown limits, and trailing stops.", icon: "Shield" },
+      { title: "Trade Notifier", desc: "Instant push alerts on order open, modify, and close.", icon: "Activity" },
+    ],
+    visualWorkflow: [
+      { from: "Market Signal", to: "Validation", label: "Check Rules" },
+      { from: "Validation", to: "Risk Manager", label: "Size Lot" },
+      { from: "Risk Manager", to: "Execution", label: "Place Order" },
+      { from: "Execution", to: "Mobile Alert", label: "Notify" },
+    ],
+    whatYouGet: [
+      "Complete MQL5 Expert Advisor Source Code (.mq5 + .ex5)",
+      "VPS setup and installation walkthrough guide",
+      "Risk parameter configuration manual",
+      "30 days of technical execution support",
+    ],
+    whoItsFor: [
+      { tier: "Systematic Traders", desc: "Traders with proven manual rules who want robotic, unemotional execution." },
+      { tier: "Prop Firm Traders", desc: "Traders needing strict daily loss caps to protect evaluation accounts." },
+    ],
+    standardVsCustom: {
+      standard: ["Single-strategy EA with fixed SL/TP and risk-per-trade controls"],
+      custom: ["Multi-symbol portfolio EA, martingale/grid filters, custom external webhook triggers"],
+    },
+    supportAndTraining: [
+      "VPS setup and installation video guide",
+      "Live walkthrough testing order placement on a demo account",
+    ],
+    faqs: [
+      { q: "Do you make any profit promises?", a: "No. We build execution technology strictly according to your specifications. You are responsible for your strategy." },
+    ],
+    defaultPrice: "Milestone Scoped",
+  },
+
+  // 14. Custom Trading Alerts to Telegram Channel
+  {
+    slug: "telegram-trading-alerts",
+    name: "Custom Trading Alerts to Telegram Channel",
+    category: "Trading Technology",
+    categoryKey: "trading",
+    badge: "Telegram Webhook Bridge",
+    icon: "Send",
+    shortStatement: "Sub-second webhook delivery of trade signals directly to Telegram.",
+    problem: {
+      title: "Delayed Signal Sharing with Teams & Clients",
+      statement: "Manually typing and posting trade signals into Telegram channels causes delayed entries and missed moves.",
+      bullets: [
+        "Minutes lost manually formatting charts, entry prices, and stop-losses",
+        "Subscribers receiving signals after the price has already moved",
+        "Clunky third-party bridge tools requiring expensive monthly fees",
+      ],
+    },
+    solution: {
+      title: "Sub-Second Automated Telegram Broadcast",
+      statement: "Direct webhook bridge from TradingView or MT5 broadcasting formatted signal cards to your Telegram channel.",
+      bullets: [
+        "Sub-second automated message dispatch upon signal trigger",
+        "Professionally formatted cards with instrument, direction, entry, SL, and TP",
+        "Runs serverless with zero monthly software subscription fees",
+      ],
+    },
+    howItWorks: [
+      { step: "01", label: "Telegram Bot", desc: "Create a private Telegram Bot and add it to your channel." },
+      { step: "02", label: "Webhook Bridge", desc: "Deploy lightweight, serverless webhook listener." },
+      { step: "03", label: "Format Card", desc: "Design clean signal layout with emojis and structured fields." },
+      { step: "04", label: "Live Broadcast", desc: "Signals triggered on TradingView/MT5 appear in Telegram instantly." },
+    ],
+    whatWeBuild: [
+      { title: "Telegram Bot Setup", desc: "Configured bot credentials with channel admin rights.", icon: "Send" },
+      { title: "Webhook Router", desc: "Serverless bridge processing alerts and routing to Telegram.", icon: "Zap" },
+      { title: "Formatted Cards", desc: "Clean message templates with symbol, direction, entry, and targets.", icon: "FileText" },
+    ],
+    visualWorkflow: [
+      { from: "TradingView / MT5", to: "Signal Generator", label: "Trigger" },
+      { from: "Signal Generator", to: "Webhook Bridge", label: "Dispatch" },
+      { from: "Webhook Bridge", to: "Telegram Bot", label: "Format" },
+      { from: "Telegram Bot", to: "VIP Channel", label: "Broadcast" },
+    ],
+    whatYouGet: [
+      "Complete Telegram Webhook Router Source Code",
+      "Telegram Bot API configuration credentials setup",
+      "Customizable message card templates (Instrument, Direction, SL, TP)",
+      "Testing verification with live chart triggers",
+    ],
+    whoItsFor: [
+      { tier: "Signal Providers", desc: "Traders running private or VIP communities needing instant alerts." },
+      { tier: "Individual Traders", desc: "Traders wanting instant mobile notifications without keeping charts open." },
+    ],
+    standardVsCustom: {
+      standard: ["TradingView-to-Telegram signal dispatch with standard formatting"],
+      custom: ["MT5-to-Telegram dispatch with automated chart screenshot attachments"],
+    },
+    supportAndTraining: [
+      "Video tutorial on creating Telegram Bots and setting up channel permissions",
+      "Guide to customizing alert message templates",
+    ],
+    faqs: [
+      { q: "How fast is the message delivery?", a: "Messages typically appear in your Telegram channel in under 500 milliseconds from signal trigger." },
+    ],
+    defaultPrice: "Milestone Scoped",
   },
 ];
 
+export const DO_MORE_BUSINESS_NODES = [
+  { name: "Website", role: "Attracts Visitors", icon: "Globe" },
+  { name: "Lead", role: "Captures Enquiries", icon: "Mail" },
+  { name: "CRM", role: "Qualifies Deals", icon: "Layers" },
+  { name: "Operations", role: "Fulfills Orders", icon: "Workflow" },
+  { name: "Finance", role: "Auto-Invoices & Collects", icon: "BarChart3" },
+  { name: "HR", role: "Coordinates Teams", icon: "Users" },
+  { name: "Reports", role: "Live Executive KPIs", icon: "Activity" },
+  { name: "Automation", role: "Runs 24/7 in Background", icon: "Zap" },
+];
 
+export const SMALL_BIZ_FLOW = [
+  { step: "1", title: "Visitor", desc: "Potential client visits your fast, mobile-optimized website.", icon: "UserCheck" },
+  { step: "2", title: "Website", desc: "Displays clear services, transparent pricing, and instant credibility.", icon: "Globe" },
+  { step: "3", title: "Lead Form", desc: "Enquiry collected with honeypot spam filtering and data validation.", icon: "FileText" },
+  { step: "4", title: "Google Sheet", desc: "Row saved instantly with a unique Lead ID (HRPS-YYYYMMDD-XXXX).", icon: "Database" },
+  { step: "5", title: "Email Alert", desc: "Manager receives full lead dossier; client receives professional receipt.", icon: "Send" },
+  { step: "6", title: "Follow-Up", desc: "Team responds within 24 hours with organized deal context.", icon: "Clock" },
+  { step: "7", title: "Customer", desc: "Delighted client onboarded with zero manual administration friction.", icon: "CheckCircle2" },
+];

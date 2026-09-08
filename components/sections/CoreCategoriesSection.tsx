@@ -82,15 +82,26 @@ export function CoreCategoriesSection() {
                 <h3 className="text-xl sm:text-2xl font-black text-slate-900 mb-2 leading-tight">
                   {cat.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-4">
+                <p className="text-xs sm:text-sm text-blue-600 font-bold leading-relaxed mb-3">
                   {cat.tagline}
                 </p>
-                <p className="text-xs text-slate-500 leading-relaxed mb-6">
+                
+                {/* Short Problem Statement */}
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 mb-4">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                    Problem Solved
+                  </span>
+                  <p className="text-xs font-semibold text-slate-700 italic">
+                    &ldquo;{cat.problemStatement}&rdquo;
+                  </p>
+                </div>
+
+                <p className="text-xs text-slate-600 leading-relaxed mb-6 font-normal">
                   {cat.description}
                 </p>
 
                 {/* Service Highlights List */}
-                <div className="space-y-2.5 pt-4 border-t border-slate-100">
+                <div className="space-y-2 pt-4 border-t border-slate-100">
                   <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
                     Included Services:
                   </span>
@@ -127,15 +138,18 @@ export function CoreCategoriesSection() {
 
               {/* Bottom CTA */}
               <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs text-slate-400 font-medium">
-                  Standard &amp; Custom Scope
-                </span>
+                <a
+                  href="#services"
+                  className="text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors"
+                >
+                  Learn More →
+                </a>
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors group-hover:translate-x-0.5"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs transition-colors"
                 >
-                  <span>Discuss Category</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>Discuss</span>
+                  <ArrowRight className="w-3 h-3" />
                 </a>
               </div>
             </div>

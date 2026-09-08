@@ -1,7 +1,7 @@
 "use client";
 
 import { HeroScene3D } from "@/components/3d/HeroScene3D";
-import { ArrowRight, MessageSquare, CheckCircle2, Sparkles, ChevronRight } from "lucide-react";
+import { ArrowRight, CheckCircle2, Sparkles, ChevronRight } from "lucide-react";
 
 export function Hero() {
   return (
@@ -21,30 +21,30 @@ export function Hero() {
               <span>Small Price. Big Work.</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-black tracking-tight text-slate-900 leading-[1.12]">
-              Do More Business With{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-                Smarter Systems.
+            <h1 className="text-3xl sm:text-5xl lg:text-[50px] font-black tracking-tight text-slate-900 leading-[1.12]">
+              Business Systems. Software. Automation.{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-600">
+                Trading Technology.
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg font-semibold text-slate-700 leading-snug">
-              Business Systems • Workflow Automation • Custom Software • Trading Technology
+            <p className="text-base sm:text-lg font-bold text-slate-800 leading-snug">
+              Do More Business. Let Your Systems Do More Work.
             </p>
 
             <p className="text-xs sm:text-sm text-slate-600 max-w-xl leading-relaxed font-normal">
-              We help companies simplify operations, automate repetitive tasks, build high-converting websites, deploy ERP/CRM systems, and engineer rule-based trading tools. Enterprise capability at an accessible price.
+              We help companies simplify operations, eliminate repetitive manual tasks, build conversion-focused websites, deploy Frappe/ERPNext systems, and engineer rule-based TradingView and MT5 technology. Small price, big work.
             </p>
 
             {/* Quick Value Signals */}
             <div className="flex flex-wrap gap-y-2 gap-x-4 pt-1 text-xs font-semibold text-slate-600">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                No Hourly Billing
+                Affordable Project Rates
               </span>
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                Standard &amp; Custom Systems
+                No Hourly Billing
               </span>
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-blue-600" />
@@ -57,19 +57,19 @@ export function Hero() {
               <a
                 href="#contact"
                 id="hero-contact-cta"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs hover:shadow-md transition-all group"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs hover:shadow-md transition-all group cursor-pointer"
               >
-                <MessageSquare className="w-4 h-4" />
                 <span>Discuss Your Project</span>
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </a>
 
               <a
                 href="#categories"
-                id="hero-categories-cta"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-950 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl shadow-2xs transition-all"
+                id="hero-services-cta"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-3 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200/90 rounded-xl transition-all shadow-2xs cursor-pointer"
               >
-                <span>Explore Categories</span>
+                <span>Explore Services</span>
+                <ChevronRight className="w-4 h-4" />
               </a>
             </div>
           </div>

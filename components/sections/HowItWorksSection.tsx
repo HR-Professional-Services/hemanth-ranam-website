@@ -40,8 +40,8 @@ export function HowItWorksSection() {
           </p>
         </div>
 
-        {/* 5-Step Process Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
+        {/* 6-Step Process Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-5">
           {PROCESS_STEPS.map((step) => (
             <div
               key={step.number}

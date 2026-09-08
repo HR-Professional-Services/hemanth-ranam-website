@@ -44,7 +44,7 @@ var CONFIG = {
   // API Security Key (can also be set in Script Properties: API_SECRET_KEY)
   API_SECRET_KEY: "HR_SECURE_API_SECRET_2026",
 
-  // Canonical Column Schema (13 Columns)
+  // Canonical Column Schema (15 Columns)
   COLUMNS: [
     "Timestamp",
     "Lead ID",
@@ -52,8 +52,10 @@ var CONFIG = {
     "Email",
     "Phone",
     "Company",
-    "Service",
     "Category",
+    "Service",
+    "Selected Plan",
+    "Price",
     "Message",
     "Source",
     "Page",
@@ -204,6 +206,8 @@ function handleCreateLead(data) {
   var company = sanitize(data.company || "");
   var category = sanitize(data.category || "Business & Consulting");
   var service = sanitize(data.service || "Business Systems Consulting");
+  var selectedPlan = sanitize(data.selectedPlan || "");
+  var price = sanitize(data.price || "");
   var message = sanitize(data.message || "");
   var source = sanitize(data.source || "Website Form");
   var page = sanitize(data.page || "/#contact");
@@ -219,7 +223,7 @@ function handleCreateLead(data) {
   var status = "New";
   var notes = sanitize(data.notes || "");
 
-  // Append new row matching exact 13-column canonical schema
+  // Append new row matching exact 15-column canonical schema
   var newRow = [
     timestamp,
     leadId,
@@ -227,8 +231,10 @@ function handleCreateLead(data) {
     email,
     phone,
     company,
-    service,
     category,
+    service,
+    selectedPlan,
+    price,
     message,
     source,
     page,
@@ -248,6 +254,8 @@ function handleCreateLead(data) {
       company: company,
       category: category,
       service: service,
+      selectedPlan: selectedPlan,
+      price: price,
       message: message,
       source: source,
       page: page,
@@ -296,9 +304,9 @@ function handleUpdateStatus(data) {
 
   for (var i = 1; i < values.length; i++) {
     if (values[i][1] === leadId) {
-      sheet.getRange(i + 1, 11).setValue(status); // Column 11 = Status
+      sheet.getRange(i + 1, 14).setValue(status); // Column 14 = Status
       if (data.notes) {
-        sheet.getRange(i + 1, 12).setValue(sanitize(data.notes)); // Column 12 = Notes
+        sheet.getRange(i + 1, 15).setValue(sanitize(data.notes)); // Column 15 = Notes
       }
       return jsonResponse({ success: true, leadId: leadId, status: status });
     }
@@ -358,6 +366,14 @@ function sendManagementAlert(params) {
           <tr>
             <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Service Required:</td>
             <td style="padding: 8px 0; font-weight: 600; color: #0F172A;">${params.service}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Selected Plan:</td>
+            <td style="padding: 8px 0; font-weight: 600; color: #0F172A;">${params.selectedPlan || "Not specified"}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Pricing / Budget:</td>
+            <td style="padding: 8px 0; font-weight: 700; color: #16A34A;">${params.price || "Custom Quote"}</td>
           </tr>
           <tr>
             <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Submitted At:</td>

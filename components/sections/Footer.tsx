@@ -100,13 +100,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/services/crm-erp-implementation" className="hover:text-blue-400 transition-colors">
-                  CRM &amp; ERPNext Implementation
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/hr-management-systems" className="hover:text-blue-400 transition-colors">
-                  HR Management Systems
+                <Link href="/services/frappe-erpnext" className="hover:text-blue-400 transition-colors">
+                  Frappe / ERPNext Systems
                 </Link>
               </li>
               <li>
@@ -115,8 +110,18 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/services/trading-technology" className="hover:text-blue-400 transition-colors">
-                  Trading Technology &amp; Automation
+                <Link href="/services/custom-business-systems" className="hover:text-blue-400 transition-colors">
+                  Custom Business Systems
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/tradingview-indicators" className="hover:text-blue-400 transition-colors">
+                  TradingView Indicators &amp; Strategies
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/mt5-scanner-alerts" className="hover:text-blue-400 transition-colors">
+                  MT5 Scanner &amp; Alerts System
                 </Link>
               </li>
             </ul>
