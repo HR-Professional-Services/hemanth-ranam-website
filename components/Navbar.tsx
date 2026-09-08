@@ -74,24 +74,23 @@ export function Navbar() {
             <Logo size="sm" />
           </Link>
 
-          {/* Desktop Navigation Links inside Pill Container */}
+          {/* Desktop Navigation Links inside Pill Container (5 clean options) */}
           <nav
             aria-label="Main Navigation"
-            className="hidden xl:flex items-center gap-1 bg-slate-50/90 p-1 rounded-full border border-slate-200/80"
+            className="hidden md:flex items-center gap-1 bg-slate-50/90 p-1 rounded-full border border-slate-200/80"
           >
             {NAV_ITEMS.map((item) => {
-              const isBlogRoute = item.isRoute && pathname.startsWith("/blogs");
               const isSectionActive =
-                !item.isRoute &&
                 pathname === "/" &&
                 activeSection === item.href.replace("/#", "").replace("#", "");
-              const isActive = isBlogRoute || isSectionActive;
+              const isHomeActive = item.href === "/" && pathname === "/" && !activeSection;
+              const isActive = isSectionActive || isHomeActive;
 
               return (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-150 ${
+                  className={`px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all duration-150 ${
                     isActive
                       ? "bg-white text-blue-600 shadow-xs font-bold"
                       : "text-slate-600 hover:text-slate-950 hover:bg-white/70"
@@ -103,38 +102,44 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Right Action CTAs */}
-          <div className="hidden sm:flex items-center gap-2.5">
+          {/* Right Action CTAs: WhatsApp + Discuss */}
+          <div className="hidden sm:flex items-center gap-2">
             <a
-              href={SITE_CONFIG.linkedin}
+              href={SITE_CONFIG.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              id="nav-linkedin-btn"
-              aria-label="Connect on LinkedIn"
-              className="p-2 rounded-xl text-slate-500 hover:text-blue-600 hover:bg-slate-50 border border-slate-200/80 transition-colors"
+              aria-label="Chat on WhatsApp"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 transition-colors"
             >
-              <LinkedinIcon className="w-4 h-4" />
+              <svg viewBox="0 0 32 32" className="w-3.5 h-3.5 fill-emerald-600 shrink-0" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 2C8.28 2 2 8.28 2 16c0 2.72.78 5.26 2.13 7.42L2.5 30l6.78-1.58C11.36 29.5 13.62 30 16 30c7.72 0 14-6.28 14-14S23.72 2 16 2zm8.18 19.82c-.34.96-1.7 1.83-2.77 2.05-.73.15-1.68.27-4.88-1.05-4.1-1.69-6.74-5.87-6.95-6.14-.2-.28-1.66-2.21-1.66-4.22 0-2.01 1.05-3 1.42-3.41.37-.41.82-.52 1.09-.52.27 0 .55.01.79.02.25.02.59-.1.92.7.34.82 1.16 2.84 1.26 3.05.1.21.17.46.03.73-.14.28-.21.46-.42.71-.21.25-.43.55-.62.74-.21.21-.42.44-.18.85.24.41 1.07 1.76 2.3 2.85 1.58 1.41 2.92 1.85 3.33 2.05.41.21.65.17.89-.1.24-.28 1.02-1.19 1.29-1.6.27-.41.55-.34.92-.21.38.14 2.39 1.13 2.8 1.33.41.21.68.31.78.48.1.17.1.99-.24 1.95z" />
+              </svg>
+              <span>WhatsApp</span>
             </a>
 
             <Link
               href="/#contact"
-              id="nav-contact-cta"
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-xs"
+              id="nav-discuss-cta"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-xs"
             >
-              <span>Talk to Us</span>
+              <span>Discuss</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          {/* Mobile Actions: Contact + Hamburger Toggle */}
-          <div className="flex xl:hidden items-center gap-2">
-            <Link
-              href="/#contact"
-              className="sm:hidden p-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors flex items-center justify-center min-w-[36px] min-h-[36px]"
-              aria-label="Contact Form"
+          {/* Mobile Actions: WhatsApp Quick Icon + Menu Toggle */}
+          <div className="flex md:hidden items-center gap-2">
+            <a
+              href={SITE_CONFIG.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat on WhatsApp"
+              className="p-2 rounded-lg text-emerald-600 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 flex items-center justify-center min-w-[36px] min-h-[36px]"
             >
-              <MessageSquare className="w-4 h-4" />
-            </Link>
+              <svg viewBox="0 0 32 32" className="w-4 h-4 fill-emerald-600 shrink-0" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 2C8.28 2 2 8.28 2 16c0 2.72.78 5.26 2.13 7.42L2.5 30l6.78-1.58C11.36 29.5 13.62 30 16 30c7.72 0 14-6.28 14-14S23.72 2 16 2zm8.18 19.82c-.34.96-1.7 1.83-2.77 2.05-.73.15-1.68.27-4.88-1.05-4.1-1.69-6.74-5.87-6.95-6.14-.2-.28-1.66-2.21-1.66-4.22 0-2.01 1.05-3 1.42-3.41.37-.41.82-.52 1.09-.52.27 0 .55.01.79.02.25.02.59-.1.92.7.34.82 1.16 2.84 1.26 3.05.1.21.17.46.03.73-.14.28-.21.46-.42.71-.21.25-.43.55-.62.74-.21.21-.42.44-.18.85.24.41 1.07 1.76 2.3 2.85 1.58 1.41 2.92 1.85 3.33 2.05.41.21.65.17.89-.1.24-.28 1.02-1.19 1.29-1.6.27-.41.55-.34.92-.21.38.14 2.39 1.13 2.8 1.33.41.21.68.31.78.48.1.17.1.99-.24 1.95z" />
+              </svg>
+            </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               id="mobile-menu-toggle-btn"
@@ -151,7 +156,7 @@ export function Navbar() {
       {/* Backdrop Overlay for Mobile Drawer */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 xl:hidden transition-opacity"
+          className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 md:hidden transition-opacity"
           onClick={() => setMobileMenuOpen(false)}
           aria-hidden="true"
         />
@@ -159,7 +164,7 @@ export function Navbar() {
 
       {/* Accessible Sliding Mobile Drawer */}
       <div
-        className={`fixed top-0 right-0 bottom-0 w-full max-w-xs bg-white z-50 shadow-2xl flex flex-col justify-between p-6 border-l border-slate-200 xl:hidden transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 bottom-0 w-full max-w-xs bg-white z-50 shadow-2xl flex flex-col justify-between p-6 border-l border-slate-200 md:hidden transform transition-transform duration-300 ease-in-out ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
         }`}
       >
@@ -192,24 +197,26 @@ export function Navbar() {
           </nav>
         </div>
 
-        {/* Drawer Bottom Actions */}
-        <div className="pt-6 border-t border-slate-100 space-y-3">
+        {/* Drawer Bottom Actions: WhatsApp + Discuss */}
+        <div className="pt-6 border-t border-slate-100 space-y-2.5">
           <Link
             href="/#contact"
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center justify-center gap-2 w-full py-3 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs transition-all"
           >
-            <MessageSquare className="w-4 h-4" />
-            <span>Talk to Us</span>
+            <span>Discuss Your Project</span>
+            <ArrowUpRight className="w-4 h-4" />
           </Link>
           <a
-            href={SITE_CONFIG.linkedin}
+            href={SITE_CONFIG.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-2.5 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors border border-slate-200/80"
+            className="flex items-center justify-center gap-2 w-full py-2.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-colors border border-emerald-200/80"
           >
-            <LinkedinIcon className="w-4 h-4 text-blue-600" />
-            <span>LinkedIn Profile</span>
+            <svg viewBox="0 0 32 32" className="w-4 h-4 fill-emerald-600 shrink-0" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 2C8.28 2 2 8.28 2 16c0 2.72.78 5.26 2.13 7.42L2.5 30l6.78-1.58C11.36 29.5 13.62 30 16 30c7.72 0 14-6.28 14-14S23.72 2 16 2zm8.18 19.82c-.34.96-1.7 1.83-2.77 2.05-.73.15-1.68.27-4.88-1.05-4.1-1.69-6.74-5.87-6.95-6.14-.2-.28-1.66-2.21-1.66-4.22 0-2.01 1.05-3 1.42-3.41.37-.41.82-.52 1.09-.52.27 0 .55.01.79.02.25.02.59-.1.92.7.34.82 1.16 2.84 1.26 3.05.1.21.17.46.03.73-.14.28-.21.46-.42.71-.21.25-.43.55-.62.74-.21.21-.42.44-.18.85.24.41 1.07 1.76 2.3 2.85 1.58 1.41 2.92 1.85 3.33 2.05.41.21.65.17.89-.1.24-.28 1.02-1.19 1.29-1.6.27-.41.55-.34.92-.21.38.14 2.39 1.13 2.8 1.33.41.21.68.31.78.48.1.17.1.99-.24 1.95z" />
+            </svg>
+            <span>Chat on WhatsApp</span>
           </a>
         </div>
       </div>

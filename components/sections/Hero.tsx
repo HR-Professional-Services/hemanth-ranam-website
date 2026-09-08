@@ -21,39 +21,39 @@ export function Hero() {
               <span>Small Price. Big Work.</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-[50px] font-black tracking-tight text-slate-900 leading-[1.12]">
-              Business Systems. Software. Automation.{" "}
+            <h1 className="text-3xl sm:text-4xl lg:text-[48px] font-black tracking-tight text-slate-900 leading-[1.14]">
+              BUILD SMARTER. <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-600">
-                Trading Technology.
+                Websites. Business Systems. Automation. Trading Technology.
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg font-bold text-slate-800 leading-snug">
-              Do More Business. Let Your Systems Do More Work.
+            <p className="text-sm sm:text-base font-bold text-slate-800 leading-snug">
+              Do more business. Let your systems do more work.
             </p>
 
             <p className="text-xs sm:text-sm text-slate-600 max-w-xl leading-relaxed font-normal">
-              We help companies simplify operations, eliminate repetitive manual tasks, build conversion-focused websites, deploy Frappe/ERPNext systems, and engineer rule-based TradingView and MT5 technology. Small price, big work.
+              Practical technology consultancy and custom system development. We turn messy operations, spreadsheets, and manual tasks into connected, automated workflows that simply work.
             </p>
 
             {/* Quick Value Signals */}
             <div className="flex flex-wrap gap-y-2 gap-x-4 pt-1 text-xs font-semibold text-slate-600">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                Affordable Project Rates
+                Affordable Rates (USD)
               </span>
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-blue-600" />
                 No Hourly Billing
               </span>
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                Support &amp; Training Included
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                WhatsApp Direct Support
               </span>
             </div>
 
-            {/* Actions */}
-            <div className="pt-3 flex flex-wrap items-center gap-3 w-full sm:w-auto">
+            {/* Actions: Discuss + WhatsApp */}
+            <div className="pt-2 flex flex-wrap items-center gap-3 w-full sm:w-auto">
               <a
                 href="#contact"
                 id="hero-contact-cta"
@@ -64,12 +64,16 @@ export function Hero() {
               </a>
 
               <a
-                href="#categories"
-                id="hero-services-cta"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-3 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200/90 rounded-xl transition-all shadow-2xs cursor-pointer"
+                href="https://wa.me/917675815245?text=Hi%2C%20I%20wanted%20to%20connect%20about%20your%20services%2C%20thanks."
+                target="_blank"
+                rel="noopener noreferrer"
+                id="hero-whatsapp-cta"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-all cursor-pointer"
               >
-                <span>Explore Services</span>
-                <ChevronRight className="w-4 h-4" />
+                <svg viewBox="0 0 32 32" className="w-4 h-4 fill-emerald-600 shrink-0" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 2C8.28 2 2 8.28 2 16c0 2.72.78 5.26 2.13 7.42L2.5 30l6.78-1.58C11.36 29.5 13.62 30 16 30c7.72 0 14-6.28 14-14S23.72 2 16 2zm8.18 19.82c-.34.96-1.7 1.83-2.77 2.05-.73.15-1.68.27-4.88-1.05-4.1-1.69-6.74-5.87-6.95-6.14-.2-.28-1.66-2.21-1.66-4.22 0-2.01 1.05-3 1.42-3.41.37-.41.82-.52 1.09-.52.27 0 .55.01.79.02.25.02.59-.1.92.7.34.82 1.16 2.84 1.26 3.05.1.21.17.46.03.73-.14.28-.21.46-.42.71-.21.25-.43.55-.62.74-.21.21-.42.44-.18.85.24.41 1.07 1.76 2.3 2.85 1.58 1.41 2.92 1.85 3.33 2.05.41.21.65.17.89-.1.24-.28 1.02-1.19 1.29-1.6.27-.41.55-.34.92-.21.38.14 2.39 1.13 2.8 1.33.41.21.68.31.78.48.1.17.1.99-.24 1.95z" />
+                </svg>
+                <span>Chat on WhatsApp</span>
               </a>
             </div>
           </div>

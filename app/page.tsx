@@ -1,15 +1,10 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/sections/Hero";
 import { CoreCategoriesSection } from "@/components/sections/CoreCategoriesSection";
-import { WhatWeSolveSection } from "@/components/sections/WhatWeSolveSection";
-import { HowItWorksSection as HowWeWorkSection } from "@/components/sections/HowItWorksSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { SystemWorkflowVisualsSection } from "@/components/sections/SystemWorkflowVisualsSection";
-import { StandardVsCustomSection } from "@/components/sections/StandardVsCustomSection";
 import { PricingSection } from "@/components/sections/PricingSection";
-import { SupportAndTrainingSection } from "@/components/sections/SupportAndTrainingSection";
 import { LifecycleSection } from "@/components/sections/LifecycleSection";
-import { FAQSection } from "@/components/sections/FAQSection";
 import { FinalCTASection } from "@/components/sections/FinalCTASection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
@@ -23,57 +18,42 @@ export default function Home() {
       {/* Viewport Reading Progress Bar */}
       <ScrollProgressBar />
 
-      {/* Sticky Header Navigation */}
+      {/* Sticky Header Navigation (5 clean options + WhatsApp + Discuss) */}
       <Navbar />
 
-      {/* Production Homepage Flow (ScaleNova-Level Systems Architecture) */}
+      {/* Simplified, Fast, Cute, and Premium Personal Services Flow */}
       <main id="main-content" className="flex flex-col">
-        {/* 1. Hero: Business Systems, Software, Automation, Trading Technology */}
+        {/* 1. Hero: Personal introduction & direct value proposition */}
         <Hero />
 
         {/* 2. Three Core Categories: Business & Consulting, Software & Web, Trading Technology */}
         <CoreCategoriesSection />
 
-        {/* 3. What We Solve: Manual Work, Disconnected Tools, Lead Leakage, Repetitive Work */}
-        <WhatWeSolveSection />
-
-        {/* 4. How We Work: Problem -> Plan -> Build -> Automate -> Train -> Support */}
-        <HowWeWorkSection />
-
-        {/* 5. Services: Compact Horizontal Icon + Heading Layout */}
+        {/* 3. What I Build / Services: Compact Horizontal Icon + Heading Layout */}
         <ServicesSection />
 
-        {/* 6. System Workflow Visuals: Real Pipelines & Interactive Examples */}
+        {/* 4. One Simple Visual Workflow: Idea -> System -> Automation -> Support -> Grow */}
         <SystemWorkflowVisualsSection />
 
-        {/* 7. Standard vs Custom Architecture */}
-        <StandardVsCustomSection />
-
-        {/* 8. Project Pricing: Locked Rates in USD ($), Was Price Subtle */}
+        {/* 5. Pricing: 5 Approved One-Time Projects + Monthly Subscriptions */}
         <PricingSection />
 
-        {/* 9. Monthly Support & Improvement: Configurable Post-Launch Support Tiers */}
-        <SupportAndTrainingSection />
-
-        {/* 10. More Than a Handover: 7-Stage Support & Training Lifecycle */}
+        {/* 6. More Than a Handover: 4 Pillars (Build, Train, Support, Improve) */}
         <LifecycleSection />
 
-        {/* 11. FAQ: Transparent, Practical Answers */}
-        <FAQSection />
-
-        {/* 12. Final CTA: "Your business doesn't need more tools. It needs better systems." */}
+        {/* 7. Final CTA: "Your business doesn't need more tools. It needs better systems." */}
         <FinalCTASection />
 
-        {/* 13. Production Lead Capture / Contact Section with Service Context */}
+        {/* 8. Lead Capture Form with Automated Plan Context */}
         <div id="contact">
           <ContactSection />
         </div>
       </main>
 
-      {/* Production Footer */}
+      {/* Compact Clean Footer */}
       <Footer />
 
-      {/* Persistent Direct Action Controls */}
+      {/* Persistent WhatsApp Floating Button & Back to Top */}
       <WhatsAppButton />
       <BackToTop />
     </div>

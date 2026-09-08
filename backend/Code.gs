@@ -40,11 +40,12 @@ var CONFIG = {
   // Sheet Settings (Optional: Leave SPREADSHEET_ID empty if bound to active sheet)
   SPREADSHEET_ID: "", 
   SHEET_NAME: "Enquiries",
+  PAYMENTS_SHEET_NAME: "Payments",
   
   // API Security Key (can also be set in Script Properties: API_SECRET_KEY)
   API_SECRET_KEY: "HR_SECURE_API_SECRET_2026",
 
-  // Canonical Column Schema (15 Columns)
+  // Canonical Column Schema (15 Columns for Leads)
   COLUMNS: [
     "Timestamp",
     "Lead ID",
@@ -60,6 +61,26 @@ var CONFIG = {
     "Source",
     "Page",
     "Status",
+    "Notes"
+  ],
+
+  // Canonical Column Schema (16 Columns for Payments)
+  PAYMENT_COLUMNS: [
+    "Timestamp",
+    "Transaction ID",
+    "Customer Name",
+    "Customer Email",
+    "Phone",
+    "Category",
+    "Service",
+    "Plan",
+    "Billing Type",
+    "Amount",
+    "Currency",
+    "Stripe Reference",
+    "Payment Status",
+    "Download Link",
+    "Source",
     "Notes"
   ],
 
@@ -139,6 +160,14 @@ function doPost(e) {
           return jsonResponse({ success: false, error: "Unauthorized operation." }, 401);
         }
         return handleUpdateStatus(data);
+      case "createPayment":
+      case "recordPayment":
+        return handleCreatePayment(data);
+      case "updatePaymentStatus":
+        if (!verifyAuth(data)) {
+          return jsonResponse({ success: false, error: "Unauthorized operation." }, 401);
+        }
+        return handleUpdatePaymentStatus(data);
       default:
         return jsonResponse({ success: false, error: "Unsupported action." }, 400);
     }
@@ -315,6 +344,138 @@ function handleUpdateStatus(data) {
   return jsonResponse({ success: false, error: "Lead not found." }, 404);
 }
 
+/**
+ * Ensures the target Payments sheet and 16-column header row exist with formatting
+ */
+function initializePaymentsSheet() {
+  var ss = getSpreadsheet();
+  var sheet = ss.getSheetByName(CONFIG.PAYMENTS_SHEET_NAME);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(CONFIG.PAYMENTS_SHEET_NAME);
+    sheet.getRange(1, 1, 1, CONFIG.PAYMENT_COLUMNS.length).setValues([CONFIG.PAYMENT_COLUMNS]);
+    
+    // Style header row
+    var headerRange = sheet.getRange(1, 1, 1, CONFIG.PAYMENT_COLUMNS.length);
+    headerRange.setFontWeight("bold");
+    headerRange.setBackground("#0F766E"); // Teal-700
+    headerRange.setFontColor("#FFFFFF");
+    headerRange.setHorizontalAlignment("center");
+    sheet.setFrozenRows(1);
+
+    for (var i = 1; i <= CONFIG.PAYMENT_COLUMNS.length; i++) {
+      sheet.setColumnWidth(i, 150);
+    }
+    sheet.setColumnWidth(1, 175); // Timestamp
+    sheet.setColumnWidth(2, 160); // Transaction ID
+    sheet.setColumnWidth(12, 180); // Stripe Reference
+  }
+
+  return sheet;
+}
+
+/**
+ * Creates and records a new payment transaction
+ */
+function handleCreatePayment(data) {
+  var sheet = initializePaymentsSheet();
+
+  var txId = data.txId || data.transactionId || ("TX-" + Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyyMMdd") + "-" + Math.floor(1000 + Math.random() * 9000));
+  var timestamp = Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy-MM-dd HH:mm:ss");
+  var customerName = sanitize(data.customerName || data.name || "Customer");
+  var customerEmail = sanitize(data.customerEmail || data.email || "");
+  var phone = sanitize(data.phone || "");
+  var category = sanitize(data.category || "");
+  var service = sanitize(data.service || "");
+  var plan = sanitize(data.plan || data.selectedPlan || "");
+  var billingType = sanitize(data.billingType || data.billing || "one-time");
+  var amount = sanitize(data.amount || data.price || "");
+  var currency = sanitize(data.currency || "USD");
+  var stripeRef = sanitize(data.stripeReference || data.ref || data.sessionId || "");
+  var status = sanitize(data.status || "Paid");
+  var downloadLink = sanitize(data.downloadLink || data.downloadUrl || "");
+  var source = sanitize(data.source || "Website Stripe Checkout");
+  var notes = sanitize(data.notes || "");
+
+  var newRow = [
+    timestamp,
+    txId,
+    customerName,
+    customerEmail,
+    phone,
+    category,
+    service,
+    plan,
+    billingType,
+    amount,
+    currency,
+    stripeRef,
+    status,
+    downloadLink,
+    source,
+    notes
+  ];
+
+  sheet.appendRow(newRow);
+
+  // Send confirmation email to customer
+  if (customerEmail && customerEmail.indexOf("@") !== -1) {
+    try {
+      sendPaymentConfirmationEmail({
+        txId: txId,
+        customerName: customerName,
+        customerEmail: customerEmail,
+        plan: plan,
+        category: category,
+        amount: amount,
+        currency: currency,
+        billingType: billingType,
+        stripeRef: stripeRef,
+        downloadLink: downloadLink
+      });
+    } catch (payMailErr) {
+      console.error("Payment confirmation email dispatch error:", payMailErr);
+    }
+  }
+
+  return jsonResponse({
+    success: true,
+    message: "Payment transaction recorded successfully.",
+    data: {
+      transactionId: txId,
+      status: status,
+      timestamp: timestamp
+    }
+  });
+}
+
+/**
+ * Updates status of an existing payment transaction
+ */
+function handleUpdatePaymentStatus(data) {
+  var txId = data.txId || data.transactionId;
+  var status = data.status;
+
+  if (!txId || !status) {
+    return jsonResponse({ success: false, error: "transactionId and status are required." }, 400);
+  }
+
+  var sheet = initializePaymentsSheet();
+  var values = sheet.getDataRange().getValues();
+
+  for (var i = 1; i < values.length; i++) {
+    if (values[i][1] === txId) {
+      sheet.getRange(i + 1, 13).setValue(status); // Column 13 = Payment Status
+      if (data.notes) {
+        sheet.getRange(i + 1, 16).setValue(sanitize(data.notes)); // Column 16 = Notes
+      }
+      return jsonResponse({ success: true, transactionId: txId, status: status });
+    }
+  }
+
+  return jsonResponse({ success: false, error: "Transaction not found." }, 404);
+}
+
 // ----------------------------------------------------------------------------
 // 5. EMAIL NOTIFICATION DISPATCHERS
 // ----------------------------------------------------------------------------
@@ -450,13 +611,99 @@ function sendCustomerAcknowledgement(params) {
       </div>
 
       <div style="background: #F8FAFC; padding: 18px 28px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 11px; color: #94A3B8;">
-        © 2026 ${CONFIG.COMPANY_NAME}. All rights reserved. • United Kingdom
+        ${CONFIG.COMPANY_NAME} • United Kingdom
       </div>
     </div>
   `;
 
   MailApp.sendEmail({
     to: params.email,
+    subject: subject,
+    htmlBody: htmlBody,
+    name: CONFIG.COMPANY_NAME,
+    replyTo: CONFIG.MANAGER_EMAIL
+  });
+}
+
+/**
+ * Dispatches payment receipt confirmation to customer
+ */
+function sendPaymentConfirmationEmail(params) {
+  var subject = "Payment Confirmation: " + params.plan + " [" + params.txId + "]";
+
+  var downloadSection = "";
+  if (params.downloadLink && params.downloadLink.trim().length > 0) {
+    downloadSection = `
+      <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 16px; text-align: center; margin: 20px 0;">
+        <p style="font-size: 13px; font-weight: 700; color: #065F46; margin: 0 0 8px 0;">Your Download Resource Is Ready</p>
+        <a href="${params.downloadLink}" style="display: inline-block; background: #059669; color: #FFFFFF; font-weight: bold; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-size: 13px;">Download Included Resource</a>
+      </div>
+    `;
+  }
+
+  var htmlBody = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden; color: #1E293B;">
+      <div style="background: #0F172A; padding: 24px; color: #FFFFFF;">
+        <h1 style="font-size: 18px; margin: 0; font-weight: 700; letter-spacing: -0.5px;">${CONFIG.COMPANY_NAME}</h1>
+        <p style="font-size: 12px; color: #94A3B8; margin: 4px 0 0 0;">Payment Confirmation & Receipt</p>
+      </div>
+
+      <div style="padding: 32px 28px;">
+        <h2 style="font-size: 18px; color: #0F172A; margin-top: 0; font-weight: 700;">
+          Thank you, ${params.customerName}.
+        </h2>
+        
+        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
+          Your payment for <strong>${params.plan}</strong> has been received and confirmed.
+        </p>
+
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 18px; margin: 24px 0;">
+          <table style="width: 100%; font-size: 13px; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 6px 0; color: #64748B; font-weight: 600;">Transaction ID</td>
+              <td style="padding: 6px 0; text-align: right; font-family: monospace; font-weight: 700; color: #0F172A;">${params.txId}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748B; font-weight: 600;">Plan</td>
+              <td style="padding: 6px 0; text-align: right; font-weight: 700; color: #0F172A;">${params.plan}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748B; font-weight: 600;">Amount Paid</td>
+              <td style="padding: 6px 0; text-align: right; font-weight: 800; color: #059669; font-size: 15px;">${params.amount} ${params.currency}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748B; font-weight: 600;">Billing Type</td>
+              <td style="padding: 6px 0; text-align: right; color: #334155; text-transform: capitalize;">${params.billingType}</td>
+            </tr>
+            ${params.stripeRef ? `<tr><td style="padding: 6px 0; color: #64748B; font-weight: 600;">Stripe Reference</td><td style="padding: 6px 0; text-align: right; font-family: monospace; color: #64748B;">${params.stripeRef}</td></tr>` : ""}
+          </table>
+        </div>
+
+        ${downloadSection}
+
+        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
+          Our team is preparing your onboarding and deliverables. We will reach out shortly to initiate your service.
+        </p>
+
+        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
+          If you need immediate support, reply directly to this email or contact us via WhatsApp.
+        </p>
+
+        <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #F1F5F9;">
+          <p style="font-size: 13px; color: #334155; margin: 0; font-weight: 600;">Best regards,</p>
+          <p style="font-size: 14px; font-weight: 700; color: #0F172A; margin: 2px 0 0 0;">${CONFIG.MANAGER_NAME}</p>
+          <p style="font-size: 12px; color: #64748B; margin: 0;">${CONFIG.COMPANY_NAME}</p>
+        </div>
+      </div>
+
+      <div style="background: #F8FAFC; padding: 18px 28px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 11px; color: #94A3B8;">
+        ${CONFIG.COMPANY_NAME} • United Kingdom
+      </div>
+    </div>
+  `;
+
+  MailApp.sendEmail({
+    to: params.customerEmail,
     subject: subject,
     htmlBody: htmlBody,
     name: CONFIG.COMPANY_NAME,

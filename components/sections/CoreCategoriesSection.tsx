@@ -49,111 +49,74 @@ export function CoreCategoriesSection() {
           </p>
         </div>
 
-        {/* 3 Major Category Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-          {CORE_CATEGORIES.map((cat) => (
-            <div
-              key={cat.id}
-              className={`p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm transition-all duration-300 flex flex-col justify-between group ${
-                headerBorders[cat.accentColor] || "hover:border-blue-400"
-              }`}
-            >
-              <div>
-                {/* Top Number & Badge */}
-                <div className="flex items-center justify-between mb-5">
-                  <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:scale-105 transition-transform">
-                    {iconMap[cat.icon] || <Sparkles className="w-6 h-6 text-blue-600" />}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-slate-400">
+        {/* 3 Compact Category Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+          {CORE_CATEGORIES.map((cat) => {
+            const hookText =
+              cat.categoryNumber === "01"
+                ? "DISCONNECTED? → LET'S FIX THE SYSTEM."
+                : cat.categoryNumber === "02"
+                ? "TOO MUCH MANUAL WORK? → LET'S AUTOMATE IT."
+                : "RULE-BASED SIGNALS? → LET'S AUTOMATE IT.";
+
+            const defaultSlug =
+              cat.categoryNumber === "01"
+                ? "/services/business-systems-consulting"
+                : cat.categoryNumber === "02"
+                ? "/services/custom-business-systems"
+                : "/services/tradingview-indicators";
+
+            return (
+              <div
+                key={cat.id}
+                className="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs hover:border-blue-400 hover:shadow-md transition-all flex flex-col justify-between group"
+              >
+                <div>
+                  {/* Top Bar: Number + Icon */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+                      {iconMap[cat.icon] || <Sparkles className="w-5 h-5 text-blue-600" />}
+                    </div>
+                    <span className="font-mono text-xs font-black text-slate-400">
                       {cat.categoryNumber}
                     </span>
-                    <span
-                      className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
-                        badgeStyles[cat.accentColor] || "bg-blue-50 text-blue-700 border-blue-200"
-                      }`}
-                    >
-                      {cat.badge}
+                  </div>
+
+                  {/* Title & One-Sentence Summary */}
+                  <h3 className="text-lg font-black text-slate-900 mb-1.5 leading-snug">
+                    {cat.title}
+                  </h3>
+                  <p className="text-xs text-slate-600 font-normal leading-relaxed mb-4">
+                    {cat.tagline}
+                  </p>
+
+                  {/* Tiny Visual Hook */}
+                  <div className="px-3 py-2 rounded-xl bg-slate-50 border border-slate-100 mb-4">
+                    <span className="font-mono text-[10px] font-black text-blue-600 tracking-wider block">
+                      {hookText}
                     </span>
                   </div>
                 </div>
 
-                {/* Title & Tagline */}
-                <h3 className="text-xl sm:text-2xl font-black text-slate-900 mb-2 leading-tight">
-                  {cat.title}
-                </h3>
-                <p className="text-xs sm:text-sm text-blue-600 font-bold leading-relaxed mb-3">
-                  {cat.tagline}
-                </p>
-                
-                {/* Short Problem Statement */}
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 mb-4">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
-                    Problem Solved
-                  </span>
-                  <p className="text-xs font-semibold text-slate-700 italic">
-                    &ldquo;{cat.problemStatement}&rdquo;
-                  </p>
-                </div>
-
-                <p className="text-xs text-slate-600 leading-relaxed mb-6 font-normal">
-                  {cat.description}
-                </p>
-
-                {/* Service Highlights List */}
-                <div className="space-y-2 pt-4 border-t border-slate-100">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                    Included Services:
-                  </span>
-                  {cat.services.map((s, idx) => (
-                    <div
-                      key={idx}
-                      className="p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 flex items-start justify-between gap-2 group/item hover:bg-blue-50/40 hover:border-blue-200/60 transition-colors"
-                    >
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                          <span className="text-xs font-bold text-slate-900 truncate">
-                            {s.name}
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-slate-500 mt-0.5 font-normal pl-5">
-                          {s.tagline}
-                        </p>
-                      </div>
-
-                      {s.slug && (
-                        <Link
-                          href={`/services/${s.slug}`}
-                          className="shrink-0 text-slate-400 group-hover/item:text-blue-600 transition-colors p-1"
-                          title="View service details"
-                        >
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </Link>
-                      )}
-                    </div>
-                  ))}
+                {/* Bottom Actions */}
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <Link
+                    href={defaultSlug}
+                    className="text-xs font-bold text-slate-700 hover:text-blue-600 transition-colors flex items-center gap-1"
+                  >
+                    <span>Learn More</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs transition-colors"
+                  >
+                    <span>Discuss</span>
+                  </a>
                 </div>
               </div>
-
-              {/* Bottom CTA */}
-              <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between">
-                <a
-                  href="#services"
-                  className="text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors"
-                >
-                  Learn More →
-                </a>
-                <a
-                  href="#contact"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs transition-colors"
-                >
-                  <span>Discuss</span>
-                  <ArrowRight className="w-3 h-3" />
-                </a>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Value Anchor Banner */}
