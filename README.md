@@ -1,148 +1,121 @@
 # HR Professional Services — Web Platform & CRM Engine
 
-Production web platform and integrated lead engine for **HR Professional Services** (overseen by Hemanth Ranam). Built with Next.js App Router, Tailwind CSS, TypeScript, and powered by an automated Google Sheets CRM backend adapted from the **ScaleNova** systems reference architecture.
+Production web platform and integrated business systems engine for **HR Professional Services** (overseen by Hemanth Ranam). Built with Next.js App Router, Tailwind CSS, TypeScript, and powered by an automated Google Sheets CRM backend inspired by the **ScaleNova** systems reference architecture.
 
 ---
 
-## 1. Project Overview
+## 1. Core Brand Positioning
 
-HR Professional Services provides practical business systems, workflow automation, custom software, HR management, recruitment systems, and rule-based trading technology for founders and growing businesses.
+> **"Small Price. Big Work."**  
+> *"Do more business with smarter systems."*
 
-### Core Architectural Pillars
-- **ScaleNova UX Adaptation**: Sharp, scannable value propositions, visual operational bento stream, 5-step process section (`How It Works`), verified credentials & zero-fabrication trust section (`Trust & Accountability`), and clear action-oriented CTAs.
-- **Mobile-First Responsiveness**: Precision layouts tested across 320px, 375px, 390px, 414px, 768px, 1024px, and 1440px+ viewports with an accessible slide-out mobile drawer and touch-friendly interactive targets (44px+).
-- **Automated Lead Engine**: Real-time enquiry submission with client-side validation, formula-injection sanitization, honeypot spam protection, `HRPS-YYYYMMDD-XXXX` unique reference generation, and in-place feedback screens.
-- **Integrated Google Sheets CRM**: Container-bound or standalone Google Apps Script engine logging enquiries across 12 canonical columns, triggering immediate management alerts, and sending branded customer confirmations.
-
----
-
-## 2. Technology Stack
-
-- **Framework**: Next.js 16 (App Router, Turbopack)
-- **Language**: TypeScript 5
-- **Styling**: Tailwind CSS v4 + Vanilla CSS Design Tokens
-- **3D Graphics**: Three.js WebGL (Interactive Geometric Core with reduced-motion support)
-- **Icons**: Lucide React
-- **Backend / CRM**: Google Apps Script (`backend/Code.gs`) + Google Sheets
-- **Hosting Targets**: Cloudflare Pages / Vercel / Node.js Standalone
+HR Professional Services operates as a practical business technology partner helping growing companies, founders, and active traders:
+- **Simplify operations** and eliminate manual spreadsheet copying
+- **Automate repetitive work** with serverless webhooks & Google Apps Script
+- **Build high-converting websites** with sub-second load times
+- **Capture leads reliably** with honeypot spam filtering
+- **Implement Frappe & ERPNext systems** with zero recurring seat licensing fees
+- **Deploy HR management solutions** with attendance and automated payroll
+- **Create executive dashboards** for real-time financial visibility
+- **Build rule-based trading technology** (TradingView Pine Script v5, MT5 EAs, Telegram alerts)
+- **Provide ongoing monthly support and staff training** ("More Than a Handover")
 
 ---
 
-## 3. Directory Structure
+## 2. Commercial Architecture
 
-```
-├── app/
-│   ├── api/
-│   │   ├── contact/route.ts       # Lead sanitization, ID generation & Apps Script proxy
-│   │   └── newsletter/route.ts    # Newsletter subscription API
-│   ├── blogs/                     # Technical insights & article routes
-│   ├── privacy/page.tsx           # Privacy Policy
-│   ├── terms/page.tsx             # Terms & Conditions
-│   ├── refund/page.tsx            # Refund Policy
-│   ├── globals.css                # Tailwind CSS v4 styling & design variables
-│   ├── layout.tsx                 # Root layout, SEO metadata, JSON-LD Schema
-│   └── page.tsx                   # Main composite landing page
-├── backend/
-│   ├── Code.gs                    # Google Apps Script CRM & Dual-Email Dispatcher
-│   └── README.md                  # Comprehensive Google Sheets setup guide
-├── components/
-│   ├── 3d/
-│   │   └── HeroScene3D.tsx        # Three.js 3D hero visualization
-│   ├── sections/
-│   │   ├── Hero.tsx               # High-contrast hero with operational flow card
-│   │   ├── AboutSection.tsx       # Verified founder bio & executive credentials
-│   │   ├── ServicesSection.tsx    # ScaleNova-style visual cards & delivery flow
-│   │   ├── HowItWorksSection.tsx  # 5-step visual delivery process
-│   │   ├── TrustSection.tsx       # Verified commitments & zero-fabrication metrics
-│   │   ├── TechStackSection.tsx   # Verified production languages & platforms
-│   │   ├── TradingTechSection.tsx # TradingView, Pine Script & MT5 tools
-│   │   ├── PricingSection.tsx     # Transparent fixed-scope packages
-│   │   ├── ContactSection.tsx     # Working lead capture form with status states
-│   │   └── Footer.tsx             # 4-column structured footer with direct channels
-│   ├── ui/                        # Modals, phone input, buttons, cookie banner
-├── data/
-│   ├── siteData.ts                # Site configuration, navigation, services, process
-│   └── blogsData.ts               # Blog posts & technical articles
-├── public/                        # Optimized images, vector icons, favicon
-└── wrangler.jsonc                 # Cloudflare Pages deployment configuration
-```
+### Three Core Commercial Categories
+1. **Business & Consulting**:
+   - Business Consultation (From $35 USD)
+   - Process / Tech Audit (From $59 USD)
+   - Business Systems Consulting (From $75 USD)
+   - Frappe / ERPNext Systems Implementation (From $369 USD)
+   - Website + Lead Capture + Basic CRM
+   - Business Apps Script Automations (From $109 USD)
+   - Documentation & Digital SOPs
+2. **Software & Web**:
+   - Website Basic & Website Premium
+   - Fully Automated & Secured Websites
+   - Custom CRM Systems & Client Portals
+   - Finance & Accounts Systems
+   - HR & People Systems
+   - ERP Systems & Booking Engines
+   - Custom Full-Stack Web Applications (TypeScript / Next.js / PostgreSQL)
+3. **Trading Technology**:
+   - Standard & Custom TradingView Indicators (Pine Script v5)
+   - Standard & Custom TradingView Strategies
+   - MT5 Custom Scanner & Multi-Symbol Alert Systems
+   - MT5 Custom Auto-Trading Systems (MQL5 Expert Advisors)
+   - Sub-second Telegram Signal Broadcast Routers
+   - TradingView-to-MT5 Automated Execution Bridges
+
+### Standard vs Custom Systems
+- **Standard**: Fast, affordable, battle-tested blueprints deployed in days with zero bloat.
+- **Custom**: Tailored, flexible, integrated architectures engineered specifically around your company's proprietary operational rules.
+
+### Ongoing Reliability ("More Than a Handover")
+- **Starter Support** ($99/mo): Weekly uptime sweeps, form monitoring, minor tweaks.
+- **Growth Support** ($199/mo): Active improvements, webhook maintenance, workflow automations.
+- **Business Systems Support** ($349/mo): Priority SLA, ERPNext/Frappe server backups, trading bridge monitoring.
+
+### 7-Stage System Lifecycle
+`PLAN` → `BUILD` → `LAUNCH` → `TRAIN` → `SUPPORT` → `IMPROVE` → `AUTOMATE`
+
+---
+
+## 3. Dedicated Service Subpages
+
+Full commercial landing pages replacing popup modals:
+- [`/services/business-systems-consulting`](/services/business-systems-consulting)
+- [`/services/process-optimisation`](/services/process-optimisation)
+- [`/services/crm-erp-implementation`](/services/crm-erp-implementation)
+- [`/services/hr-management-systems`](/services/hr-management-systems)
+- [`/services/business-operations-sop`](/services/business-operations-sop)
+- [`/services/data-business-analytics`](/services/data-business-analytics)
+- [`/services/website-lead-capture-crm`](/services/website-lead-capture-crm)
+- [`/services/trading-technology`](/services/trading-technology)
+- [`/services/workflow-automation`](/services/workflow-automation)
+- [`/services/custom-software`](/services/custom-software)
 
 ---
 
 ## 4. Google Sheets CRM Integration
 
-The platform connects to Google Sheets via a lightweight Google Apps Script endpoint (`backend/Code.gs`).
+Form submissions route directly into a formatted Google Sheet via a lightweight serverless Google Apps Script engine ([`backend/Code.gs`](./backend/Code.gs)).
 
-### Canonical 12-Column Schema
-All form submissions are automatically structured into the **`Enquiries`** sheet:
-
+### Canonical 13-Column Schema
 1. **Timestamp** (`yyyy-MM-dd HH:mm:ss`)
 2. **Lead ID** (`HRPS-YYYYMMDD-XXXX`)
-3. **Name**
-4. **Email**
-5. **Phone**
-6. **Company**
-7. **Service**
-8. **Message**
-9. **Source**
-10. **Page**
-11. **Status** (`New` by default)
-12. **Notes**
+3. **Name** (Full client name)
+4. **Email** (Validated customer email)
+5. **Phone** (International phone / WhatsApp)
+6. **Company** (Organization name or N/A)
+7. **Service** (Selected service offering)
+8. **Category** (Core commercial category)
+9. **Message** (Sanitized enquiry requirements)
+10. **Source** (Submission channel)
+11. **Page** (Source URL pathname)
+12. **Status** (`New`, `Contacted`, `Qualified`, `In Progress`, `Converted`, `Closed`, `Not Interested`)
+13. **Notes** (Internal team notes)
 
-### Dual Email Automation
-- **Management Notification**: Dispatched to `hemanth.ranam@gmail.com` with full client and project breakdown.
-- **Customer Acknowledgement**: Dispatched to the client with branded inline CSS, Lead ID reference, and expected 24-hour turnaround time.
-
-For step-by-step instructions on deploying the Apps Script Web App, see [backend/README.md](backend/README.md).
+### Automated Dual-Email Dispatch
+- **Management Notification**: Dispatched instantly to `hemanth.ranam@gmail.com` with lead parameters.
+- **Customer Acknowledgement**: Branded receipt sent to customer with unique Lead ID reference and <24h SLA.
 
 ---
 
-## 5. Local Development & Setup
+## 5. Local Development & Production Build
 
-### Prerequisites
-- Node.js 18+ or 20+
-- npm 9+
-
-### 1. Install Dependencies
 ```bash
+# Install dependencies
 npm install
-```
 
-### 2. Environment Variables Configuration
-Create a `.env.local` file in the root directory:
-```env
-# Optional: Connected Google Apps Script Web App URL
-GOOGLE_APPS_SCRIPT_WEBHOOK_URL="https://script.google.com/macros/s/AKfycbx.../exec"
-APPS_SCRIPT_API_KEY="HR_SECURE_API_SECRET_2026"
-```
-
-### 3. Run Development Server
-```bash
+# Run development server
 npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-### 4. Build Production Bundle
-```bash
+# Run strict linter (0 errors, 0 warnings)
+npm run lint
+
+# Compile static production export (pre-renders all 30 HTML pages to out/)
 npm run build
-npm run start
 ```
-
----
-
-## 6. Verification & Quality Assurance
-
-### Automated Testing Matrix
-- **TypeScript & App Router**: Validated with `npm run build` (0 errors, full static page prerendering).
-- **Formula Injection Security**: Inputs beginning with `=`, `+`, `-`, or `@` are automatically escaped with leading single quotes.
-- **Bot Mitigation**: Invisible honeypot field (`website_hp`) quietly rejects automated spambots without disturbing real users.
-- **Mobile Breakpoint Audit**: Checked across 320px, 375px, 390px, 414px, 768px, 1024px, and 1440px+ viewports with zero horizontal overflow.
-
----
-
-## 7. Direct Support & Communication
-
-- **Founder & Architect**: Hemanth Ranam
-- **Direct Management Email**: [hemanth.ranam@gmail.com](mailto:hemanth.ranam@gmail.com)
-- **Direct WhatsApp Channel**: [+91 76758 15245](https://wa.me/917675815245)
-- **LinkedIn**: [https://www.linkedin.com/in/hemanth-ranam-41b542253](https://www.linkedin.com/in/hemanth-ranam-41b542253)

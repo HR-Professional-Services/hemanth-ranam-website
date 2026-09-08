@@ -44,7 +44,7 @@ var CONFIG = {
   // API Security Key (can also be set in Script Properties: API_SECRET_KEY)
   API_SECRET_KEY: "HR_SECURE_API_SECRET_2026",
 
-  // Canonical Column Schema
+  // Canonical Column Schema (13 Columns)
   COLUMNS: [
     "Timestamp",
     "Lead ID",
@@ -53,6 +53,7 @@ var CONFIG = {
     "Phone",
     "Company",
     "Service",
+    "Category",
     "Message",
     "Source",
     "Page",
@@ -201,7 +202,8 @@ function handleCreateLead(data) {
   // Sanitize Inputs
   var phone = sanitize(data.phone || data.normalizedPhone || "");
   var company = sanitize(data.company || "");
-  var service = sanitize(data.service || "General HR & Systems Consulting");
+  var category = sanitize(data.category || "Business & Consulting");
+  var service = sanitize(data.service || "Business Systems Consulting");
   var message = sanitize(data.message || "");
   var source = sanitize(data.source || "Website Form");
   var page = sanitize(data.page || "/#contact");
@@ -217,7 +219,7 @@ function handleCreateLead(data) {
   var status = "New";
   var notes = sanitize(data.notes || "");
 
-  // Append new row matching exact 12-column canonical schema
+  // Append new row matching exact 13-column canonical schema
   var newRow = [
     timestamp,
     leadId,
@@ -226,6 +228,7 @@ function handleCreateLead(data) {
     phone,
     company,
     service,
+    category,
     message,
     source,
     page,
@@ -243,6 +246,7 @@ function handleCreateLead(data) {
       email: email,
       phone: phone,
       company: company,
+      category: category,
       service: service,
       message: message,
       source: source,
@@ -250,7 +254,7 @@ function handleCreateLead(data) {
       timestamp: timestamp
     });
   } catch (mailErr) {
-    console.error("Management alert dispatch error:", mailErr);
+    Logger.log("Management alert email warning: " + mailErr.toString());
   }
 
   // Dispatch Customer Acknowledgement Email
@@ -346,6 +350,10 @@ function sendManagementAlert(params) {
           <tr>
             <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Company / Org:</td>
             <td style="padding: 8px 0; color: #0F172A;">${params.company || "Not provided"}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Category:</td>
+            <td style="padding: 8px 0; font-weight: 600; color: #0F172A;">${params.category || "Business & Consulting"}</td>
           </tr>
           <tr>
             <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Service Required:</td>

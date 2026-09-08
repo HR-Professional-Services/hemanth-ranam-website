@@ -49,74 +49,74 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Navigation Links */}
-          <div className="lg:col-span-3 space-y-3">
+          {/* Column 2: Navigation */}
+          <div className="lg:col-span-2 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Quick Navigation
+              Architecture
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/#about" className="hover:text-blue-400 transition-colors">
-                  About &amp; Background
+                <Link href="/#categories" className="hover:text-blue-400 transition-colors">
+                  Commercial Categories
                 </Link>
               </li>
               <li>
                 <Link href="/#services" className="hover:text-blue-400 transition-colors">
-                  Services &amp; Capabilities
+                  All Services
                 </Link>
               </li>
               <li>
                 <Link href="/#how-it-works" className="hover:text-blue-400 transition-colors">
-                  How It Works (Process)
-                </Link>
-              </li>
-              <li>
-                <Link href="/#trust" className="hover:text-blue-400 transition-colors">
-                  Trust &amp; Accountability
+                  How We Work
                 </Link>
               </li>
               <li>
                 <Link href="/#pricing" className="hover:text-blue-400 transition-colors">
-                  Pricing &amp; Engagement
+                  Project Rates (USD)
                 </Link>
               </li>
               <li>
-                <Link href="/blogs" className="hover:text-blue-400 transition-colors">
-                  Technical Insights &amp; Blogs
+                <Link href="/#monthly-support" className="hover:text-blue-400 transition-colors">
+                  Monthly Support Plans
+                </Link>
+              </li>
+              <li>
+                <Link href="/#faq" className="hover:text-blue-400 transition-colors">
+                  Frequently Asked Questions
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: Core Service Pillars */}
+          {/* Column 3: Core Service Pages */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Core Pillars
+              Dedicated Services
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/#services" className="hover:text-blue-400 transition-colors">
-                  Recruitment &amp; Talent Search
+                <Link href="/services/business-systems-consulting" className="hover:text-blue-400 transition-colors">
+                  Business Systems Consulting
                 </Link>
               </li>
               <li>
-                <Link href="/#services" className="hover:text-blue-400 transition-colors">
-                  HR Consulting &amp; Systems
+                <Link href="/services/crm-erp-implementation" className="hover:text-blue-400 transition-colors">
+                  CRM &amp; ERPNext Implementation
                 </Link>
               </li>
               <li>
-                <Link href="/#services" className="hover:text-blue-400 transition-colors">
-                  CRM &amp; ERPNext Solutions
+                <Link href="/services/hr-management-systems" className="hover:text-blue-400 transition-colors">
+                  HR Management Systems
                 </Link>
               </li>
               <li>
-                <Link href="/#services" className="hover:text-blue-400 transition-colors">
-                  Workflow &amp; AI Automation
+                <Link href="/services/website-lead-capture-crm" className="hover:text-blue-400 transition-colors">
+                  Website + Lead Capture + CRM
                 </Link>
               </li>
               <li>
-                <Link href="/#trading-tech" className="hover:text-blue-400 transition-colors">
-                  TradingView &amp; MT5 Algo Tools
+                <Link href="/services/trading-technology" className="hover:text-blue-400 transition-colors">
+                  Trading Technology &amp; Automation
                 </Link>
               </li>
             </ul>

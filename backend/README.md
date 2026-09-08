@@ -16,7 +16,7 @@ This document provides complete instructions for configuring and deploying the *
 
 ## 2. Google Sheet Structure
 
-Create a Google Sheet (e.g. named **`HR Professional Services CRM`**) with a tab named **`Enquiries`**. The header row must contain exactly these 12 columns:
+Create a Google Sheet (e.g. named **`HR Professional Services CRM`**) with a tab named **`Enquiries`**. The header row must contain exactly these 13 columns:
 
 | Column # | Column Header | Description | Example Value |
 |---|---|---|---|
@@ -26,12 +26,13 @@ Create a Google Sheet (e.g. named **`HR Professional Services CRM`**) with a tab
 | **D** | `Email` | Customer contact email | `sarah.jenkins@company.com` |
 | **E** | `Phone` | International phone / WhatsApp | `+44 7700 900123` |
 | **F** | `Company` | Client organization / company | `Jenkins Logistics Ltd` |
-| **G** | `Service` | Requested service category | `Recruitment & Talent Search` |
-| **H** | `Message` | Project requirements / brief | `Looking to hire 3 senior full-stack devs...` |
-| **I** | `Source` | Source channel | `Website Contact Form` |
-| **J** | `Page` | Relative path where submitted | `/#contact` |
-| **K** | `Status` | Operational CRM status | `New` *(Default)* |
-| **L** | `Notes` | Internal team notes & audit log | *(Updated by team)* |
+| **G** | `Service` | Requested service offering | `Business Systems Consulting` |
+| **H** | `Category` | Core commercial category | `Business & Consulting` |
+| **I** | `Message` | Project requirements / brief | `Looking to audit operational workflows...` |
+| **J** | `Source` | Source channel | `Website Contact Form` |
+| **K** | `Page` | Relative path where submitted | `/#contact` |
+| **L** | `Status` | Operational CRM status | `New` *(Default)* |
+| **M** | `Notes` | Internal team notes & audit log | *(Updated by team)* |
 
 ### Status Lifecycle
 The `Status` column defaults to **`New`**. Team members can update this cell in Google Sheets to:

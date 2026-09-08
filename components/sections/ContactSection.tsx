@@ -17,19 +17,57 @@ import {
 } from "lucide-react";
 import { LinkedinIcon } from "@/components/ui/LinkedinIcon";
 
-const SERVICE_OPTIONS = [
-  "Recruitment & Talent Search",
-  "Career Support & Professional Progression",
-  "HR Consulting & Workplace Systems",
-  "Business Systems Consulting",
-  "CRM / ERP Implementation (Frappe / ERPNext)",
-  "Workflow & AI Automation",
-  "Custom Software & Web Platforms",
-  "Trading Technology & Algorithmic Systems",
-  "General Advisory / Other",
-];
+const CATEGORY_OPTIONS = [
+  "Business & Consulting",
+  "Software & Web",
+  "Trading Technology",
+] as const;
 
-export function ContactSection() {
+const SERVICES_BY_CATEGORY: Record<string, string[]> = {
+  "Business & Consulting": [
+    "Business Consultation",
+    "Process / Tech Audit",
+    "Business Systems Consulting",
+    "Frappe / ERPNext Systems Implementation",
+    "Website + Lead Capture + Basic CRM",
+    "Business Apps Script Automations",
+    "Documentation & SOPs",
+    "General Advisory / Other",
+  ],
+  "Software & Web": [
+    "Website Basic",
+    "Website Premium",
+    "Fully Automated & Secured Websites",
+    "Custom CRM Systems",
+    "Finance & Accounts Systems",
+    "HR & People Systems",
+    "ERP Systems",
+    "Booking Systems",
+    "Custom Business Applications",
+    "Integrated Business Systems",
+  ],
+  "Trading Technology": [
+    "Standard TradingView Indicators",
+    "Custom TradingView Indicators",
+    "Standard TradingView Strategies",
+    "Custom TradingView Strategies",
+    "MT5 Custom Scanner & Alert Systems",
+    "MT5 Custom Auto-Trading Systems",
+    "MT5 Alerts & Notifications",
+    "Custom Trading Alerts to Telegram",
+    "Trading Automation Systems",
+  ],
+};
+
+interface ContactSectionProps {
+  preselectedService?: string;
+  preselectedCategory?: string;
+}
+
+export function ContactSection({ preselectedService, preselectedCategory }: ContactSectionProps = {}) {
+  const initialCategory = preselectedCategory || "Business & Consulting";
+  const initialService = preselectedService || "Business Systems Consulting";
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -37,7 +75,8 @@ export function ContactSection() {
     countryCode: "GB",
     normalizedPhone: "",
     company: "",
-    service: "Business Systems Consulting",
+    category: initialCategory,
+    service: initialService,
     message: "",
     website_hp: "", // Honeypot field
   });
@@ -139,7 +178,8 @@ export function ContactSection() {
           countryCode: "GB",
           normalizedPhone: "",
           company: "",
-          service: "Business Systems Consulting",
+          category: initialCategory,
+          service: initialService,
           message: "",
           website_hp: "",
         });
@@ -154,7 +194,8 @@ export function ContactSection() {
           countryCode: "GB",
           normalizedPhone: "",
           company: "",
-          service: "Business Systems Consulting",
+          category: initialCategory,
+          service: initialService,
           message: "",
           website_hp: "",
         });
@@ -424,24 +465,53 @@ export function ContactSection() {
                     </div>
                   </div>
 
-                  {/* Service Required Dropdown */}
-                  <div className="space-y-1.5">
-                    <label htmlFor="form-service" className="block text-xs font-bold text-slate-700">
-                      Service Required <span className="text-rose-500">*</span>
-                    </label>
-                    <select
-                      id="form-service"
-                      value={formData.service}
-                      onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                      disabled={status === "submitting"}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300/90 text-slate-900 text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50 font-medium"
-                    >
-                      {SERVICE_OPTIONS.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
+                  {/* Category & Service Required Dropdowns */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label htmlFor="form-category" className="block text-xs font-bold text-slate-700">
+                        Commercial Category <span className="text-rose-500">*</span>
+                      </label>
+                      <select
+                        id="form-category"
+                        value={formData.category}
+                        onChange={(e) => {
+                          const newCat = e.target.value;
+                          const availableServices = SERVICES_BY_CATEGORY[newCat] || [];
+                          setFormData({
+                            ...formData,
+                            category: newCat,
+                            service: availableServices[0] || "Business Systems Consulting",
+                          });
+                        }}
+                        disabled={status === "submitting"}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300/90 text-slate-900 text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50 font-medium"
+                      >
+                        {CATEGORY_OPTIONS.map((cat) => (
+                          <option key={cat} value={cat}>
+                            {cat}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label htmlFor="form-service" className="block text-xs font-bold text-slate-700">
+                        Service Required <span className="text-rose-500">*</span>
+                      </label>
+                      <select
+                        id="form-service"
+                        value={formData.service}
+                        onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                        disabled={status === "submitting"}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300/90 text-slate-900 text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50 font-medium"
+                      >
+                        {(SERVICES_BY_CATEGORY[formData.category] || []).map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   {/* Message */}
@@ -471,12 +541,12 @@ export function ContactSection() {
                       {status === "submitting" ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin" />
-                          <span>Submitting to CRM Engine...</span>
+                          <span>Sending...</span>
                         </>
                       ) : (
                         <>
                           <Send className="w-4 h-4" />
-                          <span>Submit Enquiry</span>
+                          <span>Discuss Your Project</span>
                         </>
                       )}
                     </button>
