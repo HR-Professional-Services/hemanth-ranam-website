@@ -56,21 +56,21 @@ export function CaseStudiesSection() {
       ],
     },
     {
-      title: "Chartora Algorithmic Execution Bridge",
-      subtitle: "MetaTrader 5 Real-Time Scanner & Telegram Alert Ecosystem",
-      client: "Quantitative Proprietary Desk & Trading Firm",
+      title: "TradingView Indicator & Alert Setup",
+      subtitle: "Pine Script v5 Indicator & MT5 Price Alert Configuration",
+      client: "Active Systematic Trader & Private Investor",
       metrics: [
-        { label: "Execution Latency", value: "< 120ms" },
-        { label: "Markets Monitored", value: "28+ Symbols" },
-        { label: "Uptime Reliability", value: "99.99%" },
+        { label: "Rule Accuracy", value: "100% Deterministic" },
+        { label: "Signals Verified", value: "Non-Repainting" },
+        { label: "Alert Delivery", value: "Instant Push" },
       ],
       description:
-        "Engineered an institutional-grade market data ingestion and alerting pipeline connecting MetaTrader 5 (MT5) with low-latency Telegram channels and automated risk managers for Gold, Silver, and equity index instruments.",
+        "Engineered custom Pine Script v5 indicators for TradingView with non-repainting mathematical logic and configured MT5 price alert triggers for multi-timeframe trend confluence on Gold and major instruments.",
       highlights: [
-        "Real-time multi-symbol trend confluence scanner coded in native MQL5",
-        "Sub-second alert formatting with dynamic stop-loss and take-profit targets",
-        "Strict automated equity risk controls and drawdown limits",
-        "Cloud VPS runtime with continuous heartbeat monitoring",
+        "Non-repainting multi-timeframe indicator logic coded in Pine Script v5",
+        "Clear visual signals, dynamic support bands, and moving average crossovers",
+        "Instant alert notifications configured for desktop and mobile devices",
+        "Complete source code delivered with clear parameter settings",
       ],
     },
   ];
@@ -87,7 +87,7 @@ export function CaseStudiesSection() {
           </div>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             Selected Systems &amp;{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
               Live Case Studies
             </span>
           </h2>
@@ -172,8 +172,8 @@ export function CaseStudiesSection() {
 
                 <div className="pt-2">
                   <a
-                    href="#contact"
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/20 transition-all hover:scale-[1.02]"
+                    href="/#contact"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 shadow-md shadow-blue-500/20 transition-all hover:scale-[1.02]"
                   >
                     <span>Build a Similar Architecture</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -188,7 +188,7 @@ export function CaseStudiesSection() {
                     <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                     <span className="text-slate-800 font-bold">{current.title}</span>
                   </div>
-                  <span className="text-[10px] text-blue-600 font-bold">Live Cluster</span>
+                  <span className="text-[10px] text-blue-600 font-bold">System Status</span>
                 </div>
 
                 {/* Dynamic Mockup Body depending on Active Case */}
@@ -221,7 +221,7 @@ export function CaseStudiesSection() {
 
                     <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-800 flex items-center gap-2">
                       <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
-                      <span>Multi-tenant data isolation active across all workspaces.</span>
+                      <span>Role-based user permissions active across all workspaces.</span>
                     </div>
                   </div>
                 )}
@@ -231,7 +231,7 @@ export function CaseStudiesSection() {
                     <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between shadow-xs">
                       <div>
                         <span className="text-emerald-800 block text-[10px] font-semibold">Inbound Webhook Stream</span>
-                        <span className="text-slate-900 font-bold">Canonical 15-Column Google Sheet CRM</span>
+                        <span className="text-slate-900 font-bold">Google Sheets CRM Integration</span>
                       </div>
                       <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">
                         Live
@@ -248,7 +248,7 @@ export function CaseStudiesSection() {
                         <span className="text-emerald-700 font-bold">Dispatched (240ms)</span>
                       </div>
                       <div className="flex justify-between text-[11px]">
-                        <span className="text-slate-700">WhatsApp Notification Bot</span>
+                        <span className="text-slate-700">Customer Auto-Confirmation</span>
                         <span className="text-emerald-700 font-bold">Delivered</span>
                       </div>
                     </div>
@@ -262,34 +262,34 @@ export function CaseStudiesSection() {
 
                 {activeCase === 2 && (
                   <div className="space-y-3 text-xs font-mono">
-                    <div className="p-3 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-between shadow-xs">
+                    <div className="p-3 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-between shadow-xs">
                       <div>
-                        <span className="text-indigo-800 block text-[10px] font-semibold">MT5 Scanner Feed</span>
+                        <span className="text-sky-800 block text-[10px] font-semibold">Pine Script v5 Indicator</span>
                         <span className="text-slate-900 font-bold">Multi-Timeframe Trend Confluence</span>
                       </div>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold">
-                        28 Pairs
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-bold">
+                        Non-Repainting
                       </span>
                     </div>
 
                     <div className="p-3 rounded-xl bg-white border border-slate-200/80 space-y-2 shadow-xs">
                       <div className="flex justify-between text-[11px]">
                         <span className="text-slate-700">Gold (XAUUSD) M15 Pullback</span>
-                        <span className="text-emerald-700 font-bold">Confluence Triggered</span>
+                        <span className="text-emerald-700 font-bold">Signal Validated</span>
                       </div>
                       <div className="flex justify-between text-[11px]">
-                        <span className="text-slate-700">Telegram Channel Broadcast</span>
-                        <span className="text-emerald-700 font-bold">Sent (&lt;90ms)</span>
+                        <span className="text-slate-700">Mobile Push Alert Trigger</span>
+                        <span className="text-emerald-700 font-bold">Delivered</span>
                       </div>
                       <div className="flex justify-between text-[11px]">
-                        <span className="text-slate-700">Max Drawdown Guardian</span>
-                        <span className="text-slate-500 font-semibold">Active (0% breach)</span>
+                        <span className="text-slate-700">Mathematical Script Logic</span>
+                        <span className="text-slate-600 font-semibold">Verified on History</span>
                       </div>
                     </div>
 
                     <div className="p-3 rounded-xl bg-white border border-slate-200/80 text-[11px] text-slate-700 flex items-center gap-2 shadow-xs">
-                      <Server className="w-4 h-4 text-indigo-600 shrink-0" />
-                      <span>Dedicated VPS automated execution running 24/5.</span>
+                      <Server className="w-4 h-4 text-sky-600 shrink-0" />
+                      <span>Clean Pine Script source code with configurable parameters.</span>
                     </div>
                   </div>
                 )}

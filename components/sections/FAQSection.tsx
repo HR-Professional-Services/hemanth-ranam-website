@@ -73,7 +73,7 @@ export function FAQSection() {
             Have a specific requirement not covered here?
           </p>
           <a
-            href="#contact"
+            href="/#contact"
             className="text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center gap-1.5"
           >
             <MessageSquare className="w-3.5 h-3.5" />

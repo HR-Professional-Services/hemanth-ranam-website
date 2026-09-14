@@ -228,7 +228,7 @@ export function ContactSection({
 
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
               Start Your{" "}
-              <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
                 Systems Consultation
               </span>
             </h2>
@@ -523,7 +523,7 @@ export function ContactSection({
                     <button
                       type="submit"
                       disabled={status === "submitting"}
-                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg shadow-blue-500/25 transition-all disabled:opacity-50 cursor-pointer"
+                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:to-blue-900 shadow-lg shadow-blue-500/25 transition-all disabled:opacity-50 cursor-pointer"
                     >
                       {status === "submitting" ? (
                         <>

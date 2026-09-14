@@ -51,7 +51,7 @@ export function DoMoreBusinessSection() {
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight leading-tight">
             Do More Business. <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-indigo-300">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
               Let Your Systems Do More Work.
             </span>
           </h2>
@@ -109,7 +109,7 @@ export function DoMoreBusinessSection() {
             </div>
           </div>
 
-          <div className="lg:col-span-5 p-6 rounded-3xl bg-linear-to-br from-blue-600 to-indigo-700 text-white text-center flex flex-col justify-between shadow-xl">
+          <div className="lg:col-span-5 p-6 rounded-3xl bg-linear-to-br from-blue-600 via-blue-700 to-blue-800 text-white text-center flex flex-col justify-between shadow-xl">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-blue-200 block mb-1">
                 Small Price. Big Work.
@@ -121,7 +121,7 @@ export function DoMoreBusinessSection() {
             </div>
 
             <a
-              href="#contact"
+              href="/#contact"
               className="w-full py-3 px-6 rounded-xl bg-white text-slate-900 font-bold text-xs sm:text-sm hover:bg-blue-50 transition-colors shadow-sm flex items-center justify-center gap-2"
             >
               <span>Build My System</span>

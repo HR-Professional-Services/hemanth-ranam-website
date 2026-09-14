@@ -16,7 +16,7 @@ export function LifecycleSection() {
       title: "Train",
       desc: "Train your team with screen walkthroughs, SOPs, and clear digital checklists.",
       icon: GraduationCap,
-      accent: "text-indigo-600 bg-indigo-50 border-indigo-100",
+      accent: "text-sky-600 bg-sky-50 border-sky-100",
     },
     {
       step: "03",

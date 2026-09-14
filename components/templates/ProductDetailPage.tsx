@@ -78,7 +78,7 @@ export function ProductDetailPage({ product }: { product: ProductDetailProps }) 
                 {product.name}
               </h1>
 
-              <p className="mt-4 text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent leading-relaxed">
+              <p className="mt-4 text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent leading-relaxed">
                 &ldquo;{product.tagline}&rdquo;
               </p>
 
@@ -90,7 +90,7 @@ export function ProductDetailPage({ product }: { product: ProductDetailProps }) 
               <div className="mt-8 flex flex-wrap gap-3.5">
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/25 transition-all hover:scale-[1.02]"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:to-blue-900 shadow-md shadow-blue-500/25 transition-all hover:scale-[1.02]"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>Discuss {product.name} Setup</span>

@@ -89,13 +89,13 @@ export const BUSINESS_OS_PRODUCTS: BusinessOsProduct[] = [
     monthlyPlanNote: "Monthly managed CRM maintenance, webhook health checks, and minor workflow tweaks.",
     whatsIncluded: [
       "Complete lead-to-opportunity pipeline architecture",
-      "Website & WhatsApp lead form integration",
+      "Website contact form to CRM lead integration",
       "Custom quotation templates with brand styling",
-      "Notification bots and automated reminder triggers",
+      "Instant email notifications and automated follow-up reminders",
       "Team onboarding & CRM usage manual",
     ],
     supportLevel: "Continuous pipeline uptime monitoring, webhook verification, and quarterly workflow audits.",
-    technologyStack: ["Frappe CRM", "Next.js Webhooks", "REST APIs", "WhatsApp Cloud API", "Google Sheets Bridge"],
+    technologyStack: ["Frappe CRM", "Next.js Webhooks", "REST APIs", "Google Sheets Bridge", "Email Alerts"],
   },
   {
     id: "hrms-os",
@@ -513,7 +513,7 @@ export const TRADING_TECH_PRODUCTS = [
       "Built-in commission and realistic slippage simulation",
       "Time and session filters (London, NY, Asian sessions)",
       "Dynamic risk-reward and ATR-based stop mechanisms",
-      "Automation-ready alert syntax for webhook execution bots",
+      "Clean alert conditions formatted for easy manual or webhook execution",
     ],
   },
   {
@@ -535,29 +535,29 @@ export const TRADING_TECH_PRODUCTS = [
   {
     id: "mt5-expert-advisors",
     name: "MT5 Expert Advisors (EAs)",
-    tagline: "Automated execution robots with strict algorithmic risk controls.",
-    badge: "Algorithmic Execution",
-    icon: "Bot",
+    tagline: "Rule-based execution scripts with position sizing & risk controls.",
+    badge: "Automated Scripts",
+    icon: "Zap",
     description:
-      "Native MQL5 Expert Advisors engineered to execute trading rules automatically with strict position sizing, equity protection, and news filter guards.",
+      "Native MQL5 scripts engineered to execute standard trade rules with fixed position sizing, stop-loss, and take-profit targets.",
     features: [
       "Dynamic lot sizing based on strict account risk percentage",
       "Max daily drawdown circuit breakers",
       "Break-even and trailing stop management algorithms",
       "Built-in spread and slippage execution checks",
-      "Compatible with VPS hosting for 24/5 continuous runtime",
+      "Compatible with standard VPS hosting for continuous runtime",
     ],
   },
   {
     id: "telegram-alerts",
     name: "Telegram Alert Systems",
-    tagline: "Sub-second webhook delivery of trade signals directly to your Telegram channel.",
+    tagline: "Webhook delivery of trade signals directly to your Telegram channel.",
     badge: "Real-Time Alerts",
     icon: "Send",
     description:
       "Connect your TradingView alerts or MT5 scanners to automated Telegram channels or private groups with formatted market cards and charts.",
     features: [
-      "Sub-second signal delivery via Telegram Bot API",
+      "Reliable signal notifications to your private Telegram channel",
       "Clean visual markdown format with entry, SL, and TP targets",
       "Automated trade management update broadcasts",
       "VIP subscriber channel access automation",

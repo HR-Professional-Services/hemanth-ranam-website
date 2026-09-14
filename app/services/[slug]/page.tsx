@@ -111,7 +111,7 @@ export default async function ServiceSubpage({ params }: PageProps) {
     Mail: <Mail className="w-8 h-8 text-blue-600" />,
     TrendingUp: <TrendingUp className="w-8 h-8 text-emerald-600" />,
     Zap: <Zap className="w-8 h-8 text-blue-600" />,
-    Code2: <Code2 className="w-8 h-8 text-indigo-600" />,
+    Code2: <Code2 className="w-8 h-8 text-blue-600" />,
     Search: <Search className="w-8 h-8 text-blue-600" />,
     Globe: <Globe className="w-8 h-8 text-blue-600" />,
     Layout: <Layout className="w-8 h-8 text-blue-600" />,
@@ -142,7 +142,7 @@ export default async function ServiceSubpage({ params }: PageProps) {
   const tierIconMap: Record<string, React.ReactNode> = {
     "Small Business": <Store className="w-5 h-5 text-blue-600" />,
     "Growing Business": <TrendingUp className="w-5 h-5 text-emerald-600" />,
-    "Established Business": <Building2 className="w-5 h-5 text-indigo-600" />,
+    "Established Business": <Building2 className="w-5 h-5 text-blue-600" />,
   };
 
   return (
@@ -534,8 +534,8 @@ export default async function ServiceSubpage({ params }: PageProps) {
             </div>
 
             {/* Custom Tier */}
-            <div className="p-6 sm:p-8 rounded-2xl bg-white border border-indigo-200 shadow-2xs">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-4">
+            <div className="p-6 sm:p-8 rounded-2xl bg-white border border-blue-200 shadow-2xs">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wider mb-4">
                 <span>Custom Architecture</span>
               </div>
               <h3 className="text-lg font-black text-slate-900 mb-2">
@@ -547,7 +547,7 @@ export default async function ServiceSubpage({ params }: PageProps) {
               <ul className="space-y-3">
                 {service.standardVsCustom.custom.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-2.5">
-                    <Check className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
                     <span className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
                       {item}
                     </span>

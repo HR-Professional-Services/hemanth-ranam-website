@@ -94,7 +94,7 @@ export function SmallBizEntrySection() {
               View Service Specs
             </Link>
             <a
-              href="#contact"
+              href="/#contact"
               className="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 text-center transition-colors shadow-xs"
             >
               Get This System

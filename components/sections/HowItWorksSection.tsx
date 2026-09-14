@@ -90,7 +90,7 @@ export function HowItWorksSection() {
             </p>
           </div>
           <a
-            href="#contact"
+            href="/#contact"
             className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-xs shrink-0"
           >
             <span>Talk to Us</span>

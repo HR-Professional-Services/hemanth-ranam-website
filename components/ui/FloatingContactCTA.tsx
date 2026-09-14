@@ -34,7 +34,7 @@ export function FloatingContactCTA() {
           </div>
         </div>
         <a
-          href="#contact"
+          href="/#contact"
           id="mobile-floating-cta-btn"
           className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-xl transition-colors shadow-sm"
         >

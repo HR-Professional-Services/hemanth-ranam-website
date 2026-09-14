@@ -15,19 +15,19 @@ import {
 export function CoreCategoriesSection() {
   const iconMap: Record<string, React.ReactNode> = {
     Briefcase: <Briefcase className="w-6 h-6 text-blue-600" />,
-    Code2: <Code2 className="w-6 h-6 text-indigo-600" />,
+    Code2: <Code2 className="w-6 h-6 text-blue-600" />,
     TrendingUp: <TrendingUp className="w-6 h-6 text-emerald-600" />,
   };
 
   const badgeStyles: Record<string, string> = {
     blue: "bg-blue-50 text-blue-700 border-blue-200",
-    indigo: "bg-indigo-50 text-indigo-700 border-indigo-200",
+    indigo: "bg-sky-50 text-sky-700 border-sky-200",
     emerald: "bg-emerald-50 text-emerald-700 border-emerald-200",
   };
 
   const headerBorders: Record<string, string> = {
     blue: "hover:border-blue-400 focus-within:border-blue-400",
-    indigo: "hover:border-indigo-400 focus-within:border-indigo-400",
+    indigo: "hover:border-sky-400 focus-within:border-sky-400",
     emerald: "hover:border-emerald-400 focus-within:border-emerald-400",
   };
 
@@ -108,7 +108,7 @@ export function CoreCategoriesSection() {
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                   <a
-                    href="#contact"
+                    href="/#contact"
                     className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs transition-colors"
                   >
                     <span>Discuss</span>
@@ -135,7 +135,7 @@ export function CoreCategoriesSection() {
             </div>
           </div>
           <a
-            href="#pricing"
+            href="/#pricing"
             className="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors text-center shrink-0"
           >
             Review Project Pricing

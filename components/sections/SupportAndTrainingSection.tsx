@@ -10,7 +10,7 @@ export function SupportAndTrainingSection() {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200/80 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">
             <Headphones className="w-3.5 h-3.5" />
             <span>Monthly Support & Improvement</span>
           </div>
@@ -104,7 +104,7 @@ export function SupportAndTrainingSection() {
                 {/* Bottom CTA */}
                 <div className={`pt-4 border-t ${tier.recommended ? "border-slate-800" : "border-slate-200"}`}>
                   <a
-                    href="#contact"
+                    href="/#contact"
                     className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                       tier.recommended
                         ? "bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/30"
@@ -129,7 +129,7 @@ export function SupportAndTrainingSection() {
             </span>
           </div>
           <a
-            href="#lifecycle"
+            href="/#how-it-works"
             className="font-bold text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center gap-1 shrink-0"
           >
             <span>See How We Train & Handover Systems</span>

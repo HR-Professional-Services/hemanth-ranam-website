@@ -84,7 +84,7 @@ export function TradingTechSection() {
           </div>
 
           <a
-            href="#contact"
+            href="/#contact"
             className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 shrink-0"
           >
             <span>Discuss Trading Setup</span>

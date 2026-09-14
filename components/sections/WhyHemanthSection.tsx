@@ -33,7 +33,7 @@ export function WhyHemanthSection() {
           </div>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             Founder-Led Engineering.{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
               Zero Agency Overhead.
             </span>
           </h2>
@@ -60,7 +60,7 @@ export function WhyHemanthSection() {
 
           <div className="p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 p-[2px] shadow-lg shadow-blue-500/20 shrink-0">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-[2px] shadow-lg shadow-blue-500/20 shrink-0">
                 <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center text-blue-600">
                   <Award className="w-7 h-7" />
                 </div>
@@ -92,8 +92,8 @@ export function WhyHemanthSection() {
                 LinkedIn Profile
               </a>
               <a
-                href="#contact"
-                className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/25 transition-all"
+                href="/#contact"
+                className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:to-blue-900 shadow-md shadow-blue-500/25 transition-all"
               >
                 Book Systems Consultation
               </a>

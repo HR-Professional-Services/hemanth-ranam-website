@@ -124,8 +124,8 @@ export function BusinessOsIntroSection() {
                     <span>Auto Handshake</span>
                   </div>
                   <Zap className="w-3.5 h-3.5 text-blue-600 animate-pulse" />
-                  <div className="flex items-center gap-1.5 bg-indigo-50 px-2.5 py-1.5 rounded-lg border border-indigo-200 font-bold text-indigo-800">
-                    <Server className="w-3 h-3 text-indigo-600" />
+                  <div className="flex items-center gap-1.5 bg-sky-50 px-2.5 py-1.5 rounded-lg border border-sky-200 font-bold text-sky-800">
+                    <Server className="w-3 h-3 text-sky-600" />
                     <span>Managed Cloud</span>
                   </div>
                 </div>

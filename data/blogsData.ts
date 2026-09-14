@@ -45,7 +45,7 @@ export const BLOG_POSTS: BlogPost[] = [
       avatar: "/images/hemanth-ranam-profile.jpg",
     },
     coverTheme: {
-      gradient: "from-blue-600 to-indigo-800",
+      gradient: "from-blue-600 to-blue-900",
       badge: "Architecture",
       icon: "Layers",
     },
@@ -113,7 +113,7 @@ export const BLOG_POSTS: BlogPost[] = [
       avatar: "/images/hemanth-ranam-profile.jpg",
     },
     coverTheme: {
-      gradient: "from-purple-600 to-indigo-900",
+      gradient: "from-blue-700 to-cyan-900",
       badge: "AI Engineering",
       icon: "Sparkles",
     },
@@ -147,7 +147,7 @@ export const BLOG_POSTS: BlogPost[] = [
       avatar: "/images/hemanth-ranam-profile.jpg",
     },
     coverTheme: {
-      gradient: "from-violet-600 to-sky-800",
+      gradient: "from-blue-600 to-sky-700",
       badge: "Edge Architecture",
       icon: "Network",
     },
@@ -281,7 +281,7 @@ export const BLOG_POSTS: BlogPost[] = [
       avatar: "/images/hemanth-ranam-profile.jpg",
     },
     coverTheme: {
-      gradient: "from-indigo-600 to-blue-950",
+      gradient: "from-blue-600 to-slate-900",
       badge: "Automation Bridge",
       icon: "Zap",
     },

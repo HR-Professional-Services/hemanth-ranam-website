@@ -23,7 +23,7 @@ export function HeroVisualDashboard() {
   return (
     <div className="relative w-full max-w-5xl mx-auto mt-10 sm:mt-14 select-none">
       {/* Ambient background blue glow */}
-      <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-[650px] h-[300px] bg-gradient-to-tr from-blue-500/15 via-indigo-500/10 to-cyan-400/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-[650px] h-[300px] bg-gradient-to-tr from-blue-500/15 via-sky-500/10 to-cyan-400/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* Pure White Glassmorphic Window Frame */}
       <div className="relative rounded-2xl bg-white/95 border border-slate-200/90 shadow-2xl shadow-blue-600/10 backdrop-blur-2xl overflow-hidden">
@@ -118,7 +118,7 @@ export function HeroVisualDashboard() {
             </div>
 
             <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
                 <Users className="w-4 h-4" />
               </div>
               <div>
@@ -207,12 +207,12 @@ export function HeroVisualDashboard() {
               <div className="lg:col-span-3 p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                   <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-md bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                    <div className="w-7 h-7 rounded-md bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
                       <CheckSquare className="w-3.5 h-3.5" />
                     </div>
                     <span className="text-xs font-bold text-slate-900">Operations OS</span>
                   </div>
-                  <span className="text-[10px] font-mono text-indigo-700 font-bold bg-indigo-50 px-2 py-0.5 rounded">
+                  <span className="text-[10px] font-mono text-sky-700 font-bold bg-sky-50 px-2 py-0.5 rounded">
                     3 Pending
                   </span>
                 </div>
@@ -294,12 +294,12 @@ export function HeroVisualDashboard() {
             <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-md bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 rounded-md bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
                     <UserCheck className="w-3.5 h-3.5" />
                   </div>
                   <span className="text-xs font-bold text-slate-900">Workforce &amp; Attendance Hub</span>
                 </div>
-                <span className="text-xs font-mono text-indigo-700 font-bold">48/48 Synced</span>
+                <span className="text-xs font-mono text-sky-700 font-bold">48/48 Synced</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                 <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100">

@@ -25,9 +25,9 @@ export function Footer() {
           {/* Col 1: Brand & Positioning */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-500 p-[1.5px] shadow-sm shadow-blue-500/20">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-500 p-[1.5px] shadow-sm shadow-blue-500/20">
                 <div className="w-full h-full bg-white rounded-[9px] flex items-center justify-center">
-                  <span className="font-extrabold text-sm bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  <span className="font-extrabold text-sm bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
                     HR
                   </span>
                 </div>
@@ -147,32 +147,32 @@ export function Footer() {
           {/* Col 4: 03 Trading & Legal */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-mono flex items-center gap-1.5">
-              <TrendingUp className="w-3.5 h-3.5 text-indigo-600" />
+              <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
               <span>03 Trading Tech</span>
             </h4>
             <ul className="space-y-2 text-slate-600">
               <li>
-                <Link href="/trading-technology" className="hover:text-indigo-600 transition-colors">
+                <Link href="/trading-technology" className="hover:text-blue-600 transition-colors">
                   Trading Technology Suite
                 </Link>
               </li>
               <li>
-                <Link href="/services/tradingview-indicators" className="hover:text-indigo-600 transition-colors">
+                <Link href="/services/tradingview-indicators" className="hover:text-blue-600 transition-colors">
                   TradingView Indicators
                 </Link>
               </li>
               <li>
-                <Link href="/services/tradingview-strategies" className="hover:text-indigo-600 transition-colors">
+                <Link href="/services/tradingview-strategies" className="hover:text-blue-600 transition-colors">
                   TradingView Strategies
                 </Link>
               </li>
               <li>
-                <Link href="/services/mt5-scanner-alerts" className="hover:text-indigo-600 transition-colors">
+                <Link href="/services/mt5-scanner-alerts" className="hover:text-blue-600 transition-colors">
                   MT5 Scanners &amp; Alerts
                 </Link>
               </li>
               <li>
-                <Link href="/services/mt5-auto-trading" className="hover:text-indigo-600 transition-colors">
+                <Link href="/services/mt5-auto-trading" className="hover:text-blue-600 transition-colors">
                   MT5 Expert Advisors
                 </Link>
               </li>

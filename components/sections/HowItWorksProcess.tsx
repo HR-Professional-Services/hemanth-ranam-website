@@ -14,7 +14,7 @@ export function HowItWorksProcess() {
           </div>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             We Don&apos;t Just Install Software.{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
               We Engineer Systems.
             </span>
           </h2>
@@ -75,8 +75,8 @@ export function HowItWorksProcess() {
           </div>
 
           <a
-            href="#contact"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/25 transition-all hover:scale-[1.02]"
+            href="/#contact"
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:to-blue-900 shadow-md shadow-blue-500/25 transition-all hover:scale-[1.02]"
           >
             <span>Book Systems Consultation</span>
             <ArrowRight className="w-3.5 h-3.5" />

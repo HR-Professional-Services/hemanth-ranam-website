@@ -194,7 +194,7 @@ export function HeroScene3D() {
       aria-hidden="true"
     >
       {!hasWebGL && (
-        <div className="w-36 h-36 rounded-full bg-gradient-to-tr from-blue-500/20 via-sky-400/20 to-indigo-500/10 blur-xl animate-pulse" />
+        <div className="w-36 h-36 rounded-full bg-gradient-to-tr from-blue-500/20 via-sky-400/20 to-cyan-500/10 blur-xl animate-pulse" />
       )}
     </div>
   );

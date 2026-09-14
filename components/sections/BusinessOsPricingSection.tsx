@@ -42,7 +42,7 @@ export function BusinessOsPricingSection() {
           </div>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             Transparent Implementation.{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
               Managed Peace of Mind.
             </span>
           </h2>
@@ -81,18 +81,18 @@ export function BusinessOsPricingSection() {
         {/* TAB 1: MONTHLY MANAGED BUSINESS OS */}
         {billingTab === "monthly" && (
           <div className="mt-12 space-y-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
               {MONTHLY_OS_PLANS.map((plan) => (
                 <div
                   key={plan.id}
                   className={`p-6 sm:p-7 rounded-3xl flex flex-col justify-between transition-all duration-300 relative bg-white ${
                     plan.popular
-                      ? "border-2 border-blue-600 shadow-xl shadow-blue-500/15"
+                      ? "border-2 border-blue-600 shadow-xl shadow-blue-500/15 ring-4 ring-blue-50"
                       : "border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow-md"
                   }`}
                 >
                   {plan.badge && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-[10px] font-bold text-white uppercase tracking-wider shadow-md">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-[10px] font-bold text-white uppercase tracking-wider shadow-md whitespace-nowrap">
                       {plan.badge}
                     </div>
                   )}
@@ -105,7 +105,7 @@ export function BusinessOsPricingSection() {
                       </div>
                       <div>
                         <h3 className="text-lg font-bold text-slate-900 leading-tight">{plan.name}</h3>
-                        <p className="text-[11px] text-blue-600 font-medium">{plan.tagline}</p>
+                        <p className="text-[11px] text-blue-600 font-semibold">{plan.tagline}</p>
                       </div>
                     </div>
 
@@ -116,35 +116,39 @@ export function BusinessOsPricingSection() {
                         </span>
                         <span className="text-xs text-slate-500 font-mono">{plan.period}</span>
                       </div>
-                      <span className="text-[11px] text-slate-500 block mt-1">
-                        Ideal for: {plan.idealFor}
+                      <span className="text-[11px] text-slate-500 block mt-1 leading-normal">
+                        <strong>Ideal for:</strong> {plan.idealFor}
                       </span>
                     </div>
 
-                    {/* Modules included */}
-                    <div className="space-y-1.5 text-xs">
-                      <span className="font-bold text-slate-800 block font-mono text-[10px] uppercase">
+                    {/* Modules included: Full Wording, No Truncation */}
+                    <div className="space-y-2 text-xs">
+                      <span className="font-bold text-slate-800 block font-mono text-[10px] uppercase tracking-wider">
                         Covered Applications
                       </span>
-                      {plan.includedModules.map((m, i) => (
-                        <div key={i} className="flex items-center gap-2 text-slate-700">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                          <span className="truncate font-medium">{m}</span>
-                        </div>
-                      ))}
+                      <div className="space-y-1.5">
+                        {plan.includedModules.map((m, i) => (
+                          <div key={i} className="flex items-start gap-2 text-slate-700">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
+                            <span className="font-medium text-slate-800 leading-snug">{m}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
-                    {/* Features & SLA */}
-                    <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
-                      <span className="font-bold text-slate-800 block font-mono text-[10px] uppercase">
+                    {/* Features & SLA: Full Wording, No Truncation */}
+                    <div className="pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+                      <span className="font-bold text-slate-800 block font-mono text-[10px] uppercase tracking-wider">
                         Operational Scope
                       </span>
-                      {plan.features.slice(0, 4).map((f, i) => (
-                        <div key={i} className="flex items-start gap-1.5">
-                          <span className="text-blue-600 font-bold">•</span>
-                          <span>{f}</span>
-                        </div>
-                      ))}
+                      <div className="space-y-1.5">
+                        {plan.features.map((f, i) => (
+                          <div key={i} className="flex items-start gap-1.5">
+                            <span className="text-blue-600 font-bold">•</span>
+                            <span className="leading-snug">{f}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
@@ -154,10 +158,10 @@ export function BusinessOsPricingSection() {
                       <span>{plan.sla}</span>
                     </div>
                     <a
-                      href={`#contact`}
+                      href={`/#contact?plan=${encodeURIComponent(plan.name)}`}
                       className={`w-full inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl text-xs font-bold transition-all ${
                         plan.popular
-                          ? "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md shadow-blue-500/25"
+                          ? "bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white shadow-md shadow-blue-500/25"
                           : "bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200"
                       }`}
                     >
@@ -268,8 +272,8 @@ export function BusinessOsPricingSection() {
 
                   <div className="pt-6 mt-6 border-t border-slate-100">
                     <a
-                      href="#contact"
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/25 transition-all"
+                      href={`/#contact?service=${encodeURIComponent(serv.name)}`}
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 shadow-md shadow-blue-500/25 transition-all"
                     >
                       <Calendar className="w-3.5 h-3.5" />
                       <span>{serv.ctaLabel}</span>

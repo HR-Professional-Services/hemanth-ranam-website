@@ -1868,7 +1868,7 @@ export const CORE_CATEGORIES: CoreCategory[] = [
     problemStatement: "We need websites and systems that generate business without enterprise bloat.",
     description: "High-performance websites and custom business software built on modern cloud architecture. Start simple with standard blueprints, scale to custom systems when needed.",
     icon: "Code2",
-    accentColor: "indigo",
+    accentColor: "blue",
     services: [
       { name: "Website Basic → Premium", tagline: "Fast, responsive business landing pages and corporate websites.", icon: "Globe", slug: "websites" },
       { name: "Fully Automated & Secured Websites", tagline: "Websites with automated lead capture, CRM sync, and edge security.", icon: "ShieldCheck", slug: "websites" },

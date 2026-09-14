@@ -125,7 +125,7 @@ export function WhatWeSolveSection() {
           </div>
           <div className="flex items-center gap-3 shrink-0 w-full sm:w-auto">
             <a
-              href="#pricing"
+              href="/#pricing"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
             >
               <span>View Transparent Project Rates</span>

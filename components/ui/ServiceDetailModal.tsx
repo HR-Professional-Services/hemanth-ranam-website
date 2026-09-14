@@ -178,7 +178,7 @@ export function ServiceDetailModal({ service, onClose }: ServiceDetailModalProps
           </button>
 
           <a
-            href="#contact"
+            href="/#contact"
             onClick={onClose}
             className="inline-flex items-center gap-2 px-5 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs transition-all"
           >

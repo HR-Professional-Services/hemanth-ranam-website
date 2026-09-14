@@ -28,7 +28,7 @@ export function DigitalGrowthSection() {
           </div>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             Websites That Feed Your{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
               Operating Pipeline
             </span>
           </h2>
@@ -88,8 +88,8 @@ export function DigitalGrowthSection() {
 
                 <div className="pt-2 flex flex-wrap gap-3">
                   <a
-                    href="#contact"
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/20 transition-all hover:scale-[1.02]"
+                    href="/#contact"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 shadow-md shadow-blue-500/20 transition-all hover:scale-[1.02]"
                   >
                     <Calendar className="w-3.5 h-3.5" />
                     <span>Deploy Website Growth OS</span>
@@ -170,7 +170,7 @@ export function DigitalGrowthSection() {
 
               <div className="pt-4 border-t border-slate-100">
                 <a
-                  href="#contact"
+                  href="/#contact"
                   className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 transition-colors"
                 >
                   <span>Inquire about {prod.name}</span>

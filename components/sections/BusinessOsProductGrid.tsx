@@ -60,7 +60,7 @@ export function BusinessOsProductGrid() {
           </div>
           <h2 className="mt-3 text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             Modular Operating Systems.{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
               One Unified Foundation.
             </span>
           </h2>
@@ -213,8 +213,8 @@ export function BusinessOsProductGrid() {
               {/* Action Buttons (All Open in Same Tab) */}
               <div className="space-y-2 pt-1">
                 <a
-                  href={`#contact?plan=${encodeURIComponent(activeProduct.name)}`}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/20 transition-all"
+                  href={`/#contact?plan=${encodeURIComponent(activeProduct.name)}`}
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 shadow-md shadow-blue-500/20 transition-all"
                 >
                   <Calendar className="w-3.5 h-3.5" />
                   <span>Discuss {activeProduct.name} Implementation</span>
@@ -233,14 +233,14 @@ export function BusinessOsProductGrid() {
           </div>
         </div>
 
-        {/* All 10 Product Cards Grid (Heading Next to Icon to Save Vertical Space) */}
+        {/* All 10 Product Cards Grid (Links directly to each subpage in same window) */}
         <div className="mt-12 sm:mt-16">
           <div className="flex items-center justify-between mb-5">
             <h3 className="text-lg sm:text-xl font-bold text-slate-900">
               The 10 Core Business OS Applications
             </h3>
             <span className="text-xs font-mono text-slate-500 hidden sm:inline font-medium">
-              Click any application to inspect specifications
+              Click any application to open full specifications
             </span>
           </div>
 
@@ -249,46 +249,49 @@ export function BusinessOsProductGrid() {
               const CardIcon = ICON_MAP[product.icon] || Layers;
               const isSelected = product.id === selectedProductId;
               return (
-                <div
+                <Link
                   key={product.id}
-                  onClick={() => setSelectedProductId(product.id)}
-                  className={`p-4 sm:p-5 rounded-2xl cursor-pointer transition-all duration-200 relative group ${
+                  href={`/${product.slug}`}
+                  onMouseEnter={() => setSelectedProductId(product.id)}
+                  className={`p-4 sm:p-5 rounded-2xl transition-all duration-200 relative group flex flex-col justify-between ${
                     isSelected
                       ? "bg-white border-2 border-blue-600 shadow-lg shadow-blue-500/10"
-                      : "bg-white border border-slate-200/90 hover:border-blue-300 hover:shadow-md shadow-sm"
+                      : "bg-white border border-slate-200/90 hover:border-blue-400 hover:shadow-md shadow-sm"
                   }`}
                 >
-                  {/* Heading Inline Next to Icon */}
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 border border-blue-100 group-hover:scale-105 transition-transform">
-                        <CardIcon className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
-                          {product.name}
-                        </h4>
-                        <span className="text-[10px] text-blue-700 font-semibold font-mono block">
-                          {product.badge}
-                        </span>
+                  <div>
+                    {/* Heading Inline Next to Icon */}
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 border border-blue-100 group-hover:scale-105 transition-transform">
+                          <CardIcon className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
+                            {product.name}
+                          </h4>
+                          <span className="text-[10px] text-blue-700 font-semibold font-mono block">
+                            {product.badge}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed font-normal mt-1">
-                    {product.whatItSolves}
-                  </p>
+                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed font-normal mt-1">
+                      {product.whatItSolves}
+                    </p>
+                  </div>
 
                   <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span className="text-[10px] font-mono text-slate-500 font-semibold">
                       {product.coreModules.length} Modules
                     </span>
                     <span className="text-blue-600 font-bold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-xs">
-                      <span>Inspect</span>
+                      <span>View Specs</span>
                       <ArrowRight className="w-3 h-3" />
                     </span>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>

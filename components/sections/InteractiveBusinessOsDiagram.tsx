@@ -50,7 +50,7 @@ export function InteractiveBusinessOsDiagram() {
           </div>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             How Data Flows Through Your{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
               Business OS
             </span>
           </h2>
@@ -205,8 +205,8 @@ export function InteractiveBusinessOsDiagram() {
 
                 <div className="pt-2">
                   <a
-                    href="#contact"
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/20 transition-all hover:scale-[1.01]"
+                    href="/#contact"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 shadow-md shadow-blue-500/20 transition-all hover:scale-[1.01]"
                   >
                     <span>Build This Workflow for Your Business</span>
                     <ArrowRight className="w-3.5 h-3.5" />

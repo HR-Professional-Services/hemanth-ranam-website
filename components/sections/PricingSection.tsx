@@ -185,7 +185,7 @@ export function PricingSection() {
           </div>
 
           <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 flex items-start gap-3 shadow-2xs">
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 border border-indigo-100">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>

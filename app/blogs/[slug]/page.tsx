@@ -178,7 +178,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
 
           {/* Start a Project CTA Card */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-800 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="space-y-2 text-center sm:text-left">
               <span className="text-xs font-bold uppercase tracking-wider text-blue-200">
                 Need Custom Implementation?

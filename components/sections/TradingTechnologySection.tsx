@@ -40,12 +40,12 @@ export function TradingTechnologySection() {
           </div>
           <h2 className="mt-3 text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             Trading Technology &amp;{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Execution Systems
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
+              Analytical Tools
             </span>
           </h2>
           <p className="mt-3 text-sm sm:text-base text-slate-600 max-w-xl mx-auto font-normal">
-            Custom quantitative software for TradingView and MetaTrader 5. Built for proprietary desks, algorithmic traders, and systematic funds.
+            Custom indicators, chart scripts, and alerts for TradingView and MetaTrader 5. Clean, rule-based indicators, strategy backtesting scripts, and automated trade alerts.
           </p>
         </div>
 
@@ -59,7 +59,7 @@ export function TradingTechnologySection() {
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
               <span className="ml-2 text-xs font-mono text-slate-700 font-semibold flex items-center gap-1.5">
                 <Terminal className="w-3.5 h-3.5 text-blue-600" />
-                <span>quant-bridge-core.mql5 // v5.4.1</span>
+                <span>custom-indicator.pine // v5</span>
               </span>
             </div>
 
@@ -67,14 +67,14 @@ export function TradingTechnologySection() {
             <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-[11px] font-mono">
               <button
                 type="button"
-                onClick={() => setActiveTab("mt5")}
+                onClick={() => setActiveTab("pine")}
                 className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                  activeTab === "mt5"
+                  activeTab === "pine"
                     ? "bg-blue-600 text-white font-bold shadow-xs"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                MT5 Expert Advisor
+                Pine Script v5
               </button>
               <button
                 type="button"
@@ -89,14 +89,14 @@ export function TradingTechnologySection() {
               </button>
               <button
                 type="button"
-                onClick={() => setActiveTab("pine")}
+                onClick={() => setActiveTab("mt5")}
                 className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                  activeTab === "pine"
+                  activeTab === "mt5"
                     ? "bg-blue-600 text-white font-bold shadow-xs"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                Pine Script v5
+                MT5 Indicator &amp; Alerts
               </button>
             </div>
           </div>
@@ -108,9 +108,9 @@ export function TradingTechnologySection() {
                 <div className="flex items-center justify-between text-[11px] text-slate-500 pb-2 border-b border-slate-200">
                   <span className="flex items-center gap-1.5 text-emerald-600 font-bold">
                     <Activity className="w-3.5 h-3.5 animate-pulse" />
-                    <span>ENGINE ACTIVE • VPS LOW-LATENCY</span>
+                    <span>INDICATOR ACTIVE • RULE-BASED SIGNALS</span>
                   </span>
-                  <span className="font-medium">LATENCY: 84ms • TICK EVENT DRIVEN</span>
+                  <span className="font-medium">NON-REPAINTING • VERIFIED LOGIC</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                   <div className="p-3 rounded-xl bg-white border border-slate-200/80 shadow-xs">
@@ -118,20 +118,20 @@ export function TradingTechnologySection() {
                     <span className="text-slate-900 font-bold">XAUUSD (Gold Spot)</span>
                   </div>
                   <div className="p-3 rounded-xl bg-white border border-slate-200/80 shadow-xs">
-                    <span className="text-[10px] text-slate-500 block">Risk Matrix</span>
-                    <span className="text-blue-700 font-bold">0.50% Equity / Max DD 2.0%</span>
+                    <span className="text-[10px] text-slate-500 block">Timeframe</span>
+                    <span className="text-blue-700 font-bold">M15 / H1 Alignment</span>
                   </div>
                   <div className="p-3 rounded-xl bg-white border border-slate-200/80 shadow-xs">
-                    <span className="text-[10px] text-slate-500 block">Execution Mode</span>
-                    <span className="text-emerald-700 font-bold">Limit / Non-Slippage</span>
+                    <span className="text-[10px] text-slate-500 block">Notification Mode</span>
+                    <span className="text-emerald-700 font-bold">Popup &amp; Mobile Push</span>
                   </div>
                 </div>
                 <div className="p-3.5 rounded-xl bg-white border border-slate-200 text-[11px] text-slate-700 space-y-1 shadow-xs">
-                  <span className="text-blue-600 font-bold">[03:45:12 UTC]</span> OrderBlock verified on M15. Confluence index: 0.88.
+                  <span className="text-blue-600 font-bold">[03:45:12 UTC]</span> Trend condition met on M15. Support band confirmed.
                   <br />
-                  <span className="text-emerald-600 font-bold">[03:45:13 UTC]</span> Executing buy limit @ 2654.20. Target R:R 1:2.8.
+                  <span className="text-emerald-600 font-bold">[03:45:13 UTC]</span> Price triggered alert condition @ 2654.20.
                   <br />
-                  <span className="text-indigo-600 font-bold">[03:45:14 UTC]</span> Telegram alert dispatched to Private Desk VIP channel.
+                  <span className="text-sky-600 font-bold">[03:45:14 UTC]</span> Alert notification dispatched to mobile app.
                 </div>
               </div>
             )}
@@ -141,26 +141,26 @@ export function TradingTechnologySection() {
                 <div className="flex items-center justify-between text-[11px] text-slate-500 pb-2 border-b border-slate-200">
                   <span className="flex items-center gap-1.5 text-blue-700 font-bold">
                     <Activity className="w-3.5 h-3.5 animate-pulse" />
-                    <span>SCANNING 28 FOREX &amp; INDEX SYMBOLS</span>
+                    <span>SCANNING WATCHLIST SYMBOLS</span>
                   </span>
-                  <span className="font-medium">REFRESH: 1.0s REAL-TIME</span>
+                  <span className="font-medium">REAL-TIME CHART MONITORING</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center text-xs">
                   <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-xs">
                     <span className="block font-bold text-slate-900">EURUSD</span>
-                    <span className="text-[10px] text-emerald-600 font-semibold">Bullish Sweep (H1)</span>
+                    <span className="text-[10px] text-emerald-600 font-semibold">Trend Confirmed (H1)</span>
                   </div>
                   <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-xs">
                     <span className="block font-bold text-slate-900">US30</span>
-                    <span className="text-[10px] text-rose-600 font-semibold">Supply Rejection (M30)</span>
+                    <span className="text-[10px] text-rose-600 font-semibold">Resistance Test (M30)</span>
                   </div>
                   <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-xs">
                     <span className="block font-bold text-slate-900">XAUUSD</span>
-                    <span className="text-[10px] text-emerald-600 font-semibold">Break of Structure (H4)</span>
+                    <span className="text-[10px] text-emerald-600 font-semibold">Break of Highs (H4)</span>
                   </div>
                   <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-xs">
                     <span className="block font-bold text-slate-900">NAS100</span>
-                    <span className="text-[10px] text-blue-600 font-semibold">Fair Value Gap (M15)</span>
+                    <span className="text-[10px] text-blue-600 font-semibold">Moving Avg Cross (M15)</span>
                   </div>
                 </div>
               </div>
@@ -168,15 +168,15 @@ export function TradingTechnologySection() {
 
             {activeTab === "pine" && (
               <div className="space-y-2 text-[11px] text-slate-700 p-2">
-                <div className="text-slate-400">// TradingView Pine Script v5 Non-Repainting Logic</div>
+                <div className="text-slate-400">// TradingView Pine Script v5 Non-Repainting Indicator</div>
                 <div className="space-y-1">
                   <span className="text-blue-600 font-bold">//@version=5</span>
                   <br />
-                  <span className="text-indigo-600 font-bold">indicator</span>(&quot;Institutional Liquidity Engine&quot;, overlay = true)
+                  <span className="text-sky-600 font-bold">indicator</span>(&quot;Trend &amp; Confluence Signals&quot;, overlay = true)
                   <br />
-                  <span className="text-slate-600">f_detect_sweep</span>(len) =&gt; ta.highest(high, len)[1] &lt; high and close &lt; open
+                  <span className="text-slate-600">fastMA = ta.ema(close, 20), slowMA = ta.ema(close, 50)</span>
                   <br />
-                  <span className="text-emerald-600 font-bold">alertcondition</span>(sweepCondition, title=&quot;Liquidity Run&quot;, message=&quot;Symbol: {'{{ticker}}'} Run Detected&quot;)
+                  <span className="text-emerald-600 font-bold">alertcondition</span>(ta.crossover(fastMA, slowMA), title=&quot;Bullish Trend Cross&quot;, message=&quot;Symbol: {'{{ticker}}'} Bullish Cross&quot;)
                 </div>
               </div>
             )}
@@ -224,15 +224,25 @@ export function TradingTechnologySection() {
 
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                   <span className="text-[11px] font-mono text-blue-600 font-medium">
-                    C++ / MQL5 / Pine
+                    Pine / MQL5
                   </span>
-                  <a
-                    href="#contact"
+                  <Link
+                    href={
+                      prod.id === "tradingview-indicators"
+                        ? "/services/tradingview-indicators"
+                        : prod.id === "tradingview-strategies"
+                        ? "/services/tradingview-strategies"
+                        : prod.id === "mt5-scanners"
+                        ? "/services/mt5-scanner-alerts"
+                        : prod.id === "mt5-expert-advisors"
+                        ? "/services/mt5-auto-trading"
+                        : "/services/telegram-trading-alerts"
+                    }
                     className="text-xs font-bold text-slate-900 group-hover:text-blue-600 flex items-center gap-1 transition-colors"
                   >
-                    <span>Build Tool</span>
+                    <span>View Specs</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             );

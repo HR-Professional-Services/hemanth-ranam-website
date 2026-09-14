@@ -49,10 +49,10 @@ export function TechBackground3D() {
     const icoMesh = new THREE.LineSegments(icoWireframe, icoMaterial);
     mainGroup.add(icoMesh);
 
-    // 2. Inner Orbiting Geometric Ring / Torus (Deep Electric Indigo)
+    // 2. Inner Orbiting Geometric Ring / Torus (Vivid Royal Blue)
     const torusGeometry = new THREE.TorusGeometry(10, 0.06, 16, 100);
     const torusMaterial = new THREE.MeshBasicMaterial({
-      color: 0x4f46e5, // Deep Indigo
+      color: 0x1d4ed8, // Deep Royal Blue (No purple/indigo)
       transparent: true,
       opacity: 0.28,
     });
@@ -73,7 +73,7 @@ export function TechBackground3D() {
     ringMesh.rotation.x = -Math.PI / 6;
     mainGroup.add(ringMesh);
 
-    // 4. Floating Particles / Node Constellation (Blues, Cyans, Indigos)
+    // 4. Floating Particles / Node Constellation (Pure Blues and Cyans)
     const particleCount = 120;
     const particleGeometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
@@ -82,7 +82,7 @@ export function TechBackground3D() {
     const palette = [
       new THREE.Color(0x2563eb), // royal blue
       new THREE.Color(0x0284c7), // cyan
-      new THREE.Color(0x4f46e5), // indigo
+      new THREE.Color(0x1d4ed8), // deep blue
       new THREE.Color(0x0ea5e9), // sky blue
     ];
 
