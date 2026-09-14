@@ -16,56 +16,56 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: SITE_CONFIG.title,
-    template: `%s | ${SITE_CONFIG.name}`,
+    default: "Hemanth Ranam | Business OS, Enterprise Systems & Technology Platform",
+    template: "%s | Hemanth Ranam",
   },
-  description: SITE_CONFIG.description,
+  description:
+    "Hemanth Ranam — Founder & Systems Architect. We design, configure, and support connected Business OS solutions using ERPNext, CRM, automation, and modern web technology.",
   keywords: [
-    "HR Professional Services",
-    "Recruitment and Talent Search",
-    "HR Consulting",
-    "Career Support",
-    "Business Systems Consultant",
-    "Business Automation",
-    "Business Technology Consultant",
-    "Custom Software Development",
-    "Web Development",
-    "CRM ERP Solutions",
-    "Workflow Automation",
-    "AI Automation",
-    "TradingView Indicator Development",
-    "Pine Script Developer",
-    "MetaTrader 5 EA Developer",
-    "MT5 Indicator Development",
-    "Trading Automation",
-    "Trading Alerts",
-    "Telegram Trading Alerts",
-    "Business Process Optimisation",
     "Hemanth Ranam",
+    "Business OS",
+    "Business Systems",
+    "Systems Architect",
+    "ERPNext",
+    "Frappe Framework",
+    "CRM OS",
+    "HRMS OS",
+    "Finance OS",
+    "Sales OS",
+    "Website Growth OS",
+    "AI Automation",
+    "Managed Business OS",
+    "MetaTrader 5 Developer",
+    "TradingView Indicators",
+    "Pine Script Developer",
+    "Trading Technology",
+    "Digital Transformation",
   ],
-  authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.linkedin }],
-  creator: SITE_CONFIG.name,
-  metadataBase: new URL("https://hemanth.ranam.dev"),
+  authors: [{ name: "Hemanth Ranam", url: "https://www.linkedin.com/in/hemanth-ranam-41b542253" }],
+  creator: "Hemanth Ranam",
+  metadataBase: new URL("https://app.ranam.workers.dev"),
   openGraph: {
     type: "website",
     locale: "en_GB",
-    url: "https://hemanth.ranam.dev",
-    title: SITE_CONFIG.title,
-    description: SITE_CONFIG.description,
-    siteName: "Hemanth Ranam",
+    url: "https://app.ranam.workers.dev",
+    title: "Hemanth Ranam | Business OS & Enterprise Technology Platform",
+    description:
+      "One connected system for your customers, people, operations and growth. We design, configure and support practical Business OS solutions using ERPNext, CRM, automation and modern web technology.",
+    siteName: "Hemanth Ranam — Business OS",
     images: [
       {
         url: "/images/hemanth-ranam-profile.jpg",
         width: 800,
         height: 1000,
-        alt: SITE_CONFIG.profileAlt,
+        alt: "Hemanth Ranam — Founder & Systems Architect",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_CONFIG.title,
-    description: SITE_CONFIG.description,
+    title: "Hemanth Ranam | Business OS & Enterprise Technology Platform",
+    description:
+      "One connected system for your customers, people, operations and growth. We design, configure and support practical Business OS solutions.",
     images: ["/images/hemanth-ranam-profile.jpg"],
   },
   icons: {
@@ -96,17 +96,18 @@ export default function RootLayout({
     "@graph": [
       {
         "@type": "Person",
-        "@id": "https://hemanth.ranam.dev/#person",
+        "@id": "https://app.ranam.workers.dev/#person",
         name: "Hemanth Ranam",
-        jobTitle: "Technology Entrepreneur & Business Systems Specialist",
-        description: SITE_CONFIG.description,
-        email: `mailto:${SITE_CONFIG.email}`,
-        url: "https://hemanth.ranam.dev",
+        jobTitle: "Founder & Systems Architect",
+        description:
+          "Systems Architect & Technology Founder specializing in Business Operating Systems (Business OS), ERPNext, CRM, Workflow Automation, and Trading Technology.",
+        email: "hemanth.ranam@gmail.com",
+        url: "https://app.ranam.workers.dev",
         sameAs: [
-          SITE_CONFIG.linkedin,
-          SITE_CONFIG.scalenovaUrl,
+          "https://www.linkedin.com/in/hemanth-ranam-41b542253",
+          "https://github.com/hemanthranam",
         ],
-        image: "https://hemanth.ranam.dev/images/hemanth-ranam-profile.jpg",
+        image: "https://app.ranam.workers.dev/images/hemanth-ranam-profile.jpg",
         alumniOf: [
           {
             "@type": "EducationalOrganization",
@@ -122,37 +123,35 @@ export default function RootLayout({
       },
       {
         "@type": "ProfessionalService",
-        "@id": "https://hemanth.ranam.dev/#service",
-        name: "Hemanth Ranam — Business Systems & Trading Technology",
-        url: "https://hemanth.ranam.dev",
+        "@id": "https://app.ranam.workers.dev/#service",
+        name: "Hemanth Ranam — Business OS & Technology Platform",
+        url: "https://app.ranam.workers.dev",
         provider: {
-          "@id": "https://hemanth.ranam.dev/#person",
+          "@id": "https://app.ranam.workers.dev/#person",
         },
         serviceType: [
-          "Recruitment & Talent Search",
-          "HR Consulting & Workplace Systems",
-          "Career Support & Progression",
-          "Business Systems Consulting",
-          "Business Automation",
-          "Custom Software Development",
-          "CRM ERP Implementation",
-          "TradingView Pine Script Development",
-          "MetaTrader 5 EA Development",
-          "Trading Alerts & Automation",
+          "Business OS Implementation",
+          "Frappe & ERPNext Systems Configuration",
+          "CRM OS & Pipeline Automation",
+          "HRMS OS & Workforce Systems",
+          "Finance OS & Automated Invoicing",
+          "Website Growth OS",
+          "Workflow & AI Automation",
+          "TradingView & MetaTrader 5 Trading Technology",
         ],
       },
     ],
   };
 
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased dark`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-white text-slate-900 flex flex-col font-sans">
+      <body className="min-h-screen bg-[#060911] text-slate-100 flex flex-col font-sans selection:bg-blue-600/30 selection:text-blue-200">
         {children}
         <CookieConsent />
       </body>

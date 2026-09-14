@@ -1,11 +1,16 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/sections/Hero";
-import { CoreCategoriesSection } from "@/components/sections/CoreCategoriesSection";
-import { ServicesSection } from "@/components/sections/ServicesSection";
-import { SystemWorkflowVisualsSection } from "@/components/sections/SystemWorkflowVisualsSection";
-import { PricingSection } from "@/components/sections/PricingSection";
-import { LifecycleSection } from "@/components/sections/LifecycleSection";
-import { FinalCTASection } from "@/components/sections/FinalCTASection";
+import { BusinessOsIntroSection } from "@/components/sections/BusinessOsIntroSection";
+import { BusinessOsProductGrid } from "@/components/sections/BusinessOsProductGrid";
+import { InteractiveBusinessOsDiagram } from "@/components/sections/InteractiveBusinessOsDiagram";
+import { DigitalGrowthSection } from "@/components/sections/DigitalGrowthSection";
+import { HowItWorksProcess } from "@/components/sections/HowItWorksProcess";
+import { BusinessOsPricingSection } from "@/components/sections/BusinessOsPricingSection";
+import { CaseStudiesSection } from "@/components/sections/CaseStudiesSection";
+import { TradingTechnologySection } from "@/components/sections/TradingTechnologySection";
+import { WhyHemanthSection } from "@/components/sections/WhyHemanthSection";
+import { BusinessOsFaqSection } from "@/components/sections/BusinessOsFaqSection";
+import { BusinessOsFinalCta } from "@/components/sections/BusinessOsFinalCta";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
@@ -14,43 +19,56 @@ import { BackToTop } from "@/components/ui/BackToTop";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#060911] text-slate-100 selection:bg-blue-600/30 selection:text-blue-200 overflow-x-hidden">
       {/* Viewport Reading Progress Bar */}
       <ScrollProgressBar />
 
-      {/* Sticky Header Navigation (5 clean options + WhatsApp + Discuss) */}
+      {/* Sticky Header Navigation with Division Menus */}
       <Navbar />
 
-      {/* Simplified, Fast, Cute, and Premium Personal Services Flow */}
+      {/* Main Homepage Flow (SaaS Platform Architecture) */}
       <main id="main-content" className="flex flex-col">
-        {/* 1. Hero: Personal introduction & direct value proposition */}
+        {/* 1. HERO: "BUILD YOUR BUSINESS OPERATING SYSTEM" + Floating Dashboard Mockup */}
         <Hero />
 
-        {/* 2. Three Core Categories: Business & Consulting, Software & Web, Trading Technology */}
-        <CoreCategoriesSection />
+        {/* 2. BUSINESS OS INTRODUCTION: "Your business should not run across ten disconnected tools." */}
+        <BusinessOsIntroSection />
 
-        {/* 3. What I Build / Services: Compact Horizontal Icon + Heading Layout */}
-        <ServicesSection />
+        {/* 3. BUSINESS OS PRODUCT GRID: 10 Core Operating Systems */}
+        <BusinessOsProductGrid />
 
-        {/* 4. One Simple Visual Workflow: Idea -> System -> Automation -> Support -> Grow */}
-        <SystemWorkflowVisualsSection />
+        {/* 4. INTERACTIVE BUSINESS OS DIAGRAM: Automated Inbound-to-Management Flow */}
+        <InteractiveBusinessOsDiagram />
 
-        {/* 5. Pricing: 5 Approved One-Time Projects + Monthly Subscriptions */}
-        <PricingSection />
+        {/* 5. 02 DIGITAL GROWTH: Featuring Website Growth OS */}
+        <DigitalGrowthSection />
 
-        {/* 6. More Than a Handover: 4 Pillars (Build, Train, Support, Improve) */}
-        <LifecycleSection />
+        {/* 6. HOW IT WORKS: 8-Stage Methodology (Discover to Improve) */}
+        <HowItWorksProcess />
 
-        {/* 7. Final CTA: "Your business doesn't need more tools. It needs better systems." */}
-        <FinalCTASection />
+        {/* 7. PRICING ARCHITECTURE: One-Time Implementation vs. Monthly Managed Business OS */}
+        <BusinessOsPricingSection />
 
-        {/* 8. Lead Capture Form with Automated Plan Context */}
-        <div id="contact">
-          <ContactSection />
-        </div>
+        {/* 8. SELECTED SYSTEMS & CASE STUDIES: UI Dashboard Mockups */}
+        <CaseStudiesSection />
+
+        {/* 9. 03 TRADING TECHNOLOGY: Systematic Pine Script & MT5 Tools */}
+        <TradingTechnologySection />
+
+        {/* 10. WHY HEMANTH: Founder-Led, MBA/CMI Level 7, Zero Agency Fluff */}
+        <WhyHemanthSection />
+
+        {/* 11. FREQUENTLY ASKED QUESTIONS */}
+        <BusinessOsFaqSection />
+
+        {/* 12. FINAL CTA: "Build the system your business actually needs." */}
+        <BusinessOsFinalCta />
+
+        {/* 13. LEAD CAPTURE CONTACT FORM (Preserving Google Sheets CRM & Lead IDs) */}
+        <ContactSection />
       </main>
 
-      {/* Compact Clean Footer */}
+      {/* Compact Clean Executive Footer */}
       <Footer />
 
       {/* Persistent WhatsApp Floating Button & Back to Top */}
