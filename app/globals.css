@@ -137,6 +137,27 @@ body {
   background: #334155;
 }
 
+/* Mobile touch & browser auto compatibility */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+.backdrop-blur-md,
+.backdrop-blur-lg,
+.backdrop-blur-xl,
+.backdrop-blur-2xl {
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Smooth hardware accelerated transitions */
+.smooth-ui {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 /* Respects reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {

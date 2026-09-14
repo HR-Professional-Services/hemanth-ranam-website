@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { SITE_CONFIG } from "@/data/siteData";
 import {
   GraduationCap,
@@ -83,21 +84,19 @@ export function AboutSection() {
               <div className="p-3 rounded-xl bg-white border border-slate-200/90 flex items-center justify-between gap-2">
                 <div className="space-y-0.5">
                   <p className="text-xs font-bold text-slate-900">
-                    Founder & CEO — ScaleNova
+                    Founder & Systems Architect
                   </p>
                   <p className="text-[11px] text-slate-500">
-                    Building a unified Business Operating System.
+                    Enterprise Business OS & Quantitative Systems
                   </p>
                 </div>
-                <a
-                  href={SITE_CONFIG.scalenovaUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/business-os"
                   className="text-blue-600 hover:text-blue-700 p-1.5 rounded-lg bg-blue-50 shrink-0"
-                  aria-label="ScaleNova Website"
+                  aria-label="Explore Business OS"
                 >
                   <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
+                </Link>
               </div>
 
               <div className="p-3 rounded-xl bg-white border border-slate-200/90 flex items-center gap-2.5">

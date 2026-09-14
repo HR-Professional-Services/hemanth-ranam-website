@@ -20,8 +20,8 @@ export function CaseStudiesSection() {
 
   const cases = [
     {
-      title: "ScaleNova Multi-Tenant Business OS",
-      subtitle: "Enterprise Operating System & Multi-Site SaaS Architecture",
+      title: "Enterprise Core Business OS",
+      subtitle: "Multi-Department Operating System & ERP Architecture",
       client: "B2B Enterprise Group • 75+ Users",
       metrics: [
         { label: "Operational Speed", value: "+340%" },

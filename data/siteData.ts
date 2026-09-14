@@ -80,13 +80,13 @@ export const SITE_CONFIG = {
     "https://wa.me/917675815245?text=Hi%2C%20I%20wanted%20to%20connect%20about%20your%20services%2C%20thanks.",
   linkedin: "https://www.linkedin.com/in/hemanth-ranam-41b542253",
   location: "United Kingdom",
-  scalenovaUrl: "https://www.scalenovasys.com",
+  scalenovaUrl: "https://app.ranam.workers.dev",
   profileImage: "/images/hemanth-ranam-profile.jpg",
-  profileAlt: "Hemanth Ranam — Technology Entrepreneur and Business Systems Specialist",
+  profileAlt: "Hemanth Ranam — Founder & Systems Architect",
   stats: [
     { value: "2017 → 2026", label: "Nearly 10 Years", sub: "Business • Tech • Management" },
     { value: "5+ Years", label: "Financial Markets", sub: "Trading • Algo • Pine/MT5" },
-    { value: "2X", label: "Founder", sub: "CEO @ ScaleNova" },
+    { value: "Founder", label: "Systems Architect", sub: "Managed Business OS" },
     { value: "MBA", label: "Univ of South Wales", sub: "CMI Level 7 Executive" },
   ],
 };
@@ -1647,7 +1647,7 @@ export interface TrustPillar {
 export const TRUST_PILLARS: TrustPillar[] = [
   {
     title: "Founder-Led Accountability",
-    desc: "Direct systems architecture by Hemanth Ranam (MBA Univ of South Wales, CMI Level 7, ScaleNova Founder). No junior handoffs.",
+    desc: "Direct systems architecture by Hemanth Ranam (MBA Univ of South Wales, CMI Level 7 Executive). No junior handoffs.",
     badge: "Direct Execution",
     icon: "UserCheck",
   },

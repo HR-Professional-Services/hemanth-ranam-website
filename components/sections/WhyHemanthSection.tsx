@@ -53,7 +53,7 @@ export function WhyHemanthSection() {
             <div>
               <h3 className="text-lg font-bold text-white">Hemanth Ranam</h3>
               <p className="text-xs text-blue-300">
-                Founder & Systems Architect • ScaleNova & Chartora
+                Founder & Systems Architect • Enterprise Systems & Trading Technology
               </p>
               <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-300 font-mono">
                 <span className="flex items-center gap-1">

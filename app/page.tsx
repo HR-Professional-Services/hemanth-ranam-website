@@ -16,10 +16,14 @@ import { Footer } from "@/components/sections/Footer";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { TechBackground3D } from "@/components/ui/TechBackground3D";
 
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-[#060911] text-slate-100 selection:bg-blue-600/30 selection:text-blue-200 overflow-x-hidden">
+      {/* Persistent 3D Interactive Tech Model Layer (Light Colors) */}
+      <TechBackground3D />
+
       {/* Viewport Reading Progress Bar */}
       <ScrollProgressBar />
 
@@ -27,7 +31,7 @@ export default function Home() {
       <Navbar />
 
       {/* Main Homepage Flow (SaaS Platform Architecture) */}
-      <main id="main-content" className="flex flex-col">
+      <main id="main-content" className="relative z-10 flex flex-col">
         {/* 1. HERO: "BUILD YOUR BUSINESS OPERATING SYSTEM" + Floating Dashboard Mockup */}
         <Hero />
 

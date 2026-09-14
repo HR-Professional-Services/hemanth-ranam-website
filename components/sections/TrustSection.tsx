@@ -84,7 +84,7 @@ export function TrustSection() {
                 Verified Business Identity
               </span>
               <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
-                HR Professional Services & ScaleNova Ecosystem
+                HR Professional Services • Managed Business & Trading Systems
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed max-w-xl font-normal">
                 Directly overseen by Hemanth Ranam. Based in the United Kingdom with operational delivery across UK, India, and global clients. Every project is executed with transparent contracts and verified direct communications.
