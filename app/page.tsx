@@ -20,7 +20,7 @@ import { TechBackground3D } from "@/components/ui/TechBackground3D";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-[#060911] text-slate-100 selection:bg-blue-600/30 selection:text-blue-200 overflow-x-hidden">
+    <div className="relative min-h-screen bg-white text-slate-900 selection:bg-blue-600/20 selection:text-blue-700 overflow-x-hidden">
       {/* Persistent 3D Interactive Tech Model Layer (Light Colors) */}
       <TechBackground3D />
 

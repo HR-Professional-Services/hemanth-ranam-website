@@ -51,26 +51,26 @@ export function BusinessOsProductGrid() {
   const IconComponent = ICON_MAP[activeProduct.icon] || Layers;
 
   return (
-    <section id="products" className="py-16 sm:py-20 lg:py-28 relative">
+    <section id="products" className="py-14 sm:py-20 lg:py-24 relative bg-slate-50/50 border-t border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-mono uppercase tracking-wider font-semibold">
             01 Business OS Products
           </div>
-          <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+          <h2 className="mt-3 text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             Modular Operating Systems.{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
               One Unified Foundation.
             </span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed">
-            Deploy the specific operating environment your company requires today. Expand seamlessly tomorrow as you grow—with zero data migrations and zero per-seat licensing penalties.
+          <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto font-normal">
+            Deploy the specific operating environment your company requires today. Expand seamlessly tomorrow—with zero data migrations and zero per-seat licensing penalties.
           </p>
         </div>
 
-        {/* Product Selector Ribbon / Tabs */}
-        <div className="mt-10 lg:mt-12 flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none justify-start lg:justify-center">
+        {/* Product Selector Ribbon / Tabs (Heading Next to Icon) */}
+        <div className="mt-8 sm:mt-10 flex items-center gap-2 overflow-x-auto pb-3 scrollbar-none justify-start lg:justify-center">
           {BUSINESS_OS_PRODUCTS.map((prod) => {
             const TabIcon = ICON_MAP[prod.icon] || Layers;
             const isSelected = prod.id === selectedProductId;
@@ -79,168 +79,142 @@ export function BusinessOsProductGrid() {
                 key={prod.id}
                 type="button"
                 onClick={() => setSelectedProductId(prod.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 shrink-0 ${
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 shrink-0 ${
                   isSelected
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30 border border-blue-400/40"
-                    : "bg-white/[0.04] text-slate-400 hover:text-white hover:bg-white/[0.08] border border-white/[0.06]"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-500/25 border border-blue-500"
+                    : "bg-white text-slate-700 hover:text-blue-600 hover:bg-blue-50/60 border border-slate-200 shadow-sm"
                 }`}
               >
-                <TabIcon className="w-3.5 h-3.5" />
+                <TabIcon className="w-3.5 h-3.5 shrink-0" />
                 <span>{prod.name}</span>
               </button>
             );
           })}
         </div>
 
-        {/* Selected Product Hero Card (Executive Detail View) */}
-        <div className="mt-6 p-6 sm:p-8 lg:p-10 rounded-3xl bg-[#090e1b]/95 border border-white/[0.1] shadow-2xl shadow-black/80 backdrop-blur-2xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            {/* Left Column: Product Information & Value Specs */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-lg shadow-blue-500/10">
-                  <IconComponent className="w-6 h-6" />
+        {/* Selected Product Hero Card (Pure White Glassmorphism Window) */}
+        <div className="mt-6 p-5 sm:p-8 lg:p-10 rounded-3xl bg-white border border-slate-200 shadow-xl shadow-slate-200/50 backdrop-blur-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+            {/* Left Column: Product Information (Heading Next to Icon) */}
+            <div className="lg:col-span-7 space-y-5">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shadow-sm shrink-0">
+                  <IconComponent className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                       {activeProduct.name}
                     </h3>
-                    <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200 font-bold">
                       {activeProduct.badge}
                     </span>
                   </div>
-                  <p className="text-sm font-medium text-blue-400 mt-0.5">
+                  <p className="text-xs font-semibold text-blue-700 mt-0.5">
                     &ldquo;{activeProduct.tagline}&rdquo;
                   </p>
                 </div>
               </div>
 
               {/* What It Solves & Who It Is For */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-1.5">
-                  <span className="text-[11px] uppercase tracking-wider font-mono text-slate-400 font-semibold">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                  <span className="text-[10px] uppercase tracking-wider font-mono text-slate-500 font-bold block">
                     What It Solves
                   </span>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-slate-700 leading-relaxed font-medium">
                     {activeProduct.whatItSolves}
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-1.5">
-                  <span className="text-[11px] uppercase tracking-wider font-mono text-slate-400 font-semibold">
+                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                  <span className="text-[10px] uppercase tracking-wider font-mono text-slate-500 font-bold block">
                     Who It Is For
                   </span>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-slate-700 leading-relaxed font-medium">
                     {activeProduct.whoItIsFor}
                   </p>
                 </div>
               </div>
 
               {/* Core Modules List */}
-              <div className="space-y-3">
-                <span className="text-xs font-semibold uppercase tracking-wider font-mono text-slate-300">
+              <div className="space-y-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider font-mono text-slate-900 block">
                   Core Configured Modules
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                   {activeProduct.coreModules.map((mod, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-2 p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]"
+                      className="flex items-center gap-2 p-2 rounded-lg bg-blue-50/50 border border-blue-100/70 text-slate-800 font-medium"
                     >
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                      <span className="truncate">{mod}</span>
+                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                      <span>{mod}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Example Workflow */}
-              <div className="p-4.5 rounded-2xl bg-gradient-to-r from-blue-950/20 via-indigo-950/10 to-transparent border border-blue-500/20 space-y-2.5">
-                <span className="text-xs font-semibold uppercase tracking-wider font-mono text-blue-400 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Example Operational Workflow
+              <div className="p-3.5 rounded-xl bg-blue-50/40 border border-blue-100 space-y-1.5">
+                <span className="text-[10px] uppercase tracking-wider font-mono text-blue-800 font-bold flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                  Canonical Operating Flow
                 </span>
-                <div className="space-y-2 text-xs text-slate-300">
-                  {activeProduct.exampleWorkflow.map((step, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5">
-                      <span className="font-mono text-blue-400 text-[11px] mt-0.5 shrink-0">
-                        {idx + 1}.
-                      </span>
-                      <span>{step}</span>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-xs text-slate-800 font-mono">
+                  {activeProduct.exampleWorkflow}
+                </p>
               </div>
             </div>
 
-            {/* Right Column: Commercial Packaging & Actions */}
-            <div className="lg:col-span-5 p-6 rounded-2xl bg-[#0d1424] border border-white/[0.08] shadow-xl space-y-6">
-              <div className="border-b border-white/[0.08] pb-4">
-                <span className="text-xs font-mono uppercase tracking-wider text-slate-400">
+            {/* Right Column: Commercial Summary */}
+            <div className="lg:col-span-5 p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm space-y-4">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-bold block">
                   Commercial Architecture
                 </span>
-                <h4 className="text-lg font-bold text-white mt-1">
-                  Implementation & Managed OS
+                <h4 className="text-base font-bold text-slate-900 mt-0.5">
+                  Implementation &amp; Managed OS
                 </h4>
-                <p className="text-xs text-slate-300 mt-1">
-                  Structured milestone setup followed by ongoing managed technical support.
-                </p>
               </div>
 
-              {/* Pricing Cards Context */}
-              <div className="space-y-3">
-                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-slate-200">One-Time Implementation</span>
-                    <span className="text-blue-400 font-mono text-[11px]">Setup & Build</span>
+              <div className="space-y-2.5">
+                <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-sm">
+                  <div className="flex items-center justify-between text-xs font-semibold">
+                    <span className="text-slate-900">One-Time Implementation</span>
+                    <span className="text-blue-600 font-mono text-[11px] font-bold">Setup &amp; Build</span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                  <p className="text-xs text-slate-600 mt-1 leading-relaxed font-normal">
                     {activeProduct.setupFeeNote}
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-slate-200">Managed Business OS</span>
-                    <span className="text-emerald-400 font-mono text-[11px]">Monthly Subscription</span>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-sm">
+                  <div className="flex items-center justify-between text-xs font-semibold">
+                    <span className="text-slate-900">Managed Business OS</span>
+                    <span className="text-emerald-700 font-mono text-[11px] font-bold">Monthly Plan</span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                  <p className="text-xs text-slate-600 mt-1 leading-relaxed font-normal">
                     {activeProduct.monthlyPlanNote}
                   </p>
                 </div>
               </div>
 
-              {/* What's Included & Support Level */}
-              <div className="space-y-2.5 text-xs text-slate-300">
-                <span className="font-semibold text-white text-xs block">
-                  What&apos;s Included:
-                </span>
-                <ul className="space-y-1.5">
-                  {activeProduct.whatsIncluded.map((inc, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-blue-400 font-bold">•</span>
-                      <span>{inc}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs text-blue-200">
-                <div className="flex items-center gap-1.5 font-semibold text-blue-300 mb-0.5">
-                  <ShieldCheck className="w-3.5 h-3.5" />
+              <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900">
+                <div className="flex items-center gap-1.5 font-bold text-blue-800 mb-0.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
                   Support Level
                 </div>
-                <p className="text-[11px] leading-relaxed text-blue-200/90">
+                <p className="text-[11px] text-blue-800/90 font-medium">
                   {activeProduct.supportLevel}
                 </p>
               </div>
 
-              {/* Action Buttons */}
-              <div className="space-y-2.5 pt-2">
+              {/* Action Buttons (All Open in Same Tab) */}
+              <div className="space-y-2 pt-1">
                 <a
                   href={`#contact?plan=${encodeURIComponent(activeProduct.name)}`}
-                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-500/25 transition-all"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/20 transition-all"
                 >
                   <Calendar className="w-3.5 h-3.5" />
                   <span>Discuss {activeProduct.name} Implementation</span>
@@ -249,9 +223,9 @@ export function BusinessOsProductGrid() {
 
                 <Link
                   href={`/${activeProduct.slug}`}
-                  className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] transition-all"
+                  className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-blue-700 bg-white hover:bg-slate-100 border border-slate-200 shadow-sm transition-all"
                 >
-                  <span>View Full {activeProduct.name} Specifications</span>
+                  <span>View Full {activeProduct.name} Specs</span>
                   <ExternalLink className="w-3 h-3" />
                 </Link>
               </div>
@@ -259,18 +233,18 @@ export function BusinessOsProductGrid() {
           </div>
         </div>
 
-        {/* All 10 Product Cards Grid (Quick Browse) */}
-        <div className="mt-14">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-white">
+        {/* All 10 Product Cards Grid (Heading Next to Icon to Save Vertical Space) */}
+        <div className="mt-12 sm:mt-16">
+          <div className="flex items-center justify-between mb-5">
+            <h3 className="text-lg sm:text-xl font-bold text-slate-900">
               The 10 Core Business OS Applications
             </h3>
-            <span className="text-xs font-mono text-slate-400 hidden sm:inline">
+            <span className="text-xs font-mono text-slate-500 hidden sm:inline font-medium">
               Click any application to inspect specifications
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {BUSINESS_OS_PRODUCTS.map((product) => {
               const CardIcon = ICON_MAP[product.icon] || Layers;
               const isSelected = product.id === selectedProductId;
@@ -278,38 +252,40 @@ export function BusinessOsProductGrid() {
                 <div
                   key={product.id}
                   onClick={() => setSelectedProductId(product.id)}
-                  className={`p-6 rounded-2xl cursor-pointer transition-all duration-300 relative group ${
+                  className={`p-4 sm:p-5 rounded-2xl cursor-pointer transition-all duration-200 relative group ${
                     isSelected
-                      ? "bg-[#0f172a] border-2 border-blue-500 shadow-xl shadow-blue-500/10"
-                      : "bg-[#0b101d]/80 border border-white/[0.08] hover:border-white/[0.2] hover:bg-[#0f172a]/70"
+                      ? "bg-white border-2 border-blue-600 shadow-lg shadow-blue-500/10"
+                      : "bg-white border border-slate-200/90 hover:border-blue-300 hover:shadow-md shadow-sm"
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center text-blue-400 group-hover:scale-105 transition-transform">
-                      <CardIcon className="w-5 h-5" />
+                  {/* Heading Inline Next to Icon */}
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 border border-blue-100 group-hover:scale-105 transition-transform">
+                        <CardIcon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
+                          {product.name}
+                        </h4>
+                        <span className="text-[10px] text-blue-700 font-semibold font-mono block">
+                          {product.badge}
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.05] text-slate-300 border border-white/[0.08]">
-                      {product.badge}
-                    </span>
                   </div>
 
-                  <h4 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">
-                    {product.name}
-                  </h4>
-                  <p className="text-xs text-blue-300/90 font-medium mt-1">
-                    &ldquo;{product.tagline}&rdquo;
-                  </p>
-                  <p className="text-xs text-slate-400 mt-2.5 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed font-normal mt-1">
                     {product.whatItSolves}
                   </p>
 
-                  <div className="mt-4 pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs">
-                    <span className="text-[11px] font-mono text-slate-400">
+                  <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span className="text-[10px] font-mono text-slate-500 font-semibold">
                       {product.coreModules.length} Modules
                     </span>
-                    <span className="text-blue-400 font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                      <span>Explore</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                    <span className="text-blue-600 font-bold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-xs">
+                      <span>Inspect</span>
+                      <ArrowRight className="w-3 h-3" />
                     </span>
                   </div>
                 </div>

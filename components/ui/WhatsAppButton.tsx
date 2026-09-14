@@ -10,16 +10,14 @@ export function WhatsAppButton() {
     <div className="fixed bottom-6 right-6 z-50 flex items-center">
       {/* Desktop Tooltip */}
       {showTooltip && (
-        <div className="hidden sm:block mr-3 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-md whitespace-nowrap animate-fade-in border border-slate-800">
+        <div className="hidden sm:block mr-3 px-3 py-1.5 rounded-xl bg-white text-slate-800 text-xs font-semibold shadow-lg whitespace-nowrap animate-fade-in border border-slate-200">
           Chat on WhatsApp
         </div>
       )}
 
-      {/* Floating Circular Action Button */}
+      {/* Floating Circular Action Button (opens in same tab) */}
       <a
         href={SITE_CONFIG.whatsappUrl}
-        target="_blank"
-        rel="noopener noreferrer"
         id="whatsapp-floating-btn"
         aria-label="Chat with Hemanth Ranam on WhatsApp"
         onMouseEnter={() => setShowTooltip(true)}

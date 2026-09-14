@@ -78,20 +78,20 @@ export function CaseStudiesSection() {
   const current = cases[activeCase];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 border-t border-white/[0.06] relative">
+    <section className="py-16 sm:py-20 lg:py-24 border-t border-slate-200/80 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-mono uppercase tracking-wider font-semibold">
             Proven Architectures
           </div>
-          <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Selected Systems &{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-300 bg-clip-text text-transparent">
+          <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
+            Selected Systems &amp;{" "}
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
               Live Case Studies
             </span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
             Real enterprise operating environments engineered, configured, and managed by Hemanth Ranam.
           </p>
         </div>
@@ -103,10 +103,10 @@ export function CaseStudiesSection() {
               key={idx}
               type="button"
               onClick={() => setActiveCase(idx as 0 | 1 | 2)}
-              className={`px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeCase === idx
-                  ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30 border border-blue-400/40"
-                  : "bg-white/[0.04] text-slate-400 hover:text-white hover:bg-white/[0.08] border border-white/[0.06]"
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/30"
+                  : "bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200/80 border border-slate-200"
               }`}
             >
               {c.title}
@@ -114,169 +114,186 @@ export function CaseStudiesSection() {
           ))}
         </div>
 
-        {/* Selected Case Mockup Presentation */}
-        <div className="mt-8 p-6 sm:p-8 lg:p-10 rounded-3xl bg-[#080d19] border border-white/[0.1] shadow-2xl shadow-black/80 backdrop-blur-2xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left: Case Description & Metrics */}
-            <div className="lg:col-span-6 space-y-6">
-              <div>
-                <span className="text-xs font-mono text-blue-400 uppercase tracking-wider">
-                  {current.client}
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-bold text-white mt-1">
-                  {current.title}
-                </h3>
-                <p className="text-xs font-medium text-slate-400 mt-1">
-                  {current.subtitle}
-                </p>
-              </div>
-
-              {/* Metrics Grid */}
-              <div className="grid grid-cols-3 gap-3">
-                {current.metrics.map((m, i) => (
-                  <div key={i} className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
-                    <div className="text-xl sm:text-2xl font-bold text-white font-mono">{m.value}</div>
-                    <div className="text-[10px] text-slate-400 mt-0.5">{m.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <p className="text-sm text-slate-300 leading-relaxed">
-                {current.description}
-              </p>
-
-              <div className="space-y-2 text-xs text-slate-300">
-                {current.highlights.map((h, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" />
-                    <span>{h}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-2">
-                <a
-                  href="#contact"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-500/25 transition-all"
-                >
-                  <span>Build a Similar Architecture</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
+        {/* Selected Case Mockup Presentation (Pure White Window Container) */}
+        <div className="mt-8 rounded-3xl bg-white border border-slate-200 shadow-xl shadow-blue-500/5 overflow-hidden">
+          {/* Mac/Windows Window Controls Bar */}
+          <div className="px-5 py-3 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-400" />
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+              <span className="ml-2 text-xs font-mono text-slate-600 font-semibold">
+                case-study // {current.title.toLowerCase().replace(/\s+/g, "-")}.env
+              </span>
             </div>
+            <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold">
+              Production Verified
+            </span>
+          </div>
 
-            {/* Right: Realistic UI System Mockup Display */}
-            <div className="lg:col-span-6 rounded-2xl bg-[#050811] border border-white/[0.1] shadow-2xl p-4 sm:p-5 space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] text-xs font-mono text-slate-400">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-slate-300 font-semibold">{current.title}</span>
+          <div className="p-6 sm:p-8 lg:p-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              {/* Left: Case Description & Metrics */}
+              <div className="lg:col-span-6 space-y-6">
+                <div>
+                  <span className="text-xs font-mono text-blue-600 uppercase tracking-wider font-bold">
+                    {current.client}
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+                    {current.title}
+                  </h3>
+                  <p className="text-xs font-medium text-slate-500 mt-1">
+                    {current.subtitle}
+                  </p>
                 </div>
-                <span className="text-[10px] text-blue-400">Production Node</span>
+
+                {/* Metrics Grid */}
+                <div className="grid grid-cols-3 gap-3">
+                  {current.metrics.map((m, i) => (
+                    <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-center">
+                      <div className="text-xl sm:text-2xl font-extrabold text-blue-600 font-mono">{m.value}</div>
+                      <div className="text-[10px] text-slate-600 mt-0.5 font-medium">{m.label}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {current.description}
+                </p>
+
+                <div className="space-y-2 text-xs text-slate-700">
+                  {current.highlights.map((h, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
+                      <span className="font-medium">{h}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-2">
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/20 transition-all hover:scale-[1.02]"
+                  >
+                    <span>Build a Similar Architecture</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
               </div>
 
-              {/* Dynamic Mockup Body depending on Active Case */}
-              {activeCase === 0 && (
-                <div className="space-y-3 text-xs font-mono">
-                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between">
-                    <div>
-                      <span className="text-slate-400 block text-[10px]">ERP System State</span>
-                      <span className="text-emerald-400 font-bold">100% Operational • 0 Errors</span>
-                    </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-300">
-                      Frappe v15
-                    </span>
+              {/* Right: Realistic UI System Mockup Display (Window Card) */}
+              <div className="lg:col-span-6 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm p-4 sm:p-5 space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200 text-xs font-mono text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-slate-800 font-bold">{current.title}</span>
                   </div>
-
-                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-slate-300">Sales → Invoicing Automation</span>
-                      <span className="text-emerald-400">Cleared in 1.4s</span>
-                    </div>
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-slate-300">HRMS Leave Balance Calculation</span>
-                      <span className="text-emerald-400">Synchronized</span>
-                    </div>
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-slate-300">Daily Automated Backup Snapshot</span>
-                      <span className="text-slate-400">03:00 UTC (Verified)</span>
-                    </div>
-                  </div>
-
-                  <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[11px] text-blue-300 flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0" />
-                    <span>Multi-tenant data isolation active across all workspaces.</span>
-                  </div>
+                  <span className="text-[10px] text-blue-600 font-bold">Live Cluster</span>
                 </div>
-              )}
 
-              {activeCase === 1 && (
-                <div className="space-y-3 text-xs font-mono">
-                  <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between">
-                    <div>
-                      <span className="text-emerald-400 block text-[10px]">Inbound Webhook Stream</span>
-                      <span className="text-white font-bold">Canonical 15-Column Google Sheet CRM</span>
+                {/* Dynamic Mockup Body depending on Active Case */}
+                {activeCase === 0 && (
+                  <div className="space-y-3 text-xs font-mono">
+                    <div className="p-3 rounded-xl bg-white border border-slate-200/80 flex items-center justify-between shadow-xs">
+                      <div>
+                        <span className="text-slate-500 block text-[10px]">ERP System State</span>
+                        <span className="text-emerald-700 font-bold">100% Operational • 0 Errors</span>
+                      </div>
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200">
+                        Frappe v15
+                      </span>
                     </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
-                      Live
-                    </span>
-                  </div>
 
-                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-slate-300">Lead ID Generator</span>
-                      <span className="text-cyan-400">HRPS-20260914-8842</span>
+                    <div className="p-3 rounded-xl bg-white border border-slate-200/80 space-y-2 shadow-xs">
+                      <div className="flex justify-between text-[11px]">
+                        <span className="text-slate-700">Sales → Invoicing Automation</span>
+                        <span className="text-emerald-700 font-bold">Cleared in 1.4s</span>
+                      </div>
+                      <div className="flex justify-between text-[11px]">
+                        <span className="text-slate-700">HRMS Leave Balance Calculation</span>
+                        <span className="text-emerald-700 font-bold">Synchronized</span>
+                      </div>
+                      <div className="flex justify-between text-[11px]">
+                        <span className="text-slate-700">Daily Automated Backup Snapshot</span>
+                        <span className="text-slate-500">03:00 UTC (Verified)</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-slate-300">Executive Alert Email</span>
-                      <span className="text-emerald-400">Dispatched (240ms)</span>
-                    </div>
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-slate-300">WhatsApp Notification Bot</span>
-                      <span className="text-emerald-400">Delivered</span>
-                    </div>
-                  </div>
 
-                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] text-[11px] text-slate-300 flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-amber-400 shrink-0" />
-                    <span>Average lead contact speed reduced from 4 hours to 3 minutes.</span>
-                  </div>
-                </div>
-              )}
-
-              {activeCase === 2 && (
-                <div className="space-y-3 text-xs font-mono">
-                  <div className="p-3 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-between">
-                    <div>
-                      <span className="text-violet-400 block text-[10px]">MT5 Scanner Feed</span>
-                      <span className="text-white font-bold">Multi-Timeframe Trend Confluence</span>
-                    </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-violet-500/20 text-violet-300">
-                      28 Pairs
-                    </span>
-                  </div>
-
-                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-slate-300">Gold (XAUUSD) M15 Pullback</span>
-                      <span className="text-emerald-400">Confluence Triggered</span>
-                    </div>
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-slate-300">Telegram Channel Broadcast</span>
-                      <span className="text-emerald-400">Sent (&lt;90ms)</span>
-                    </div>
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-slate-300">Max Drawdown Guardian</span>
-                      <span className="text-slate-400">Active (0% breach)</span>
+                    <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-800 flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+                      <span>Multi-tenant data isolation active across all workspaces.</span>
                     </div>
                   </div>
+                )}
 
-                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] text-[11px] text-slate-300 flex items-center gap-2">
-                    <Server className="w-4 h-4 text-violet-400 shrink-0" />
-                    <span>Dedicated VPS automated execution running 24/5.</span>
+                {activeCase === 1 && (
+                  <div className="space-y-3 text-xs font-mono">
+                    <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between shadow-xs">
+                      <div>
+                        <span className="text-emerald-800 block text-[10px] font-semibold">Inbound Webhook Stream</span>
+                        <span className="text-slate-900 font-bold">Canonical 15-Column Google Sheet CRM</span>
+                      </div>
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">
+                        Live
+                      </span>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white border border-slate-200/80 space-y-2 shadow-xs">
+                      <div className="flex justify-between text-[11px]">
+                        <span className="text-slate-700">Lead ID Generator</span>
+                        <span className="text-blue-700 font-bold">HRPS-20260914-8842</span>
+                      </div>
+                      <div className="flex justify-between text-[11px]">
+                        <span className="text-slate-700">Executive Alert Email</span>
+                        <span className="text-emerald-700 font-bold">Dispatched (240ms)</span>
+                      </div>
+                      <div className="flex justify-between text-[11px]">
+                        <span className="text-slate-700">WhatsApp Notification Bot</span>
+                        <span className="text-emerald-700 font-bold">Delivered</span>
+                      </div>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white border border-slate-200/80 text-[11px] text-slate-700 flex items-center gap-2 shadow-xs">
+                      <Zap className="w-4 h-4 text-amber-500 shrink-0" />
+                      <span>Average lead contact speed reduced from 4 hours to 3 minutes.</span>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+
+                {activeCase === 2 && (
+                  <div className="space-y-3 text-xs font-mono">
+                    <div className="p-3 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-between shadow-xs">
+                      <div>
+                        <span className="text-indigo-800 block text-[10px] font-semibold">MT5 Scanner Feed</span>
+                        <span className="text-slate-900 font-bold">Multi-Timeframe Trend Confluence</span>
+                      </div>
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold">
+                        28 Pairs
+                      </span>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white border border-slate-200/80 space-y-2 shadow-xs">
+                      <div className="flex justify-between text-[11px]">
+                        <span className="text-slate-700">Gold (XAUUSD) M15 Pullback</span>
+                        <span className="text-emerald-700 font-bold">Confluence Triggered</span>
+                      </div>
+                      <div className="flex justify-between text-[11px]">
+                        <span className="text-slate-700">Telegram Channel Broadcast</span>
+                        <span className="text-emerald-700 font-bold">Sent (&lt;90ms)</span>
+                      </div>
+                      <div className="flex justify-between text-[11px]">
+                        <span className="text-slate-700">Max Drawdown Guardian</span>
+                        <span className="text-slate-500 font-semibold">Active (0% breach)</span>
+                      </div>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white border border-slate-200/80 text-[11px] text-slate-700 flex items-center gap-2 shadow-xs">
+                      <Server className="w-4 h-4 text-indigo-600 shrink-0" />
+                      <span>Dedicated VPS automated execution running 24/5.</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

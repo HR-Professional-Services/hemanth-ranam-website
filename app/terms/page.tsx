@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-[#060911] text-slate-100 selection:bg-blue-600/30 selection:text-blue-200 flex flex-col justify-between">
+    <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-600/20 selection:text-blue-700 flex flex-col justify-between">
       <Navbar />
 
       <main className="pt-24 pb-16">

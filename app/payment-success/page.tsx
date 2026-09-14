@@ -115,8 +115,6 @@ function PaymentSuccessContent() {
           <div className="mt-6 pt-6 border-t border-slate-100 text-center">
             <a
               href={downloadUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors"
             >
               <Download className="w-4 h-4" />
@@ -172,8 +170,6 @@ function PaymentSuccessContent() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <a
             href={SITE_CONFIG.whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs border border-emerald-200 transition-colors"
           >
             <svg viewBox="0 0 32 32" className="w-4 h-4 fill-emerald-600 shrink-0" xmlns="http://www.w3.org/2000/svg">

@@ -77,16 +77,16 @@ export function TrustSection() {
         </div>
 
         {/* Verified Business Details Block */}
-        <div className="mt-10 p-5 sm:p-7 rounded-2xl bg-slate-900 text-white shadow-md relative overflow-hidden">
+        <div className="mt-10 p-5 sm:p-7 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 shadow-sm relative overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             <div className="lg:col-span-8 space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600">
                 Verified Business Identity
               </span>
-              <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
-                HR Professional Services • Managed Business & Trading Systems
+              <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+                HR Professional Services • Managed Business &amp; Trading Systems
               </h3>
-              <p className="text-xs text-slate-300 leading-relaxed max-w-xl font-normal">
+              <p className="text-xs text-slate-600 leading-relaxed max-w-xl font-normal">
                 Directly overseen by Hemanth Ranam. Based in the United Kingdom with operational delivery across UK, India, and global clients. Every project is executed with transparent contracts and verified direct communications.
               </p>
             </div>
@@ -94,18 +94,16 @@ export function TrustSection() {
             <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0">
               <a
                 href={SITE_CONFIG.whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors shadow-xs"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-xs"
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>Chat Directly on WhatsApp</span>
               </a>
               <a
                 href={`mailto:${SITE_CONFIG.email}`}
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-bold transition-colors shadow-xs"
               >
-                <Mail className="w-4 h-4" />
+                <Mail className="w-4 h-4 text-blue-600" />
                 <span>{SITE_CONFIG.email}</span>
               </a>
             </div>

@@ -12,17 +12,17 @@ export function BusinessOsFaqSection() {
   };
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 border-t border-white/[0.06] relative">
+    <section className="py-16 sm:py-20 lg:py-24 border-t border-slate-200/80 relative">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-mono uppercase tracking-wider font-semibold">
             Clear Answers
           </div>
-          <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Frequently Asked Questions
           </h2>
-          <p className="mt-3 text-sm text-slate-300">
+          <p className="mt-3 text-sm text-slate-600">
             Everything you need to know about Business OS, implementation timelines, and our managed operating subscriptions.
           </p>
         </div>
@@ -34,25 +34,30 @@ export function BusinessOsFaqSection() {
             return (
               <div
                 key={idx}
-                className="rounded-2xl bg-[#090e1b]/80 border border-white/[0.08] overflow-hidden transition-colors"
+                className="rounded-2xl bg-white border border-slate-200 overflow-hidden transition-all shadow-xs"
               >
                 <button
                   type="button"
                   onClick={() => toggleFaq(idx)}
-                  className="w-full flex items-center justify-between p-5 text-left transition-colors hover:bg-white/[0.02]"
+                  className="w-full flex items-center justify-between p-5 text-left transition-colors hover:bg-slate-50/60 cursor-pointer"
                 >
-                  <span className="text-sm sm:text-base font-semibold text-white pr-4">
-                    {faq.question}
-                  </span>
+                  <div className="flex items-center gap-2.5 pr-4">
+                    <div className="w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                      <HelpCircle className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="text-sm sm:text-base font-bold text-slate-900">
+                      {faq.question}
+                    </span>
+                  </div>
                   <ChevronDown
-                    className={`w-4 h-4 text-blue-400 shrink-0 transition-transform duration-200 ${
+                    className={`w-4 h-4 text-blue-600 shrink-0 transition-transform duration-200 ${
                       isOpen ? "rotate-180" : ""
                     }`}
                   />
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 pb-5 pt-1 border-t border-white/[0.04] text-xs sm:text-sm text-slate-300 leading-relaxed animate-in fade-in duration-200">
+                  <div className="px-5 pb-5 pt-1 border-t border-slate-100 text-xs sm:text-sm text-slate-600 leading-relaxed animate-in fade-in duration-150">
                     {faq.answer}
                   </div>
                 )}

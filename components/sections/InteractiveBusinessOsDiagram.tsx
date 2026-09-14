@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  INTERACTIVE_DIAGRAM_STAGES,
-} from "@/data/businessOsData";
+import { INTERACTIVE_DIAGRAM_STAGES } from "@/data/businessOsData";
 import {
   Globe,
   Mail,
@@ -14,7 +12,6 @@ import {
   UserCheck,
   Headphones,
   Layers,
-  ArrowDown,
   ArrowRight,
   Zap,
   Sparkles,
@@ -44,26 +41,26 @@ export function InteractiveBusinessOsDiagram() {
   const IconComponent = STAGE_ICONS[activeStage.icon] || Layers;
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 border-t border-white/[0.06] relative">
+    <section className="py-16 sm:py-20 lg:py-24 border-t border-slate-200/80 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-mono uppercase tracking-wider font-semibold">
             Connected Architecture
           </div>
-          <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+          <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             How Data Flows Through Your{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
               Business OS
             </span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
             Click any node in the operating chain below to inspect how information transitions automatically from visitor discovery to management insight without manual friction.
           </p>
         </div>
 
         {/* Diagram Flow Container */}
-        <div className="mt-12 lg:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="mt-12 lg:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Visual Step-by-Step Flow Pipeline */}
           <div className="lg:col-span-7 space-y-2.5">
             {INTERACTIVE_DIAGRAM_STAGES.map((stage, idx) => {
@@ -76,51 +73,52 @@ export function InteractiveBusinessOsDiagram() {
                   <button
                     type="button"
                     onClick={() => setSelectedStageId(stage.id)}
-                    className={`w-full flex items-center justify-between p-3.5 sm:p-4 rounded-xl text-left transition-all duration-200 border ${
+                    className={`w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl text-left transition-all duration-200 border cursor-pointer ${
                       isSelected
-                        ? "bg-blue-600/20 border-blue-500/50 shadow-lg shadow-blue-500/10"
-                        : "bg-[#090e1b]/80 border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.12]"
+                        ? "bg-blue-50/90 border-blue-500 shadow-md shadow-blue-500/10"
+                        : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/60 shadow-xs"
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                        className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                           isSelected
-                            ? "bg-blue-500 text-white"
-                            : "bg-white/[0.05] text-slate-400"
+                            ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
+                            : "bg-slate-100 text-slate-600"
                         }`}
                       >
                         <StepIcon className="w-4 h-4" />
                       </div>
                       <div>
+                        {/* Inline heading next to category badge */}
                         <div className="flex items-center gap-2">
                           <span
                             className={`text-xs sm:text-sm font-bold ${
-                              isSelected ? "text-white" : "text-slate-200"
+                              isSelected ? "text-blue-900" : "text-slate-900"
                             }`}
                           >
                             {stage.title}
                           </span>
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.05] text-slate-400">
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
                             {stage.category}
                           </span>
                         </div>
-                        <span className="text-[11px] text-slate-400 block mt-0.5 truncate max-w-xs sm:max-w-md">
+                        <span className="text-[11px] text-slate-500 block mt-0.5 truncate max-w-xs sm:max-w-md">
                           {stage.description}
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs">
+                    <div className="flex items-center gap-2 text-xs shrink-0">
                       {isSelected && (
-                        <span className="text-[11px] font-mono text-blue-400 font-semibold hidden sm:inline">
-                          Inspecting
+                        <span className="text-[11px] font-mono text-blue-600 font-bold hidden sm:inline">
+                          Active
                         </span>
                       )}
                       <ArrowRight
                         className={`w-4 h-4 transition-transform ${
                           isSelected
-                            ? "text-blue-400 translate-x-1"
+                            ? "text-blue-600 translate-x-1"
                             : "text-slate-400"
                         }`}
                       />
@@ -130,7 +128,7 @@ export function InteractiveBusinessOsDiagram() {
                   {/* Vertical Connector Line */}
                   {!isLast && (
                     <div className="flex justify-center my-0.5">
-                      <div className="w-[1.5px] h-2 bg-gradient-to-b from-blue-500/40 to-white/10" />
+                      <div className="w-[1.5px] h-2 bg-gradient-to-b from-blue-400 to-slate-200" />
                     </div>
                   )}
                 </div>
@@ -138,64 +136,82 @@ export function InteractiveBusinessOsDiagram() {
             })}
           </div>
 
-          {/* Right Column: Node Details Inspector Card */}
+          {/* Right Column: Node Details Inspector Window (Mac/Windows Frame) */}
           <div className="lg:col-span-5 sticky top-24">
-            <div className="p-6 sm:p-8 rounded-3xl bg-[#0b1122] border border-blue-500/30 shadow-2xl shadow-blue-500/10 space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
-                  <IconComponent className="w-6 h-6" />
-                </div>
-                <div>
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-blue-400 font-semibold">
-                    {activeStage.category} Stage
+            <div className="rounded-3xl bg-white border border-slate-200 shadow-xl shadow-blue-500/5 overflow-hidden">
+              {/* Window Header Controls */}
+              <div className="px-5 py-3 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-400" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                  <span className="ml-2 text-xs font-mono text-slate-600 font-semibold">
+                    pipeline-inspector.json
                   </span>
-                  <h3 className="text-xl font-bold text-white">
-                    {activeStage.title}
-                  </h3>
                 </div>
-              </div>
-
-              <p className="text-sm text-slate-300 leading-relaxed">
-                {activeStage.description}
-              </p>
-
-              {/* Data Transformation Context */}
-              <div className="space-y-3 pt-4 border-t border-white/[0.08]">
-                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-1">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
-                    Inputs Received
-                  </span>
-                  <p className="text-xs text-slate-200 font-medium font-mono">
-                    {activeStage.inputs}
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 space-y-1">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-blue-300 font-semibold">
-                    Automated Output / Next Trigger
-                  </span>
-                  <p className="text-xs text-blue-200 font-medium font-mono">
-                    {activeStage.outputs}
-                  </p>
-                </div>
-              </div>
-
-              {/* Automation Highlight */}
-              <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] text-xs text-slate-300 flex items-start gap-2.5">
-                <Zap className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <span>
-                  <strong className="text-white">Zero Hand-offs:</strong> Every transition executes programmatically inside ERPNext and webhooks without manual re-entry.
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-semibold">
+                  {activeStage.category}
                 </span>
               </div>
 
-              <div className="pt-2">
-                <a
-                  href="#contact"
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-500/25 transition-all"
-                >
-                  <span>Build This Workflow for Your Business</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+              <div className="p-6 sm:p-7 space-y-5">
+                {/* Heading next to icon */}
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shrink-0 shadow-xs">
+                    <IconComponent className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-blue-600 font-bold block">
+                      {activeStage.category} Stage
+                    </span>
+                    <h3 className="text-lg font-bold text-slate-900 leading-tight">
+                      {activeStage.title}
+                    </h3>
+                  </div>
+                </div>
+
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  {activeStage.description}
+                </p>
+
+                {/* Data Transformation Context */}
+                <div className="space-y-2.5 pt-2 border-t border-slate-100">
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-semibold block">
+                      Inputs Received
+                    </span>
+                    <p className="text-xs text-slate-800 font-medium font-mono">
+                      {activeStage.inputs}
+                    </p>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-blue-50 border border-blue-200/80 space-y-1">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-blue-700 font-bold block">
+                      Automated Output / Next Trigger
+                    </span>
+                    <p className="text-xs text-blue-900 font-medium font-mono">
+                      {activeStage.outputs}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Automation Highlight */}
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 flex items-start gap-2.5">
+                  <Zap className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                  <span>
+                    <strong className="text-slate-900">Zero Hand-offs:</strong> Every transition executes programmatically inside ERPNext and webhooks without manual re-entry.
+                  </span>
+                </div>
+
+                <div className="pt-2">
+                  <a
+                    href="#contact"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/20 transition-all hover:scale-[1.01]"
+                  >
+                    <span>Build This Workflow for Your Business</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
