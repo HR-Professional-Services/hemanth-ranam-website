@@ -8,6 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: ["/api/", "/payment-success"],
       },
     ],
     sitemap: "https://hemanth.ranam.dev/sitemap.xml",

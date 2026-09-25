@@ -38,15 +38,15 @@ export function BusinessOsFinalCta() {
           </a>
 
           <a
-            href="/#products"
+            href="/products"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-xs font-bold text-slate-700 hover:text-blue-600 bg-white hover:bg-slate-50 border border-slate-200 transition-all hover:scale-[1.02] shadow-xs"
           >
             <Layers className="w-4 h-4 text-blue-600" />
-            <span>Explore Business OS</span>
+            <span>Explore All Products &amp; Systems</span>
           </a>
 
           <a
-            href="/#trading-tech"
+            href="/trading-technology"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-xs font-bold text-sky-700 hover:text-sky-800 bg-sky-50/70 hover:bg-sky-100/70 border border-sky-200 transition-all hover:scale-[1.02]"
           >
             <TrendingUp className="w-4 h-4 text-sky-600" />
