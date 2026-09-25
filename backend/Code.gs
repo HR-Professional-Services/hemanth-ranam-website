@@ -1208,3 +1208,108 @@ function jsonResponse(obj, statusCode) {
   output.setMimeType(ContentService.MimeType.JSON);
   return output;
 }
+
+/**
+ * Direct Drive Document Populator:
+ * Creates the canonical ScaleNova-aligned Master Operating Documents
+ * directly inside each respective folder under 'HR - Services'.
+ * Executed under the user's Google account with full storage quota.
+ */
+function populateMasterDocumentsDirect() {
+  var rootFolderId = PropertiesService.getScriptProperties().getProperty("MASTER_ROOT_FOLDER_ID") || CONFIG.MASTER_ROOT_FOLDER_ID;
+  var root = DriveApp.getFolderById(rootFolderId);
+
+  // Map of folder names to Folder objects
+  var folderMap = {};
+  var fIter = root.getFolders();
+  while (fIter.hasNext()) {
+    var f = fIter.next();
+    folderMap[f.getName().trim()] = f;
+  }
+
+  function writeDoc(folderName, fileName, title, docId, summary) {
+    var targetFolder = folderMap[folderName];
+    if (!targetFolder) {
+      console.warn("Folder not found: " + folderName);
+      return;
+    }
+
+    var existingFiles = targetFolder.getFilesByName(fileName);
+    var content = "# " + title + "\n" +
+      "**Document ID:** " + docId + "  \n" +
+      "**Version:** v1.0  \n" +
+      "**Status:** ACTIVE  \n" +
+      "**Owner:** Hemanth Ranam  \n" +
+      "**Created:** " + Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy-MM-dd") + "  \n" +
+      "**Updated:** " + Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy-MM-dd") + "  \n\n" +
+      "---\n\n" +
+      "## 1. Executive Summary & Purpose\n" +
+      summary + "\n\n" +
+      "## 2. Operational Authority\n" +
+      "Authoritative local master specification synchronized with HR - Services Operating System.\n";
+
+    if (existingFiles.hasNext()) {
+      var file = existingFiles.next();
+      file.setContent(content);
+      console.log("Updated: " + folderName + " / " + fileName);
+    } else {
+      targetFolder.createFile(fileName, content, MimeType.PLAIN_TEXT);
+      console.log("Created: " + folderName + " / " + fileName);
+    }
+  }
+
+  // 1. Master Control
+  writeDoc("00 - MASTER CONTROL", "01_MASTER_OPERATING_SYSTEM_v1.0.md", "Master Operating System Specification", "SYS-001", "Defines the core operating system architecture, multi-tenant workflows, and governance framework.");
+  writeDoc("00 - MASTER CONTROL", "02_SERVICE_CATALOGUE_MANIFEST_v1.0.md", "Service Catalogue Master Manifest", "CAT-001", "Full index of 50+ commercial services across 15 categories with Stripe pricing IDs.");
+  writeDoc("00 - MASTER CONTROL", "03_DRIVE_MASTER_BLUEPRINT_v1.0.md", "Google Drive Master Blueprint", "DRV-001", "Canonical 20-folder operating structure under HR - Services (1YmEJ3MhozQ5yVNKIKq4YwUaCKQa0Fb3l).");
+
+  // 2. Consulting
+  writeDoc("01 - CONSULTING", "01_STRATEGIC_BUSINESS_OS_v1.0.md", "Strategic Business Operating System", "STRAT-001", "Defines the 10-stage flywheel model, client acquisition economics, and margin architecture.");
+
+  // 3. Website Services
+  writeDoc("02 - WEBSITE SERVICES", "01_SERVICE_PACKAGE_STANDARDS_v1.0.md", "Service Package Standards & Specifications", "SERV-STD-001", "Mandates the 15-document standard package for all commercial service deliveries.");
+
+  // 4. Business Automation
+  writeDoc("03 - BUSINESS AUTOMATION", "01_AUTOMATION_ENGINE_PLAYBOOK_v1.0.md", "Automation Engine Playbook", "AUTO-001", "Details all 18 end-to-end automation workflows, webhook idempotency, and failure recovery protocols.");
+
+  // 5. Trading Technology
+  writeDoc("06 - TRADING TECHNOLOGY", "01_TRADING_TECH_FRAMEWORK_v1.0.md", "Trading Technology Architecture & Standards", "TRD-001", "Defines TradingView and MT5 development standards with mandatory Educational & Analytical Tool Disclaimer.");
+
+  // 6. Templates
+  writeDoc("07 - TEMPLATES", "01_REUSABLE_DOCUMENT_TEMPLATES_v1.0.md", "Reusable Document & Delivery Templates", "TMP-DOC-001", "Master index of client intake questionnaires, scope freeze checklists, and handover SOP templates.");
+
+  // 7. Training
+  writeDoc("09 - TRAINING", "01_CLIENT_TRAINING_AND_HANDOVER_FRAMEWORK_v1.0.md", "Client Training & Handover Framework", "TRN-HO-001", "Guidelines for video walkthroughs, client SOPs, and 14-day post-delivery warranties.");
+
+  // 8. Code & Automation Kits
+  writeDoc("10 - CODE & AUTOMATION KITS", "01_DIGITAL_PRODUCT_PORTFOLIO_v1.0.md", "Digital Product Portfolio Specification", "PROD-SPEC-001", "Turnkey spreadsheet models, checklists, and code kits with instant automated delivery.");
+
+  // 9. Free Resources
+  writeDoc("12 - FREE RESOURCES", "01_FREE_RESOURCE_ECOSYSTEM_v1.0.md", "Free Resource Ecosystem & Lead Magnet Hub", "RES-ECO-001", "The 12 primary lead magnets, intake webhooks, and nurture sequence architecture.");
+
+  // 10. Client Management
+  writeDoc("13 - CLIENT MANAGEMENT", "01_CLIENT_PROVISIONING_STANDARD_v1.0.md", "Client Provisioning & Folder Standard", "CLI-OPS-001", "Automatic provisioning specification for CLI-YYYY-XXXX client workspaces.");
+
+  // 11. Finance & Accounting
+  writeDoc("15 - FINANCE & ACCOUNTING", "01_STRIPE_COMMERCE_CATALOGUE_v1.0.md", "Stripe Commerce & Payment Mapping", "STRIPE-001", "Complete catalog of one-time checkout links and monthly recurring subscriptions.");
+
+  // 12. Marketing
+  writeDoc("16 - MARKETING", "01_OMNICHANNEL_MARKETING_PLAYBOOK_v1.0.md", "Omnichannel Marketing Playbook", "MKT-PLAY-001", "Content positioning, LinkedIn carousel strategy, and email nurture playbooks.");
+
+  // 13. Website & SEO
+  writeDoc("17 - WEBSITE & SEO", "01_WEBSITE_ARCHITECTURE_AND_SPECS_v1.0.md", "Website Architecture & Specifications", "WEB-SPEC-001", "59+ indexable route inventory, white-background design tokens, and mobile-first ergonomics.");
+  writeDoc("17 - WEBSITE & SEO", "01_TECHNICAL_SEO_STRATEGY_v1.0.md", "Technical SEO Strategy & Schemas", "SEO-001", "Schema.org structured data, sitemap prioritization, and canonical URL rules.");
+
+  // 14. Business Operations
+  writeDoc("18 - BUSINESS OPERATIONS", "01_MODULAR_BUSINESS_SYSTEMS_v1.0.md", "Modular Business Systems Architecture", "SYS-MOD-001", "The 7 modular business systems: CRM, Lead, Sales, Client, Ops, Finance, and Master OS.");
+  writeDoc("18 - BUSINESS OPERATIONS", "01_MEASUREMENT_AND_CONVERSION_STACK_v1.0.md", "Measurement & Conversion Stack", "ANL-STK-001", "Event dictionary, Google Analytics 4, and privacy-first measurement.");
+
+  // 15. Archive
+  writeDoc("99 - ARCHIVE", "01_ARCHIVE_RETENTION_POLICY_v1.0.md", "Archive & Retention Policy", "ARC-RET-001", "Rules for deprecation, document versioning, and client history retention.");
+
+  return {
+    success: true,
+    message: "Master documentation populated successfully into Google Drive folders.",
+    timestamp: new Date().toISOString()
+  };
+}
