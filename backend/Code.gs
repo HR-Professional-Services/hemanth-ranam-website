@@ -1,27 +1,17 @@
 /**
  * ============================================================================
- * HR PROFESSIONAL SERVICES — PRODUCTION LEAD CAPTURE & CRM ENGINE
+ * HR PROFESSIONAL SERVICES — PRODUCTION LEAD CAPTURE, CRM & DELIVERY ENGINE
  * ============================================================================
- * Version: 2.5.0 (Production Release)
+ * Version: 2.6.0 (Automated Drive Workspace Engine & Stripe Integration)
  * Environment: Google Apps Script Web App
- * Architecture Reference: ScaleNova Systems Lead Engine
  * Target Flow:
  *   Website Lead Form -> Next.js API / Direct Post -> Apps Script Web App
- *   -> Google Sheets CRM -> Dual Email Notifications (Management + Client)
+ *   Stripe Webhook -> Apps Script Web App -> Payment Logged ->
+ *   Automated Google Drive Workspace Provisioning -> Gmail Delivery with Private Link
  *
- * CANONICAL WORKSHEET COLUMNS (12):
- *   1.  Timestamp
- *   2.  Lead ID
- *   3.  Name
- *   4.  Email
- *   5.  Phone
- *   6.  Company
- *   7.  Service
- *   8.  Message
- *   9.  Source
- *   10. Page
- *   11. Status
- *   12. Notes
+ * GOOGLE DRIVE ARCHITECTURE:
+ *   Master Root Folder ID: 1YmEJ3MhozQ5yVNKIKq4YwUaCKQa0Fb3l (HR - Services)
+ *   Target Client Provisioning: 13 - CLIENT MANAGEMENT / CLI-YYYY-XXXX - [Client Name]
  * ============================================================================
  */
 
@@ -29,8 +19,8 @@
 // 1. GLOBAL CONFIGURATION & METADATA
 // ----------------------------------------------------------------------------
 var CONFIG = {
-  VERSION: "2.5.0",
-  SERVICE_NAME: "HR Professional Services CRM Engine",
+  VERSION: "2.6.0",
+  SERVICE_NAME: "HR Professional Services CRM & Delivery Engine",
   COMPANY_NAME: "HR Professional Services",
   MANAGER_EMAIL: "hemanth.ranam@gmail.com",
   MANAGER_NAME: "Hemanth Ranam",
@@ -41,7 +31,22 @@ var CONFIG = {
   SPREADSHEET_ID: "", 
   SHEET_NAME: "Enquiries",
   PAYMENTS_SHEET_NAME: "Payments",
+  CRM_SHEET_NAME: "Clients",
   
+  // Master Google Drive Root (HR - Services)
+  MASTER_ROOT_FOLDER_ID: "1YmEJ3MhozQ5yVNKIKq4YwUaCKQa0Fb3l",
+  CLIENT_MANAGEMENT_FOLDER_NAME: "13 - CLIENT MANAGEMENT",
+  
+  // Standard Client Workspace Subfolders
+  CLIENT_SUBFOLDERS: [
+    "00 - Client Profile & Contracts",
+    "01 - Requirements & Intake",
+    "02 - Working Files",
+    "03 - Deliverables",
+    "04 - Training & SOPs",
+    "05 - Support & Milestone Notes"
+  ],
+
   // API Security Key (can also be set in Script Properties: API_SECRET_KEY)
   API_SECRET_KEY: "HR_SECURE_API_SECRET_2026",
 
@@ -79,8 +84,23 @@ var CONFIG = {
     "Currency",
     "Stripe Reference",
     "Payment Status",
-    "Download Link",
+    "Workspace Link",
     "Source",
+    "Notes"
+  ],
+
+  // Canonical Column Schema for Clients
+  CRM_COLUMNS: [
+    "Timestamp",
+    "Client ID",
+    "Company Name",
+    "Contact Name",
+    "Email",
+    "Phone",
+    "Active Services",
+    "Drive Folder URL",
+    "Status",
+    "Payment Reference",
     "Notes"
   ],
 
@@ -110,6 +130,7 @@ function doGet(e) {
         service: CONFIG.SERVICE_NAME,
         version: CONFIG.VERSION,
         status: "operational",
+        driveRootConfigured: !!CONFIG.MASTER_ROOT_FOLDER_ID,
         timestamp: new Date().toISOString()
       });
     }
@@ -122,6 +143,11 @@ function doGet(e) {
       return jsonResponse({ success: true, data: listEnquiries() });
     }
 
+    if (action === "processQueue") {
+      var queueResult = processProvisioningQueue();
+      return jsonResponse({ success: true, result: queueResult });
+    }
+
     return jsonResponse({ success: false, error: "Invalid action requested." }, 400);
   } catch (error) {
     return jsonResponse({ success: false, error: error.toString() }, 500);
@@ -129,7 +155,7 @@ function doGet(e) {
 }
 
 // ----------------------------------------------------------------------------
-// 3. HTTP POST HANDLER (Lead Capture & Integration)
+// 3. HTTP POST HANDLER (Lead Capture, Payments & Webhooks)
 // ----------------------------------------------------------------------------
 function doPost(e) {
   try {
@@ -144,9 +170,14 @@ function doPost(e) {
       data = e.parameter;
     }
 
-    // Basic Bot / Honeypot rejection
+    // Bot / Honeypot rejection
     if (data.website_hp || data.honeypot) {
       return jsonResponse({ success: true, message: "Request received." });
+    }
+
+    // Direct Stripe Webhook event detection
+    if (data.object === "event" || (data.type && data.type.indexOf("checkout.session") !== -1)) {
+      return handleStripeWebhook(data);
     }
 
     var action = data.action || "createLead";
@@ -155,19 +186,34 @@ function doPost(e) {
       case "createLead":
       case "submitEnquiry":
         return handleCreateLead(data);
+        
       case "updateStatus":
         if (!verifyAuth(data)) {
           return jsonResponse({ success: false, error: "Unauthorized operation." }, 401);
         }
         return handleUpdateStatus(data);
+        
       case "createPayment":
       case "recordPayment":
         return handleCreatePayment(data);
-      case "updatePaymentStatus":
+        
+      case "stripeWebhook":
+        return handleStripeWebhook(data);
+        
+      case "provisionWorkspace":
         if (!verifyAuth(data)) {
           return jsonResponse({ success: false, error: "Unauthorized operation." }, 401);
         }
-        return handleUpdatePaymentStatus(data);
+        var provResult = provisionClientWorkspace(data);
+        return jsonResponse(provResult);
+        
+      case "processQueue":
+        if (!verifyAuth(data)) {
+          return jsonResponse({ success: false, error: "Unauthorized operation." }, 401);
+        }
+        var qResult = processProvisioningQueue();
+        return jsonResponse({ success: true, result: qResult });
+        
       default:
         return jsonResponse({ success: false, error: "Unsupported action." }, 400);
     }
@@ -181,9 +227,6 @@ function doPost(e) {
 // 4. CORE SHEET INITIALIZATION & LEAD CREATION
 // ----------------------------------------------------------------------------
 
-/**
- * Ensures the target sheet and 12-column header row exist with premium formatting
- */
 function initializeSheet() {
   var ss = getSpreadsheet();
   var sheet = ss.getSheetByName(CONFIG.SHEET_NAME);
@@ -192,7 +235,6 @@ function initializeSheet() {
     sheet = ss.insertSheet(CONFIG.SHEET_NAME);
     sheet.getRange(1, 1, 1, CONFIG.COLUMNS.length).setValues([CONFIG.COLUMNS]);
     
-    // Style header row
     var headerRange = sheet.getRange(1, 1, 1, CONFIG.COLUMNS.length);
     headerRange.setFontWeight("bold");
     headerRange.setBackground("#1E293B"); // Slate-800
@@ -200,7 +242,6 @@ function initializeSheet() {
     headerRange.setHorizontalAlignment("center");
     sheet.setFrozenRows(1);
 
-    // Auto-fit column widths
     for (var i = 1; i <= CONFIG.COLUMNS.length; i++) {
       sheet.setColumnWidth(i, 160);
     }
@@ -212,25 +253,19 @@ function initializeSheet() {
   return sheet;
 }
 
-/**
- * Creates and records a new enquiry, appending it to Google Sheets
- */
 function handleCreateLead(data) {
   var sheet = initializeSheet();
 
-  // Validate Name
   var name = sanitize(data.name || "");
   if (!name || name.length < 2) {
     return jsonResponse({ success: false, error: "Full Name is required (minimum 2 characters)." }, 400);
   }
 
-  // Validate Email
   var email = (data.email || "").toString().trim().toLowerCase();
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return jsonResponse({ success: false, error: "A valid email address is required." }, 400);
   }
 
-  // Sanitize Inputs
   var phone = sanitize(data.phone || data.normalizedPhone || "");
   var company = sanitize(data.company || "");
   var category = sanitize(data.category || "Business & Consulting");
@@ -241,18 +276,12 @@ function handleCreateLead(data) {
   var source = sanitize(data.source || "Website Form");
   var page = sanitize(data.page || "/#contact");
 
-  // Generate Unique Collision-Free Lead ID (Format: HRPS-YYYYMMDD-XXXX)
   var leadId = data.leadId || generateLeadId();
-
-  // Timestamp
   var now = new Date();
   var timestamp = Utilities.formatDate(now, CONFIG.TIMEZONE, "yyyy-MM-dd HH:mm:ss");
-
-  // Status is always "New" by default
   var status = "New";
   var notes = sanitize(data.notes || "");
 
-  // Append new row matching exact 15-column canonical schema
   var newRow = [
     timestamp,
     leadId,
@@ -273,7 +302,6 @@ function handleCreateLead(data) {
 
   sheet.appendRow(newRow);
 
-  // Dispatch Management Alert Email
   try {
     sendManagementAlert({
       leadId: leadId,
@@ -294,7 +322,6 @@ function handleCreateLead(data) {
     Logger.log("Management alert email warning: " + mailErr.toString());
   }
 
-  // Dispatch Customer Acknowledgement Email
   try {
     sendCustomerAcknowledgement({
       leadId: leadId,
@@ -317,9 +344,6 @@ function handleCreateLead(data) {
   });
 }
 
-/**
- * Updates status of an existing lead
- */
 function handleUpdateStatus(data) {
   var leadId = data.leadId;
   var status = data.status;
@@ -333,9 +357,9 @@ function handleUpdateStatus(data) {
 
   for (var i = 1; i < values.length; i++) {
     if (values[i][1] === leadId) {
-      sheet.getRange(i + 1, 14).setValue(status); // Column 14 = Status
+      sheet.getRange(i + 1, 14).setValue(status);
       if (data.notes) {
-        sheet.getRange(i + 1, 15).setValue(sanitize(data.notes)); // Column 15 = Notes
+        sheet.getRange(i + 1, 15).setValue(sanitize(data.notes));
       }
       return jsonResponse({ success: true, leadId: leadId, status: status });
     }
@@ -344,9 +368,10 @@ function handleUpdateStatus(data) {
   return jsonResponse({ success: false, error: "Lead not found." }, 404);
 }
 
-/**
- * Ensures the target Payments sheet and 16-column header row exist with formatting
- */
+// ----------------------------------------------------------------------------
+// 5. PAYMENTS & STRIPE WEBHOOK HANDLER
+// ----------------------------------------------------------------------------
+
 function initializePaymentsSheet() {
   var ss = getSpreadsheet();
   var sheet = ss.getSheetByName(CONFIG.PAYMENTS_SHEET_NAME);
@@ -355,7 +380,6 @@ function initializePaymentsSheet() {
     sheet = ss.insertSheet(CONFIG.PAYMENTS_SHEET_NAME);
     sheet.getRange(1, 1, 1, CONFIG.PAYMENT_COLUMNS.length).setValues([CONFIG.PAYMENT_COLUMNS]);
     
-    // Style header row
     var headerRange = sheet.getRange(1, 1, 1, CONFIG.PAYMENT_COLUMNS.length);
     headerRange.setFontWeight("bold");
     headerRange.setBackground("#0F766E"); // Teal-700
@@ -369,14 +393,135 @@ function initializePaymentsSheet() {
     sheet.setColumnWidth(1, 175); // Timestamp
     sheet.setColumnWidth(2, 160); // Transaction ID
     sheet.setColumnWidth(12, 180); // Stripe Reference
+    sheet.setColumnWidth(14, 250); // Workspace Link
+  }
+
+  return sheet;
+}
+
+function initializeCrmSheet() {
+  var ss = getSpreadsheet();
+  var sheet = ss.getSheetByName(CONFIG.CRM_SHEET_NAME);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(CONFIG.CRM_SHEET_NAME);
+    sheet.getRange(1, 1, 1, CONFIG.CRM_COLUMNS.length).setValues([CONFIG.CRM_COLUMNS]);
+    
+    var headerRange = sheet.getRange(1, 1, 1, CONFIG.CRM_COLUMNS.length);
+    headerRange.setFontWeight("bold");
+    headerRange.setBackground("#1E40AF"); // Blue-800
+    headerRange.setFontColor("#FFFFFF");
+    headerRange.setHorizontalAlignment("center");
+    sheet.setFrozenRows(1);
+
+    for (var i = 1; i <= CONFIG.CRM_COLUMNS.length; i++) {
+      sheet.setColumnWidth(i, 150);
+    }
+    sheet.setColumnWidth(1, 175);
+    sheet.setColumnWidth(2, 160);
+    sheet.setColumnWidth(8, 250); // Drive Folder Link
   }
 
   return sheet;
 }
 
 /**
- * Creates and records a new payment transaction
+ * Handles incoming Stripe Webhook payloads (checkout.session.completed, etc.)
  */
+function handleStripeWebhook(event) {
+  var session = (event.data && event.data.object) ? event.data.object : event;
+
+  var customerEmail = session.customer_email || (session.customer_details ? session.customer_details.email : "");
+  var customerName = (session.customer_details ? session.customer_details.name : "") || "Valued Client";
+  var amount = session.amount_total ? (session.amount_total / 100).toFixed(2) : (session.amount || "0");
+  var currency = (session.currency || "USD").toUpperCase();
+  var stripeRef = session.id || session.payment_intent || ("STRIPE-" + Date.now());
+  var metadata = session.metadata || {};
+
+  var service = metadata.service || metadata.serviceName || metadata.plan || "HR Professional Service";
+  var category = metadata.category || "Consulting & Services";
+  var billingType = session.mode === "subscription" ? "monthly" : "one-time";
+  var googleEmail = metadata.googleEmail || customerEmail;
+
+  var sheet = initializePaymentsSheet();
+
+  // IDEMPOTENCY CHECK: Guard against duplicate Stripe webhooks
+  var values = sheet.getDataRange().getValues();
+  for (var i = 1; i < values.length; i++) {
+    if (values[i][11] === stripeRef) { // Column 12 = Stripe Reference
+      return jsonResponse({
+        success: true,
+        message: "Webhook already processed (Idempotent replay).",
+        transactionId: values[i][1],
+        workspace: values[i][13] || null,
+        alreadyProcessed: true
+      });
+    }
+  }
+
+  // Standard Order ID format: ORD-YYYY-XXXX
+  var year = Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy");
+  var orderSuffix = ("0000" + Math.floor(Math.random() * 10000)).slice(-4);
+  var orderId = "ORD-" + year + "-" + orderSuffix;
+  var timestamp = Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy-MM-dd HH:mm:ss");
+
+  // Record initial payment record
+  var newRow = [
+    timestamp,
+    orderId,
+    customerName,
+    customerEmail,
+    session.customer_details ? (session.customer_details.phone || "") : "",
+    category,
+    service,
+    service,
+    billingType,
+    amount,
+    currency,
+    stripeRef,
+    "PENDING_PROVISIONING",
+    "",
+    "Stripe Webhook",
+    "Google Account: " + googleEmail
+  ];
+  sheet.appendRow(newRow);
+
+  // Synchronously provision or let queue handle it safely
+  var prov = provisionClientWorkspace({
+    txId: orderId,
+    orderId: orderId,
+    customerName: customerName,
+    customerEmail: customerEmail,
+    googleEmail: googleEmail,
+    company: metadata.company || customerName,
+    service: service,
+    category: category,
+    billingType: billingType,
+    amount: amount,
+    currency: currency,
+    stripeRef: stripeRef
+  });
+
+  // Update payment row with workspace link & status
+  var lastRow = sheet.getLastRow();
+  if (prov.success) {
+    sheet.getRange(lastRow, 13).setValue("COMPLETED");
+    sheet.getRange(lastRow, 14).setValue(prov.folderUrl);
+  } else {
+    sheet.getRange(lastRow, 13).setValue("PAYMENT_SUCCESS_PROVISIONING_FAILED");
+    sheet.getRange(lastRow, 16).setValue("Provisioning error: " + (prov.error || "Check Drive permissions"));
+  }
+
+  return jsonResponse({
+    success: true,
+    message: "Stripe event processed successfully.",
+    transactionId: orderId,
+    orderId: orderId,
+    workspace: prov.folderUrl || null,
+    provisioningStatus: prov.success ? "COMPLETED" : "FAILED"
+  });
+}
+
 function handleCreatePayment(data) {
   var sheet = initializePaymentsSheet();
 
@@ -384,6 +529,7 @@ function handleCreatePayment(data) {
   var timestamp = Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy-MM-dd HH:mm:ss");
   var customerName = sanitize(data.customerName || data.name || "Customer");
   var customerEmail = sanitize(data.customerEmail || data.email || "");
+  var googleEmail = sanitize(data.googleEmail || customerEmail);
   var phone = sanitize(data.phone || "");
   var category = sanitize(data.category || "");
   var service = sanitize(data.service || "");
@@ -392,10 +538,25 @@ function handleCreatePayment(data) {
   var amount = sanitize(data.amount || data.price || "");
   var currency = sanitize(data.currency || "USD");
   var stripeRef = sanitize(data.stripeReference || data.ref || data.sessionId || "");
-  var status = sanitize(data.status || "Paid");
-  var downloadLink = sanitize(data.downloadLink || data.downloadUrl || "");
   var source = sanitize(data.source || "Website Stripe Checkout");
   var notes = sanitize(data.notes || "");
+
+  var prov = provisionClientWorkspace({
+    txId: txId,
+    customerName: customerName,
+    customerEmail: customerEmail,
+    googleEmail: googleEmail,
+    company: customerName,
+    service: service || plan,
+    category: category,
+    billingType: billingType,
+    amount: amount,
+    currency: currency,
+    stripeRef: stripeRef
+  });
+
+  var status = prov.success ? "Paid & Provisioned" : "Paid";
+  var workspaceUrl = prov.success ? prov.folderUrl : "";
 
   var newRow = [
     timestamp,
@@ -411,78 +572,266 @@ function handleCreatePayment(data) {
     currency,
     stripeRef,
     status,
-    downloadLink,
+    workspaceUrl,
     source,
     notes
   ];
 
   sheet.appendRow(newRow);
 
-  // Send confirmation email to customer
-  if (customerEmail && customerEmail.indexOf("@") !== -1) {
-    try {
-      sendPaymentConfirmationEmail({
-        txId: txId,
-        customerName: customerName,
-        customerEmail: customerEmail,
-        plan: plan,
-        category: category,
-        amount: amount,
-        currency: currency,
-        billingType: billingType,
-        stripeRef: stripeRef,
-        downloadLink: downloadLink
-      });
-    } catch (payMailErr) {
-      console.error("Payment confirmation email dispatch error:", payMailErr);
-    }
-  }
-
   return jsonResponse({
     success: true,
-    message: "Payment transaction recorded successfully.",
+    message: "Payment transaction recorded and workspace initialized.",
     data: {
       transactionId: txId,
       status: status,
+      workspaceUrl: workspaceUrl,
       timestamp: timestamp
     }
   });
 }
 
+// ----------------------------------------------------------------------------
+// 6. AUTOMATED GOOGLE DRIVE WORKSPACE PROVISIONING
+// ----------------------------------------------------------------------------
+
 /**
- * Updates status of an existing payment transaction
+ * Creates private dedicated client folder structure in Google Drive and shares permissions
  */
-function handleUpdatePaymentStatus(data) {
-  var txId = data.txId || data.transactionId;
-  var status = data.status;
+function provisionClientWorkspace(params) {
+  try {
+    var rootFolderId = PropertiesService.getScriptProperties().getProperty("MASTER_ROOT_FOLDER_ID") || CONFIG.MASTER_ROOT_FOLDER_ID;
+    if (!rootFolderId) {
+      return { success: false, error: "Master Drive root folder ID is not configured." };
+    }
 
-  if (!txId || !status) {
-    return jsonResponse({ success: false, error: "transactionId and status are required." }, 400);
-  }
+    var rootFolder = DriveApp.getFolderById(rootFolderId);
+    
+    // Find or create "13 - CLIENT MANAGEMENT"
+    var clientMgmtFolder = null;
+    var subFolders = rootFolder.getFoldersByName(CONFIG.CLIENT_MANAGEMENT_FOLDER_NAME);
+    if (subFolders.hasNext()) {
+      clientMgmtFolder = subFolders.next();
+    } else {
+      clientMgmtFolder = rootFolder.createFolder(CONFIG.CLIENT_MANAGEMENT_FOLDER_NAME);
+    }
 
-  var sheet = initializePaymentsSheet();
-  var values = sheet.getDataRange().getValues();
+    // Generate unique Client ID: CLI-YYYY-XXXX
+    var year = Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy");
+    var clientSuffix = ("0000" + Math.floor(Math.random() * 10000)).slice(-4);
+    var clientId = "CLI-" + year + "-" + clientSuffix;
 
-  for (var i = 1; i < values.length; i++) {
-    if (values[i][1] === txId) {
-      sheet.getRange(i + 1, 13).setValue(status); // Column 13 = Payment Status
-      if (data.notes) {
-        sheet.getRange(i + 1, 16).setValue(sanitize(data.notes)); // Column 16 = Notes
+    var sanitizedCompanyName = (params.company || params.customerName || "Client").replace(/[\/\\:*?"<>|]/g, "").trim();
+    var clientFolderName = clientId + " - " + sanitizedCompanyName;
+
+    // Create primary client workspace folder
+    var clientFolder = clientMgmtFolder.createFolder(clientFolderName);
+    var folderUrl = clientFolder.getUrl();
+
+    // Create the 6 standard subfolders
+    for (var i = 0; i < CONFIG.CLIENT_SUBFOLDERS.length; i++) {
+      clientFolder.createFolder(CONFIG.CLIENT_SUBFOLDERS[i]);
+    }
+
+    // Safe permission granting (Viewer by default for security, with fallback handling)
+    var targetEmail = (params.googleEmail || params.customerEmail || "").trim();
+    var permissionStatus = "Pending Verification";
+
+    if (targetEmail && targetEmail.indexOf("@") !== -1) {
+      try {
+        clientFolder.addViewer(targetEmail);
+        permissionStatus = "Granted (" + targetEmail + ")";
+      } catch (permErr) {
+        console.warn("Could not grant Drive permission directly to " + targetEmail + ":", permErr);
+        permissionStatus = "Non-Google Email Alert: Direct Grant Failed (" + permErr.toString() + ")";
       }
-      return jsonResponse({ success: true, transactionId: txId, status: status });
+    }
+
+    // Append to CRM Clients Sheet
+    try {
+      var crmSheet = initializeCrmSheet();
+      var nowStr = Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy-MM-dd HH:mm:ss");
+      crmSheet.appendRow([
+        nowStr,
+        clientId,
+        sanitizedCompanyName,
+        params.customerName,
+        targetEmail,
+        params.phone || "",
+        params.service || "Purchased Service",
+        folderUrl,
+        "Active",
+        params.stripeRef || params.txId || "",
+        "Workspace: " + permissionStatus
+      ]);
+    } catch (crmErr) {
+      console.error("CRM logging error:", crmErr);
+    }
+
+    // Dispatch branded delivery email with private Drive workspace link
+    try {
+      sendWorkspaceWelcomeEmail({
+        clientId: clientId,
+        customerName: params.customerName,
+        customerEmail: params.customerEmail,
+        service: params.service,
+        amount: params.amount,
+        currency: params.currency,
+        folderUrl: folderUrl,
+        targetEmail: targetEmail,
+        permissionStatus: permissionStatus,
+        category: params.category || "Consulting & Services"
+      });
+    } catch (welcomeMailErr) {
+      console.error("Workspace welcome email error:", welcomeMailErr);
+    }
+
+    return {
+      success: true,
+      clientId: clientId,
+      folderId: clientFolder.getId(),
+      folderUrl: folderUrl,
+      permissionStatus: permissionStatus
+    };
+  } catch (err) {
+    console.error("provisionClientWorkspace exception:", err);
+    return { success: false, error: err.toString() };
+  }
+}
+
+/**
+ * Queue processor: processes any pending orders without timing out
+ */
+function processProvisioningQueue() {
+  var sheet = initializePaymentsSheet();
+  var data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return "No orders found.";
+
+  var processedCount = 0;
+  for (var i = 1; i < data.length; i++) {
+    var status = data[i][12]; // Column 13: Payment Status
+    if (status === "Pending Provisioning") {
+      var txId = data[i][1];
+      var customerName = data[i][2];
+      var customerEmail = data[i][3];
+      var category = data[i][5];
+      var service = data[i][6];
+      var amount = data[i][9];
+      var currency = data[i][10];
+      var stripeRef = data[i][11];
+
+      var prov = provisionClientWorkspace({
+        txId: txId,
+        customerName: customerName,
+        customerEmail: customerEmail,
+        service: service,
+        category: category,
+        amount: amount,
+        currency: currency,
+        stripeRef: stripeRef
+      });
+
+      if (prov.success) {
+        sheet.getRange(i + 1, 13).setValue("Paid & Provisioned");
+        sheet.getRange(i + 1, 14).setValue(prov.folderUrl);
+        processedCount++;
+      }
     }
   }
 
-  return jsonResponse({ success: false, error: "Transaction not found." }, 404);
+  return "Processed " + processedCount + " queued orders.";
 }
 
 // ----------------------------------------------------------------------------
-// 5. EMAIL NOTIFICATION DISPATCHERS
+// 7. EMAIL NOTIFICATION DISPATCHERS
 // ----------------------------------------------------------------------------
 
-/**
- * Dispatches an alert email to management
- */
+function sendWorkspaceWelcomeEmail(params) {
+  var subject = "Your Private Client Workspace Is Ready: " + params.service + " [" + params.clientId + "]";
+
+  var tradingDisclaimer = "";
+  if (params.category && params.category.toLowerCase().indexOf("trading") !== -1) {
+    tradingDisclaimer = `
+      <div style="margin: 20px 0; padding: 14px; background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 8px; font-size: 11px; line-height: 1.5; color: #92400E;">
+        <strong>Educational & Analytical Tool Disclaimer:</strong> All indicators, scripts, and software provided are strictly for educational and analytical purposes. They do not constitute financial, investment, or trading advice. Past market performance does not guarantee future results.
+      </div>
+    `;
+  }
+
+  var htmlBody = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden; color: #1E293B;">
+      <div style="background: #0F172A; padding: 28px 24px; color: #FFFFFF; text-align: center;">
+        <div style="display: inline-block; background: #2563EB; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+          HR Professional Services
+        </div>
+        <h1 style="margin: 14px 0 0 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">
+          Your Private Workspace Is Active
+        </h1>
+        <p style="margin: 6px 0 0 0; font-size: 13px; color: #94A3B8;">
+          Client ID: <span style="font-family: monospace; color: #60A5FA; font-weight: 700;">${params.clientId}</span>
+        </p>
+      </div>
+
+      <div style="padding: 32px 28px;">
+        <h2 style="font-size: 18px; color: #0F172A; margin-top: 0; font-weight: 700;">
+          Welcome, ${params.customerName}.
+        </h2>
+        
+        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
+          Thank you for securing <strong>${params.service}</strong>. Your dedicated, private Google Drive workspace has been created and structured for your project.
+        </p>
+
+        <div style="background: #EFF6FF; border: 2px solid #BFDBFE; border-radius: 12px; padding: 22px; text-align: center; margin: 26px 0;">
+          <p style="font-size: 12px; font-weight: 700; color: #1E40AF; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 8px 0;">
+            Secure Google Drive Access
+          </p>
+          <a href="${params.folderUrl}" style="display: inline-block; background: #2563EB; color: #FFFFFF; font-weight: 700; font-size: 14px; text-decoration: none; padding: 12px 28px; border-radius: 8px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);">
+            Open Your Private Workspace →
+          </a>
+          <p style="font-size: 11px; color: #64748B; margin: 10px 0 0 0;">
+            Shared with: <strong style="color: #0F172A;">${params.targetEmail}</strong>
+          </p>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 18px; font-size: 13px; line-height: 1.6;">
+          <strong style="color: #0F172A; font-size: 13px;">What is waiting inside your workspace:</strong>
+          <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #475569;">
+            <li><strong>00 - Client Profile & Scope:</strong> Your verified deliverables list and project timeline.</li>
+            <li><strong>01 - Requirements & Intake:</strong> Briefing questionnaire to kick off your implementation.</li>
+            <li><strong>02 - Working Files:</strong> Active spreadsheets, diagrams, and review drafts.</li>
+            <li><strong>03 - Deliverables:</strong> Master documents, sign-off files, and source code.</li>
+            <li><strong>04 - Training & SOPs:</strong> Video walkthrough links, user manuals, and troubleshooting guides.</li>
+          </ul>
+        </div>
+
+        ${tradingDisclaimer}
+
+        <div style="margin-top: 24px; padding: 14px; background: #F1F5F9; border-radius: 8px; font-size: 12px; color: #64748B;">
+          <strong>Cannot access the folder?</strong> If you checked out with an email not linked to Google, reply directly to this email with your preferred Google account and we will grant access within 60 minutes.
+        </div>
+
+        <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #F1F5F9;">
+          <p style="font-size: 13px; color: #334155; margin: 0; font-weight: 600;">Dedicated Systems Architect,</p>
+          <p style="font-size: 15px; font-weight: 700; color: #0F172A; margin: 2px 0 0 0;">${CONFIG.MANAGER_NAME}</p>
+          <p style="font-size: 12px; color: #64748B; margin: 0;">${CONFIG.COMPANY_NAME}</p>
+        </div>
+      </div>
+
+      <div style="background: #F8FAFC; padding: 18px 28px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 11px; color: #94A3B8;">
+        ${CONFIG.COMPANY_NAME} • United Kingdom • <a href="${CONFIG.WEBSITE_URL}" style="color: #64748B; text-decoration: none;">hemanth.ranam.dev</a>
+      </div>
+    </div>
+  `;
+
+  MailApp.sendEmail({
+    to: params.customerEmail,
+    subject: subject,
+    htmlBody: htmlBody,
+    name: CONFIG.COMPANY_NAME,
+    replyTo: CONFIG.MANAGER_EMAIL
+  });
+}
+
 function sendManagementAlert(params) {
   var managerEmail = PropertiesService.getScriptProperties().getProperty("MANAGER_EMAIL") || CONFIG.MANAGER_EMAIL;
   var subject = "🚨 New Enquiry: " + params.name + " (" + params.service + ") [" + params.leadId + "]";
@@ -521,28 +870,12 @@ function sendManagementAlert(params) {
             <td style="padding: 8px 0; color: #0F172A;">${params.company || "Not provided"}</td>
           </tr>
           <tr>
-            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Category:</td>
-            <td style="padding: 8px 0; font-weight: 600; color: #0F172A;">${params.category || "Business & Consulting"}</td>
-          </tr>
-          <tr>
             <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Service Required:</td>
             <td style="padding: 8px 0; font-weight: 600; color: #0F172A;">${params.service}</td>
           </tr>
           <tr>
-            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Selected Plan:</td>
-            <td style="padding: 8px 0; font-weight: 600; color: #0F172A;">${params.selectedPlan || "Not specified"}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Pricing / Budget:</td>
-            <td style="padding: 8px 0; font-weight: 700; color: #16A34A;">${params.price || "Custom Quote"}</td>
-          </tr>
-          <tr>
             <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Submitted At:</td>
             <td style="padding: 8px 0; color: #64748B;">${params.timestamp}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Source / Page:</td>
-            <td style="padding: 8px 0; color: #64748B;">${params.source} (${params.page})</td>
           </tr>
         </table>
 
@@ -550,10 +883,6 @@ function sendManagementAlert(params) {
           <strong style="font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Message Content:</strong>
           <p style="font-size: 13px; color: #1E293B; margin: 8px 0 0 0; line-height: 1.6; white-space: pre-wrap;">${params.message || "No additional message provided."}</p>
         </div>
-      </div>
-
-      <div style="background: #F1F5F9; padding: 14px 24px; border-top: 1px solid #E2E8F0; font-size: 11px; color: #64748B; text-align: center;">
-        Automated notification from ${CONFIG.COMPANY_NAME} CRM Engine.
       </div>
     </div>
   `;
@@ -566,9 +895,6 @@ function sendManagementAlert(params) {
   });
 }
 
-/**
- * Dispatches a professional acknowledgement email to the customer
- */
 function sendCustomerAcknowledgement(params) {
   var subject = "Thank you for contacting " + CONFIG.COMPANY_NAME + " [" + params.leadId + "]";
 
@@ -576,7 +902,7 @@ function sendCustomerAcknowledgement(params) {
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden; color: #1E293B;">
       <div style="background: #2563EB; padding: 28px; text-align: center; color: #FFFFFF;">
         <h1 style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">${CONFIG.COMPANY_NAME}</h1>
-        <p style="margin: 6px 0 0 0; font-size: 13px; opacity: 0.9;">Recruitment • HR Consulting • Career Support • Systems Architecture</p>
+        <p style="margin: 6px 0 0 0; font-size: 13px; opacity: 0.9;">Consulting • Systems Architecture • Automation</p>
       </div>
 
       <div style="padding: 32px 28px;">
@@ -596,11 +922,7 @@ function sendCustomerAcknowledgement(params) {
         </div>
 
         <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-          Our team is reviewing your requirements and will respond within <strong>24 business hours</strong> with clear next steps or scheduling details.
-        </p>
-
-        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-          If you need urgent assistance, you may reply directly to this email or connect with us on WhatsApp.
+          Our team is reviewing your requirements and will respond within <strong>24 business hours</strong> with clear next steps.
         </p>
 
         <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #F1F5F9;">
@@ -608,10 +930,6 @@ function sendCustomerAcknowledgement(params) {
           <p style="font-size: 14px; font-weight: 700; color: #0F172A; margin: 2px 0 0 0;">${CONFIG.MANAGER_NAME}</p>
           <p style="font-size: 12px; color: #64748B; margin: 0;">${CONFIG.COMPANY_NAME}</p>
         </div>
-      </div>
-
-      <div style="background: #F8FAFC; padding: 18px 28px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 11px; color: #94A3B8;">
-        ${CONFIG.COMPANY_NAME} • United Kingdom
       </div>
     </div>
   `;
@@ -625,99 +943,10 @@ function sendCustomerAcknowledgement(params) {
   });
 }
 
-/**
- * Dispatches payment receipt confirmation to customer
- */
-function sendPaymentConfirmationEmail(params) {
-  var subject = "Payment Confirmation: " + params.plan + " [" + params.txId + "]";
-
-  var downloadSection = "";
-  if (params.downloadLink && params.downloadLink.trim().length > 0) {
-    downloadSection = `
-      <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 16px; text-align: center; margin: 20px 0;">
-        <p style="font-size: 13px; font-weight: 700; color: #065F46; margin: 0 0 8px 0;">Your Download Resource Is Ready</p>
-        <a href="${params.downloadLink}" style="display: inline-block; background: #059669; color: #FFFFFF; font-weight: bold; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-size: 13px;">Download Included Resource</a>
-      </div>
-    `;
-  }
-
-  var htmlBody = `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden; color: #1E293B;">
-      <div style="background: #0F172A; padding: 24px; color: #FFFFFF;">
-        <h1 style="font-size: 18px; margin: 0; font-weight: 700; letter-spacing: -0.5px;">${CONFIG.COMPANY_NAME}</h1>
-        <p style="font-size: 12px; color: #94A3B8; margin: 4px 0 0 0;">Payment Confirmation & Receipt</p>
-      </div>
-
-      <div style="padding: 32px 28px;">
-        <h2 style="font-size: 18px; color: #0F172A; margin-top: 0; font-weight: 700;">
-          Thank you, ${params.customerName}.
-        </h2>
-        
-        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-          Your payment for <strong>${params.plan}</strong> has been received and confirmed.
-        </p>
-
-        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 18px; margin: 24px 0;">
-          <table style="width: 100%; font-size: 13px; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 6px 0; color: #64748B; font-weight: 600;">Transaction ID</td>
-              <td style="padding: 6px 0; text-align: right; font-family: monospace; font-weight: 700; color: #0F172A;">${params.txId}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 0; color: #64748B; font-weight: 600;">Plan</td>
-              <td style="padding: 6px 0; text-align: right; font-weight: 700; color: #0F172A;">${params.plan}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 0; color: #64748B; font-weight: 600;">Amount Paid</td>
-              <td style="padding: 6px 0; text-align: right; font-weight: 800; color: #059669; font-size: 15px;">${params.amount} ${params.currency}</td>
-            </tr>
-            <tr>
-              <td style="padding: 6px 0; color: #64748B; font-weight: 600;">Billing Type</td>
-              <td style="padding: 6px 0; text-align: right; color: #334155; text-transform: capitalize;">${params.billingType}</td>
-            </tr>
-            ${params.stripeRef ? `<tr><td style="padding: 6px 0; color: #64748B; font-weight: 600;">Stripe Reference</td><td style="padding: 6px 0; text-align: right; font-family: monospace; color: #64748B;">${params.stripeRef}</td></tr>` : ""}
-          </table>
-        </div>
-
-        ${downloadSection}
-
-        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-          Our team is preparing your onboarding and deliverables. We will reach out shortly to initiate your service.
-        </p>
-
-        <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-          If you need immediate support, reply directly to this email or contact us via WhatsApp.
-        </p>
-
-        <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #F1F5F9;">
-          <p style="font-size: 13px; color: #334155; margin: 0; font-weight: 600;">Best regards,</p>
-          <p style="font-size: 14px; font-weight: 700; color: #0F172A; margin: 2px 0 0 0;">${CONFIG.MANAGER_NAME}</p>
-          <p style="font-size: 12px; color: #64748B; margin: 0;">${CONFIG.COMPANY_NAME}</p>
-        </div>
-      </div>
-
-      <div style="background: #F8FAFC; padding: 18px 28px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 11px; color: #94A3B8;">
-        ${CONFIG.COMPANY_NAME} • United Kingdom
-      </div>
-    </div>
-  `;
-
-  MailApp.sendEmail({
-    to: params.customerEmail,
-    subject: subject,
-    htmlBody: htmlBody,
-    name: CONFIG.COMPANY_NAME,
-    replyTo: CONFIG.MANAGER_EMAIL
-  });
-}
-
 // ----------------------------------------------------------------------------
-// 6. UTILITY FUNCTIONS & SANITIZATION
+// 8. UTILITY FUNCTIONS & SANITIZATION
 // ----------------------------------------------------------------------------
 
-/**
- * Generates unique Lead ID matching standard: HRPS-YYYYMMDD-XXXX
- */
 function generateLeadId() {
   var now = new Date();
   var datePart = Utilities.formatDate(now, CONFIG.TIMEZONE, "yyyyMMdd");
@@ -725,9 +954,6 @@ function generateLeadId() {
   return "HRPS-" + datePart + "-" + randomSuffix;
 }
 
-/**
- * Sanitizes strings against CSV/Spreadsheet formula injection and whitespace
- */
 function sanitize(val) {
   if (val === null || val === undefined) return "";
   var str = val.toString().trim();
@@ -737,9 +963,6 @@ function sanitize(val) {
   return str;
 }
 
-/**
- * Retrieves the target Google Spreadsheet instance
- */
 function getSpreadsheet() {
   var propId = PropertiesService.getScriptProperties().getProperty("SPREADSHEET_ID");
   var targetId = propId || CONFIG.SPREADSHEET_ID;
@@ -750,18 +973,12 @@ function getSpreadsheet() {
   return SpreadsheetApp.getActiveSpreadsheet();
 }
 
-/**
- * Verifies API authorization for administrative actions
- */
 function verifyAuth(params) {
   var configuredKey = PropertiesService.getScriptProperties().getProperty("API_SECRET_KEY") || CONFIG.API_SECRET_KEY;
   var providedKey = params.apiKey || params.token || params.key;
   return providedKey === configuredKey;
 }
 
-/**
- * Parses urlencoded form payload
- */
 function parseFormData(body) {
   var params = {};
   var pairs = body.split("&");
@@ -774,9 +991,6 @@ function parseFormData(body) {
   return params;
 }
 
-/**
- * Lists existing enquiries (secured)
- */
 function listEnquiries() {
   var sheet = initializeSheet();
   var data = sheet.getDataRange().getValues();
@@ -795,9 +1009,6 @@ function listEnquiries() {
   return records;
 }
 
-/**
- * Creates standardized JSON response with permissive CORS headers
- */
 function jsonResponse(obj, statusCode) {
   var output = ContentService.createTextOutput(JSON.stringify(obj));
   output.setMimeType(ContentService.MimeType.JSON);

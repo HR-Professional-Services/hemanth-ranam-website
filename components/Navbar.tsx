@@ -288,13 +288,30 @@ export function Navbar() {
                 )}
               </div>
 
-              {/* Digital Growth */}
+              {/* Storefront Products */}
               <Link
-                href="/website-growth-os"
+                href="/products"
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-full hover:bg-slate-100/70 transition-all whitespace-nowrap"
               >
-                <Globe className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                <span>Digital Growth</span>
+                <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                <span>Products &amp; Services</span>
+              </Link>
+
+              {/* Free Resources */}
+              <Link
+                href="/resources"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold text-emerald-700 hover:text-emerald-800 rounded-full bg-emerald-50/70 hover:bg-emerald-100/80 transition-all whitespace-nowrap border border-emerald-200/60"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                <span>Free Resources</span>
+              </Link>
+
+              {/* Monthly Retainers */}
+              <Link
+                href="/monthly"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-full hover:bg-slate-100/70 transition-all whitespace-nowrap"
+              >
+                <span>Monthly Retainers</span>
               </Link>
 
               {/* Trading Technology */}
@@ -304,14 +321,6 @@ export function Navbar() {
               >
                 <TrendingUp className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                 <span>Trading Tech</span>
-              </Link>
-
-              {/* How It Works */}
-              <Link
-                href="/#how-it-works"
-                className="px-3 py-1.5 text-xs lg:text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-full hover:bg-slate-100/70 transition-all whitespace-nowrap"
-              >
-                How It Works
               </Link>
 
               {/* Pricing */}
