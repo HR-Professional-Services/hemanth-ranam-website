@@ -36,6 +36,58 @@ var CONFIG = {
   // Master Google Drive Root (HR - Services)
   MASTER_ROOT_FOLDER_ID: "1YmEJ3MhozQ5yVNKIKq4YwUaCKQa0Fb3l",
   CLIENT_MANAGEMENT_FOLDER_NAME: "13 - CLIENT MANAGEMENT",
+
+  // Master Operating Google Drive Folders (HR - Services)
+  MASTER_FOLDERS: [
+    "00 - MASTER CONTROL",
+    "01 - CONSULTING",
+    "02 - WEBSITE SERVICES",
+    "03 - BUSINESS AUTOMATION",
+    "04 - GOOGLE SHEETS & APPS SCRIPT",
+    "05 - FRAPPE & ERPNEXT",
+    "06 - TRADING TECHNOLOGY",
+    "07 - TEMPLATES",
+    "08 - CHECKLISTS",
+    "09 - TRAINING",
+    "10 - CODE & AUTOMATION KITS",
+    "11 - MONTHLY SERVICES",
+    "12 - FREE RESOURCES",
+    "13 - CLIENT MANAGEMENT",
+    "14 - SALES & LEADS",
+    "15 - FINANCE & ACCOUNTING",
+    "16 - MARKETING",
+    "17 - WEBSITE & SEO",
+    "18 - BUSINESS OPERATIONS",
+    "19 - TRADING & RESEARCH",
+    "99 - ARCHIVE"
+  ],
+
+  // 12 Core Free Resources
+  FREE_RESOURCES_LIST: [
+    "FREE-001 - Business Audit Workbook",
+    "FREE-002 - Free CRM Sheet",
+    "FREE-003 - Free Lead Tracker",
+    "FREE-004 - Free Sales Tracker",
+    "FREE-005 - Free Cash Flow Sheet",
+    "FREE-006 - Free Website Launch Checklist",
+    "FREE-007 - Free Automation Checklist",
+    "FREE-008 - Free SEO Checklist",
+    "FREE-009 - Free AI Business Guide",
+    "FREE-010 - Free Business Operations Template",
+    "FREE-011 - Free Business Systems Assessment",
+    "FREE-012 - Free Google Sheets Master Guide"
+  ],
+
+  // Free Resource Standard Subfolders
+  FREE_RESOURCE_SUBFOLDERS: [
+    "01 - Resource",
+    "02 - Preview",
+    "03 - Download",
+    "04 - Marketing",
+    "05 - Email",
+    "06 - SEO",
+    "99 - Archive"
+  ],
   
   // Standard Client Workspace Subfolders
   CLIENT_SUBFOLDERS: [
@@ -146,6 +198,11 @@ function doGet(e) {
     if (action === "processQueue") {
       var queueResult = processProvisioningQueue();
       return jsonResponse({ success: true, result: queueResult });
+    }
+
+    if (action === "setupMasterDrive") {
+      var setupResult = setupMasterDriveFolders();
+      return jsonResponse({ success: true, result: setupResult });
     }
 
     return jsonResponse({ success: false, error: "Invalid action requested." }, 400);
@@ -697,6 +754,92 @@ function provisionClientWorkspace(params) {
     console.error("provisionClientWorkspace exception:", err);
     return { success: false, error: err.toString() };
   }
+}
+
+/**
+ * Provisions the complete 20-folder Master Operating Hierarchy
+ * inside Google Drive Root (HR - Services: 1YmEJ3MhozQ5yVNKIKq4YwUaCKQa0Fb3l).
+ * Idempotent: checks for existing folders and never creates duplicates.
+ */
+function setupMasterDriveFolders() {
+  var rootFolderId = PropertiesService.getScriptProperties().getProperty("MASTER_ROOT_FOLDER_ID") || CONFIG.MASTER_ROOT_FOLDER_ID;
+  if (!rootFolderId) {
+    throw new Error("Master Drive root folder ID is not configured.");
+  }
+
+  var rootFolder;
+  try {
+    rootFolder = DriveApp.getFolderById(rootFolderId);
+  } catch (err) {
+    throw new Error("Unable to access Master Root Folder ID (" + rootFolderId + "): " + err.toString());
+  }
+
+  var existingFolders = {};
+  var folderIter = rootFolder.getFolders();
+  while (folderIter.hasNext()) {
+    var f = folderIter.next();
+    existingFolders[f.getName().trim().toLowerCase()] = f;
+  }
+
+  var created = [];
+  var existing = [];
+
+  CONFIG.MASTER_FOLDERS.forEach(function(folderName) {
+    var key = folderName.trim().toLowerCase();
+    var targetFolder;
+    if (existingFolders[key]) {
+      targetFolder = existingFolders[key];
+      existing.push(folderName);
+    } else {
+      targetFolder = rootFolder.createFolder(folderName);
+      existingFolders[key] = targetFolder;
+      created.push(folderName);
+    }
+
+    // Provision subfolders for 12 - FREE RESOURCES
+    if (folderName.indexOf("12 - FREE RESOURCES") !== -1) {
+      var freeExisting = {};
+      var subIter = targetFolder.getFolders();
+      while (subIter.hasNext()) {
+        var sf = subIter.next();
+        freeExisting[sf.getName().trim().toLowerCase()] = sf;
+      }
+
+      CONFIG.FREE_RESOURCES_LIST.forEach(function(resName) {
+        var resKey = resName.trim().toLowerCase();
+        var resFolder;
+        if (freeExisting[resKey]) {
+          resFolder = freeExisting[resKey];
+        } else {
+          resFolder = targetFolder.createFolder(resName);
+        }
+
+        // Subfolders for each free resource
+        var itemExisting = {};
+        var itemIter = resFolder.getFolders();
+        while (itemIter.hasNext()) {
+          var itemF = itemIter.next();
+          itemExisting[itemF.getName().trim().toLowerCase()] = itemF;
+        }
+        CONFIG.FREE_RESOURCE_SUBFOLDERS.forEach(function(subName) {
+          if (!itemExisting[subName.trim().toLowerCase()]) {
+            resFolder.createFolder(subName);
+          }
+        });
+      });
+    }
+  });
+
+  return {
+    success: true,
+    rootFolderId: rootFolderId,
+    rootFolderName: rootFolder.getName(),
+    createdCount: created.length,
+    reusedCount: existing.length,
+    createdFolders: created,
+    reusedFolders: existing,
+    timestamp: new Date().toISOString()
+  };
 }
 
 /**
