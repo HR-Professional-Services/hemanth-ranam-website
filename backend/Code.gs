@@ -205,6 +205,11 @@ function doGet(e) {
       return jsonResponse({ success: true, result: setupResult });
     }
 
+    if (action === "getDriveTree") {
+      var treeResult = getDriveTree(params.folderId);
+      return jsonResponse({ success: true, result: treeResult });
+    }
+
     return jsonResponse({ success: false, error: "Invalid action requested." }, 400);
   } catch (error) {
     return jsonResponse({ success: false, error: error.toString() }, 500);
@@ -839,6 +844,52 @@ function setupMasterDriveFolders() {
     createdFolders: created,
     reusedFolders: existing,
     timestamp: new Date().toISOString()
+  };
+}
+
+/**
+ * Returns a complete JSON tree of folders and files inside HR - Services.
+ * Allows Antigravity / external tools to inspect Drive state securely via the Web App.
+ */
+function getDriveTree(targetFolderId) {
+  var folderId = targetFolderId || PropertiesService.getScriptProperties().getProperty("MASTER_ROOT_FOLDER_ID") || CONFIG.MASTER_ROOT_FOLDER_ID;
+  var root = DriveApp.getFolderById(folderId);
+
+  function scanFolder(folder, depth) {
+    if (depth > 3) return null; // Protect execution limits
+    var node = {
+      id: folder.getId(),
+      name: folder.getName(),
+      url: folder.getUrl(),
+      folders: [],
+      files: []
+    };
+
+    var subFolders = folder.getFolders();
+    while (subFolders.hasNext()) {
+      var sf = subFolders.next();
+      node.folders.push(scanFolder(sf, depth + 1));
+    }
+
+    var files = folder.getFiles();
+    while (files.hasNext()) {
+      var f = files.next();
+      node.files.push({
+        id: f.getId(),
+        name: f.getName(),
+        mimeType: f.getMimeType(),
+        size: f.getSize(),
+        lastUpdated: f.getLastUpdated().toISOString()
+      });
+    }
+
+    return node;
+  }
+
+  return {
+    success: true,
+    scannedAt: new Date().toISOString(),
+    tree: scanFolder(root, 1)
   };
 }
 
