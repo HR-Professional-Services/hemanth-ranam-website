@@ -77,26 +77,32 @@ export function EcommerceCheckoutModal({
     setErrorMessage("");
     setIsSubmitting(true);
 
-    try {
-      // Post to our local API route which synchronizes with Google Apps Script
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "createLead",
-          name: fullName,
-          email: billingEmail,
-          googleEmail: googleEmail || billingEmail,
-          service: item.name,
-          category: item.category,
-          plan: "Free Resource Download",
-          message: `Free resource request for ${item.name}. Notes: ${notes || "None"}`,
-          source: "Ecommerce Store Checkout",
-        }),
-      });
+    const GAS_URL =
+      process.env.NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_WEBHOOK_URL ||
+      "https://script.google.com/macros/s/AKfycbz0PfSDNcjbNUnMJRP0PgaI-jgPd2VCNvfXVEasYElOk_1jH1wWaXeZOKA9ewmONJlX-w/exec";
 
-      const data = await res.json();
-      console.log("Free delivery lead result:", data);
+    try {
+      const payload = {
+        action: "createLead",
+        name: fullName,
+        email: billingEmail,
+        googleEmail: googleEmail || billingEmail,
+        service: item.name,
+        category: item.category,
+        plan: "Free Resource Download",
+        message: `Free resource request for ${item.name}. Notes: ${notes || "None"}`,
+        source: "Ecommerce Store Checkout",
+      };
+
+      try {
+        await fetch(GAS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        });
+      } catch (gasErr) {
+        console.warn("GAS notification caught:", gasErr);
+      }
 
       // Trigger confetti celebration
       try {

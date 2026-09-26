@@ -193,6 +193,10 @@ function CheckoutContent() {
     selectedItem.category.toLowerCase().includes("consulting") ||
     selectedItem.id.startsWith("CONS");
 
+  const GAS_URL =
+    process.env.NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_WEBHOOK_URL ||
+    "https://script.google.com/macros/s/AKfycbz0PfSDNcjbNUnMJRP0PgaI-jgPd2VCNvfXVEasYElOk_1jH1wWaXeZOKA9ewmONJlX-w/exec";
+
   // Free Resource Claim Handler
   const handleFreeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -204,26 +208,30 @@ function CheckoutContent() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "createLead",
-          name: fullName,
-          email: billingEmail,
-          googleEmail: googleEmail || billingEmail,
-          company: company || "Independent",
-          service: selectedItem.name,
-          category: selectedItem.category,
-          selectedPlan: "Free Resource Download",
-          price: "$0.00",
-          message: `Free claim for ${selectedItem.name} (${selectedItem.id}). Notes: ${notes || "None"}`,
-          source: "Checkout Page Embed",
-          page: "/checkout",
-        }),
-      });
+      const payload = {
+        action: "createLead",
+        name: fullName,
+        email: billingEmail,
+        googleEmail: googleEmail || billingEmail,
+        company: company || "Independent",
+        service: selectedItem.name,
+        category: selectedItem.category,
+        selectedPlan: "Free Resource Download",
+        price: "$0.00",
+        message: `Free claim for ${selectedItem.name} (${selectedItem.id}). Notes: ${notes || "None"}`,
+        source: "Checkout Page Embed",
+        page: "/checkout",
+      };
 
-      await res.json();
+      try {
+        await fetch(GAS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        });
+      } catch (gasErr) {
+        console.warn("GAS notification caught:", gasErr);
+      }
 
       try {
         confetti({
@@ -262,25 +270,31 @@ function CheckoutContent() {
     setIsSubmitting(true);
 
     try {
-      // 1. Log lead/order intent in CRM via our local API route
-      await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "createLead",
-          name: fullName,
-          email: billingEmail,
-          googleEmail: googleEmail || billingEmail,
-          company: company || "Independent",
-          service: selectedItem.name,
-          category: selectedItem.category,
-          selectedPlan: selectedItem.price,
-          price: selectedItem.price,
-          message: `Pre-checkout order intent for ${selectedItem.name} (${selectedItem.id}). Add order bump: ${addOrderBump ? "Yes" : "No"}. Notes: ${notes || "None"}`,
-          source: "Checkout Page Embed",
-          page: "/checkout",
-        }),
-      });
+      const payload = {
+        action: "createLead",
+        name: fullName,
+        email: billingEmail,
+        googleEmail: googleEmail || billingEmail,
+        company: company || "Independent",
+        service: selectedItem.name,
+        category: selectedItem.category,
+        selectedPlan: selectedItem.price,
+        price: selectedItem.price,
+        message: `Pre-checkout order intent for ${selectedItem.name} (${selectedItem.id}). Add order bump: ${addOrderBump ? "Yes" : "No"}. Notes: ${notes || "None"}`,
+        source: "Checkout Page Embed",
+        page: "/checkout",
+      };
+
+      // 1. Direct post to Google Apps Script CRM
+      try {
+        await fetch(GAS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        });
+      } catch (gasErr) {
+        console.warn("GAS order intent caught:", gasErr);
+      }
 
       // 2. Determine target Stripe Payment Link or calendar booking
       const targetUrl =
