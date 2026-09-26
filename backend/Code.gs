@@ -27,8 +27,8 @@ var CONFIG = {
   WEBSITE_URL: "https://hemanth.ranam.dev",
   TIMEZONE: "GMT", // or Europe/London / GMT
   
-  // Sheet Settings (Optional: Leave SPREADSHEET_ID empty if bound to active sheet)
-  SPREADSHEET_ID: "", 
+  // Sheet Settings (Connected to HR - Services Master Spreadsheet)
+  SPREADSHEET_ID: "1CZA0mEQu8vPJUGq_lc41flD37q54Rr_Qr6-ikLZMnKo", 
   SHEET_NAME: "Enquiries",
   PAYMENTS_SHEET_NAME: "Payments",
   CRM_SHEET_NAME: "Clients",
@@ -1163,39 +1163,65 @@ function getSpreadsheet() {
 
   if (targetId && targetId.trim().length > 0) {
     try {
-      return SpreadsheetApp.openById(targetId.trim());
+      var opened = SpreadsheetApp.openById(targetId.trim());
+      if (opened) return opened;
     } catch (e) {
       console.warn("Could not open spreadsheet by ID: " + targetId, e);
     }
   }
 
-  var active = SpreadsheetApp.getActiveSpreadsheet();
-  if (active) return active;
+  try {
+    var active = SpreadsheetApp.getActiveSpreadsheet();
+    if (active) return active;
+  } catch (e) {}
 
-  // Fallback for standalone Apps Script: Locate or create "HR Services Master CRM" in HR - Services root
+  // Fallback 1: Locate or create in HR - Services root folder
   var rootFolderId = PropertiesService.getScriptProperties().getProperty("MASTER_ROOT_FOLDER_ID") || CONFIG.MASTER_ROOT_FOLDER_ID;
   if (rootFolderId) {
     try {
       var root = DriveApp.getFolderById(rootFolderId);
+      
+      // Look for dedicated CRM
       var files = root.getFilesByName("HR Services Master CRM");
       if (files.hasNext()) {
         var ss = SpreadsheetApp.open(files.next());
         PropertiesService.getScriptProperties().setProperty("SPREADSHEET_ID", ss.getId());
         return ss;
-      } else {
-        var newSs = SpreadsheetApp.create("HR Services Master CRM");
-        var newFile = DriveApp.getFileById(newSs.getId());
-        root.addFile(newFile);
-        DriveApp.getRootFolder().removeFile(newFile);
-        PropertiesService.getScriptProperties().setProperty("SPREADSHEET_ID", newSs.getId());
-        return newSs;
       }
+      
+      // Look for any existing spreadsheet in root folder (e.g. Content Calendar - HR Services)
+      var sheetFiles = root.getFilesByType(MimeType.GOOGLE_SHEETS);
+      if (sheetFiles.hasNext()) {
+        var existingSs = SpreadsheetApp.open(sheetFiles.next());
+        PropertiesService.getScriptProperties().setProperty("SPREADSHEET_ID", existingSs.getId());
+        return existingSs;
+      }
+
+      // If none, create a new one inside the root folder
+      var newSs = SpreadsheetApp.create("HR Services Master CRM");
+      var newFile = DriveApp.getFileById(newSs.getId());
+      try {
+        newFile.moveTo(root);
+      } catch (moveErr) {
+        root.addFile(newFile);
+      }
+      PropertiesService.getScriptProperties().setProperty("SPREADSHEET_ID", newSs.getId());
+      return newSs;
     } catch (driveErr) {
-      console.error("Error creating standalone spreadsheet:", driveErr);
+      console.error("Error creating/locating standalone spreadsheet in Drive:", driveErr);
     }
   }
 
-  throw new Error("Spreadsheet not configured. Please set SPREADSHEET_ID in Script Properties.");
+  // Fallback 2: Standalone creation
+  try {
+    var standaloneSs = SpreadsheetApp.create("HR Services Master CRM");
+    PropertiesService.getScriptProperties().setProperty("SPREADSHEET_ID", standaloneSs.getId());
+    return standaloneSs;
+  } catch (err) {
+    console.error("Could not create standalone sheet:", err);
+  }
+
+  throw new Error("Spreadsheet not configured. Please set SPREADSHEET_ID in Script Properties or in CONFIG.SPREADSHEET_ID.");
 }
 
 function verifyAuth(params) {

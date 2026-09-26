@@ -294,7 +294,16 @@ export function Navbar() {
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-full hover:bg-slate-100/70 transition-all whitespace-nowrap"
               >
                 <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                <span>Products &amp; Services</span>
+                <span>Products</span>
+              </Link>
+
+              {/* Full E-Commerce Store & Checkout */}
+              <Link
+                href="/checkout"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold text-blue-700 hover:text-blue-800 rounded-full bg-blue-50/80 hover:bg-blue-100/80 transition-all whitespace-nowrap border border-blue-200/60"
+              >
+                <CreditCard className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                <span>Checkout &amp; Store</span>
               </Link>
 
               {/* Free Resources */}
@@ -436,6 +445,16 @@ export function Navbar() {
               <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-3 pt-3 pb-1 font-bold">
                 Core Catalogue &amp; Resources
               </div>
+              <Link
+                href="/checkout"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-xl text-xs font-bold text-blue-700 bg-blue-50/70 hover:bg-blue-100 flex items-center gap-2.5"
+              >
+                <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0">
+                  <CreditCard className="w-3.5 h-3.5" />
+                </div>
+                <span>E-Commerce Checkout &amp; Store</span>
+              </Link>
               <Link
                 href="/products"
                 onClick={() => setMobileMenuOpen(false)}
