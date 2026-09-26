@@ -14,6 +14,10 @@ import {
   CanonicalService,
 } from "@/data/pricingData";
 import {
+  EcommerceCheckoutModal,
+  CheckoutItem,
+} from "@/components/ui/EcommerceCheckoutModal";
+import {
   Search,
   Filter,
   CheckCircle2,
@@ -44,6 +48,8 @@ export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedInclusions, setExpandedInclusions] = useState<Record<string, boolean>>({});
+  const [selectedItem, setSelectedItem] = useState<CheckoutItem | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleInclusions = (id: string) => {
     setExpandedInclusions((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -328,12 +334,27 @@ export default function ProductsPage() {
 
                     {/* Bottom CTA */}
                     <div className="pt-6 mt-6 border-t border-slate-100">
-                      <a
-                        href={
-                          item.stripePaymentLink ||
-                          item.bookingUrl ||
-                          `/#contact?service=${encodeURIComponent(item.serviceName)}`
-                        }
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedItem({
+                            id: item.serviceId,
+                            name: item.serviceName,
+                            category: item.category,
+                            subcategory: item.subcategory,
+                            price: item.price,
+                            originalPrice: item.originalPrice,
+                            billingType: item.billingType,
+                            deliveryTime: item.deliveryTime,
+                            shortDescription: item.shortDescription,
+                            included: item.included,
+                            stripePaymentLink: item.stripePaymentLink,
+                            bookingUrl: item.bookingUrl,
+                            orderBump: item.orderBump,
+                            disclaimer: item.disclaimer,
+                          });
+                          setIsModalOpen(true);
+                        }}
                         className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 shadow-md shadow-blue-500/25 transition-all cursor-pointer"
                       >
                         {item.deliveryType === "instant_download" ? (
@@ -351,7 +372,7 @@ export default function ProductsPage() {
                             : `Secure Service (${item.price})`}
                         </span>
                         <ArrowRight className="w-3.5 h-3.5" />
-                      </a>
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -387,6 +408,13 @@ export default function ProductsPage() {
       <Footer />
       <WhatsAppButton />
       <BackToTop />
+
+      {/* Embedded Checkout & Delivery Drawer Modal */}
+      <EcommerceCheckoutModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        item={selectedItem}
+      />
     </div>
   );
 }

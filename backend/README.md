@@ -77,7 +77,8 @@ The `Status` column defaults to **`New`**. Team members can update this cell in 
 Add the Web App URL to your website's `.env.local` or hosting provider environment variables (e.g. Cloudflare Pages, Vercel):
 
 ```env
-GOOGLE_APPS_SCRIPT_WEBHOOK_URL="https://script.google.com/macros/s/AKfycbx.../exec"
+GOOGLE_APPS_SCRIPT_WEBHOOK_URL="https://script.google.com/macros/s/AKfycbz0PfSDNcjbNUnMJRP0PgaI-jgPd2VCNvfXVEasYElOk_1jH1wWaXeZOKA9ewmONJlX-w/exec"
+NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_WEBHOOK_URL="https://script.google.com/macros/s/AKfycbz0PfSDNcjbNUnMJRP0PgaI-jgPd2VCNvfXVEasYElOk_1jH1wWaXeZOKA9ewmONJlX-w/exec"
 APPS_SCRIPT_API_KEY="HR_SECURE_API_SECRET_2026"
 ```
 
@@ -89,7 +90,7 @@ APPS_SCRIPT_API_KEY="HR_SECURE_API_SECRET_2026"
 Run the following terminal command to verify end-to-end processing:
 
 ```bash
-curl -X POST "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec" \
+curl -X POST "https://script.google.com/macros/s/AKfycbz0PfSDNcjbNUnMJRP0PgaI-jgPd2VCNvfXVEasYElOk_1jH1wWaXeZOKA9ewmONJlX-w/exec" \
   -H "Content-Type: application/json" \
   -d '{
     "action": "createLead",
