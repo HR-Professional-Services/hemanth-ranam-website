@@ -2,34 +2,34 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Menu,
   X,
   Layers,
-  Globe,
-  TrendingUp,
   ChevronDown,
   ArrowRight,
-  Shield,
-  Zap,
-  Users,
+  Workflow,
+  Cpu,
+  Globe,
+  TrendingUp,
+  ShoppingBag,
+  FolderKanban,
+  FileText,
+  CreditCard,
+  User,
+  MessageSquare,
   Sparkles,
   Phone,
-  Workflow,
-  CheckCircle2,
-  MessageSquare,
-  Boxes,
-  Cpu,
-  FolderKanban,
-  LifeBuoy,
-  CreditCard,
 } from "lucide-react";
-import { SITE_CONFIG } from "@/data/siteData";
+import { useCart } from "@/context/CartContext";
 
 export function Navbar() {
+  const pathname = usePathname();
+  const { totalCount, openCart } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [servicesFlyoutOpen, setServicesFlyoutOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [businessOsOpen, setBusinessOsOpen] = useState(false);
   const flyoutRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,29 +44,68 @@ export function Navbar() {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (flyoutRef.current && !flyoutRef.current.contains(event.target as Node)) {
-        setBusinessOsOpen(false);
+        setServicesFlyoutOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setServicesFlyoutOpen(false);
+  }, [pathname]);
+
+  const serviceCategories = [
+    {
+      title: "Business Systems",
+      desc: "CRM, sales, operations & management systems",
+      href: "/services?cat=business-systems",
+      icon: Layers,
+    },
+    {
+      title: "Business Automation",
+      desc: "Connect tools and remove repetitive admin work",
+      href: "/services?cat=automation",
+      icon: Workflow,
+    },
+    {
+      title: "ERPNext Implementation",
+      desc: "Frappe & ERPNext workflows, setup & custom doctypes",
+      href: "/services?cat=erpnext",
+      icon: Cpu,
+    },
+    {
+      title: "Business Websites",
+      desc: "Modern websites connected to lead capture & CRM",
+      href: "/services?cat=websites",
+      icon: Globe,
+    },
+    {
+      title: "Trading Technology",
+      desc: "Pine Script v6 & MT5 indicators, scanners & bridges",
+      href: "/trading-technology",
+      icon: TrendingUp,
+    },
+  ];
+
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-200 ${
+        className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-200 ${
           scrolled
-            ? "bg-white/95 backdrop-blur-2xl border-b border-slate-200 shadow-sm shadow-blue-500/5"
-            : "bg-white/90 backdrop-blur-xl border-b border-slate-200/80"
+            ? "bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-xs"
+            : "bg-white/90 backdrop-blur-md border-b border-slate-200/80"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Brand & Identity (Left) */}
+          <div className="flex items-center justify-between h-16 sm:h-18">
+            {/* Brand Logo & Name */}
             <Link href="/" className="flex items-center gap-3 shrink-0 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-500 p-[1.5px] shadow-md shadow-blue-500/20 group-hover:shadow-blue-500/35 transition-all">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-[1.5px] shadow-sm group-hover:shadow-blue-500/25 transition-all">
                 <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center">
-                  <span className="font-extrabold text-sm tracking-wider bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                  <span className="font-extrabold text-xs tracking-wider bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">
                     HR
                   </span>
                 </div>
@@ -76,485 +115,344 @@ export function Navbar() {
                   Hemanth Ranam
                 </span>
                 <span className="text-[11px] text-slate-500 font-normal leading-tight mt-1">
-                  Founder &amp; Systems Architect
+                  Business Systems &amp; Automation
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation Links (Center) */}
-            <nav className="hidden md:flex items-center gap-1 lg:gap-1.5">
-              {/* Business OS with Flyout Menu */}
+            {/* Desktop Navigation Links */}
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs xl:text-sm font-semibold text-slate-700">
+              <Link
+                href="/"
+                className={`px-3 py-1.5 rounded-lg transition-colors hover:text-blue-600 hover:bg-slate-100/60 ${
+                  pathname === "/" ? "text-blue-600 font-bold" : ""
+                }`}
+              >
+                Home
+              </Link>
+
+              {/* Services Dropdown */}
               <div
                 ref={flyoutRef}
                 className="relative"
-                onMouseEnter={() => setBusinessOsOpen(true)}
-                onMouseLeave={() => setBusinessOsOpen(false)}
+                onMouseEnter={() => setServicesFlyoutOpen(true)}
+                onMouseLeave={() => setServicesFlyoutOpen(false)}
               >
                 <button
                   type="button"
-                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold rounded-full transition-all whitespace-nowrap cursor-pointer ${
-                    businessOsOpen
-                      ? "text-blue-700 bg-blue-50"
-                      : "text-slate-700 hover:text-blue-600 hover:bg-slate-100/70"
+                  onClick={() => setServicesFlyoutOpen((prev) => !prev)}
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-colors hover:text-blue-600 hover:bg-slate-100/60 cursor-pointer ${
+                    pathname.startsWith("/services") ? "text-blue-600 font-bold" : ""
                   }`}
-                  onClick={() => setBusinessOsOpen(!businessOsOpen)}
-                  aria-expanded={businessOsOpen}
+                  aria-expanded={servicesFlyoutOpen}
                 >
-                  <Layers className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                  <span>Business OS</span>
+                  <span>Services</span>
                   <ChevronDown
-                    className={`w-3 h-3 transition-transform duration-200 shrink-0 ${
-                      businessOsOpen ? "rotate-180 text-blue-600" : "text-slate-400"
+                    className={`w-3.5 h-3.5 text-slate-400 transition-transform ${
+                      servicesFlyoutOpen ? "rotate-180 text-blue-600" : ""
                     }`}
                   />
                 </button>
 
-                {/* Flyout Menu Panel (Pure White Glass, All 10 OS Products Listed) */}
-                {businessOsOpen && (
-                  <div className="absolute top-full left-0 w-[580px] pt-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                    <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xl shadow-slate-400/20 backdrop-blur-2xl">
-                      <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-bold">
-                            01 Division
-                          </span>
-                          <span className="text-xs font-bold text-slate-900">
-                            Connected Business Operating Systems
-                          </span>
-                        </div>
-                        <span className="text-[11px] text-slate-500 font-medium">
-                          Frappe &amp; ERPNext Architecture
+                {servicesFlyoutOpen && (
+                  <div className="absolute top-full left-0 w-80 pt-2 z-50 animate-in fade-in duration-150">
+                    <div className="p-3 bg-white rounded-2xl border border-slate-200 shadow-xl space-y-1">
+                      <div className="px-3 py-1.5 border-b border-slate-100 flex items-center justify-between">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold">
+                          Core Divisions
                         </span>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2">
                         <Link
-                          href="/business-os"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="p-2 rounded-xl hover:bg-blue-50/60 transition-colors group/item"
+                          href="/services"
+                          className="text-[11px] text-blue-600 hover:underline font-bold"
                         >
-                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-xs group-hover/item:text-blue-600">
-                            <Layers className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                            <span>Business OS (All-in-One)</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            Complete connected environment for all teams.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/crm-os"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="p-2 rounded-xl hover:bg-blue-50/60 transition-colors group/item"
-                        >
-                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-xs group-hover/item:text-blue-600">
-                            <Users className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                            <span>CRM OS</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            Lead capture, deal stages &amp; pipeline tracking.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/finance-os"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="p-2 rounded-xl hover:bg-blue-50/60 transition-colors group/item"
-                        >
-                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-xs group-hover/item:text-blue-600">
-                            <CreditCard className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                            <span>Finance OS</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            Invoicing, expense tracking &amp; financial ledger.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/hrms-os"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="p-2 rounded-xl hover:bg-blue-50/60 transition-colors group/item"
-                        >
-                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-xs group-hover/item:text-blue-600">
-                            <Shield className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                            <span>HRMS OS</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            Staff directory, attendance &amp; leave management.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/sales-os"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="p-2 rounded-xl hover:bg-blue-50/60 transition-colors group/item"
-                        >
-                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-xs group-hover/item:text-blue-600">
-                            <TrendingUp className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                            <span>Sales OS</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            Customer quotations, orders &amp; forecasting.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/operations-os"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="p-2 rounded-xl hover:bg-blue-50/60 transition-colors group/item"
-                        >
-                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-xs group-hover/item:text-blue-600">
-                            <Zap className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                            <span>Operations OS</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            Standard operating procedures &amp; approval workflows.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/inventory-os"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="p-2 rounded-xl hover:bg-blue-50/60 transition-colors group/item"
-                        >
-                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-xs group-hover/item:text-blue-600">
-                            <Boxes className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                            <span>Inventory OS</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            Stock ledger, warehouse balances &amp; purchasing.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/project-os"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="p-2 rounded-xl hover:bg-blue-50/60 transition-colors group/item"
-                        >
-                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-xs group-hover/item:text-blue-600">
-                            <FolderKanban className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                            <span>Project OS</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            Milestone delivery, tasks &amp; time tracking.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/helpdesk-os"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="p-2 rounded-xl hover:bg-blue-50/60 transition-colors group/item"
-                        >
-                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-xs group-hover/item:text-blue-600">
-                            <LifeBuoy className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                            <span>Helpdesk OS</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            Client support tickets &amp; issue resolution.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/custom-os"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="p-2 rounded-xl hover:bg-blue-50/60 transition-colors group/item"
-                        >
-                          <div className="flex items-center gap-2 text-slate-900 font-semibold text-xs group-hover/item:text-blue-600">
-                            <Cpu className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                            <span>Custom OS</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            Tailored software matching your exact workflow.
-                          </p>
+                          All Services →
                         </Link>
                       </div>
 
-                      <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <div className="flex items-center gap-1.5 text-slate-600 font-medium">
-                          <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                          <span>Managed setup + monthly maintenance</span>
-                        </div>
-                        <Link
-                          href="/#products"
-                          onClick={() => setBusinessOsOpen(false)}
-                          className="text-blue-600 hover:text-blue-700 font-bold flex items-center gap-1"
-                        >
-                          <span>Compare all products</span>
-                          <ArrowRight className="w-3 h-3" />
-                        </Link>
-                      </div>
+                      {serviceCategories.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <Link
+                            key={item.title}
+                            href={item.href}
+                            className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-blue-50/60 transition-colors group"
+                          >
+                            <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <span className="text-xs font-bold text-slate-900 group-hover:text-blue-600 block">
+                                {item.title}
+                              </span>
+                              <span className="text-[11px] text-slate-500 leading-tight block mt-0.5">
+                                {item.desc}
+                              </span>
+                            </div>
+                          </Link>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Storefront Products */}
               <Link
-                href="/products"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-full hover:bg-slate-100/70 transition-all whitespace-nowrap"
+                href="/work"
+                className={`px-3 py-1.5 rounded-lg transition-colors hover:text-blue-600 hover:bg-slate-100/60 ${
+                  pathname === "/work" ? "text-blue-600 font-bold" : ""
+                }`}
               >
-                <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                <span>Products</span>
+                Work
               </Link>
 
-              {/* Full E-Commerce Store & Checkout */}
-              <Link
-                href="/checkout"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold text-blue-700 hover:text-blue-800 rounded-full bg-blue-50/80 hover:bg-blue-100/80 transition-all whitespace-nowrap border border-blue-200/60"
-              >
-                <CreditCard className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                <span>Checkout &amp; Store</span>
-              </Link>
-
-              {/* Free Resources */}
               <Link
                 href="/resources"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold text-emerald-700 hover:text-emerald-800 rounded-full bg-emerald-50/70 hover:bg-emerald-100/80 transition-all whitespace-nowrap border border-emerald-200/60"
+                className={`px-3 py-1.5 rounded-lg transition-colors hover:text-blue-600 hover:bg-slate-100/60 ${
+                  pathname === "/resources" ? "text-blue-600 font-bold" : ""
+                }`}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                <span>Free Resources</span>
+                Resources
               </Link>
 
-              {/* Monthly Retainers */}
               <Link
-                href="/monthly"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-full hover:bg-slate-100/70 transition-all whitespace-nowrap"
+                href="/store"
+                className={`px-3 py-1.5 rounded-lg transition-colors hover:text-blue-600 hover:bg-slate-100/60 ${
+                  pathname === "/store" ? "text-blue-600 font-bold" : ""
+                }`}
               >
-                <span>Monthly Retainers</span>
+                Store
               </Link>
 
-              {/* Trading Technology */}
               <Link
-                href="/trading-technology"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs lg:text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-full hover:bg-slate-100/70 transition-all whitespace-nowrap"
+                href="/about"
+                className={`px-3 py-1.5 rounded-lg transition-colors hover:text-blue-600 hover:bg-slate-100/60 ${
+                  pathname === "/about" ? "text-blue-600 font-bold" : ""
+                }`}
               >
-                <TrendingUp className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                <span>Trading Tech</span>
+                About
               </Link>
 
-              {/* Pricing */}
               <Link
-                href="/#pricing"
-                className="px-3 py-1.5 text-xs lg:text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-full hover:bg-slate-100/70 transition-all whitespace-nowrap"
+                href="/pricing"
+                className={`px-3 py-1.5 rounded-lg transition-colors hover:text-blue-600 hover:bg-slate-100/60 ${
+                  pathname === "/pricing" ? "text-blue-600 font-bold" : ""
+                }`}
               >
                 Pricing
               </Link>
+
+              <Link
+                href="/contact"
+                className={`px-3 py-1.5 rounded-lg transition-colors hover:text-blue-600 hover:bg-slate-100/60 ${
+                  pathname === "/contact" ? "text-blue-600 font-bold" : ""
+                }`}
+              >
+                Contact
+              </Link>
             </nav>
 
-            {/* Desktop Right Action Area */}
-            <div className="hidden sm:flex items-center gap-2.5 shrink-0">
-              {/* WhatsApp Quick Link (opens in same tab, no phone displayed) */}
-              <a
-                href={SITE_CONFIG.whatsappUrl}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-all whitespace-nowrap shadow-xs"
-                title="Chat directly on WhatsApp"
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                <MessageSquare className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span>WhatsApp</span>
-              </a>
-
-              {/* Book Consultation Primary CTA (Pure Blue Gradient) */}
-              <a
-                href="/#contact"
-                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 shadow-md shadow-blue-500/25 border border-blue-400/20 transition-all hover:scale-[1.02] whitespace-nowrap"
-              >
-                <span>Book Consultation</span>
-                <ArrowRight className="w-3.5 h-3.5 shrink-0" />
-              </a>
-            </div>
-
-            {/* Mobile Menu Hamburger */}
-            <div className="md:hidden flex items-center gap-2">
-              <a
-                href="/#contact"
-                className="px-3 py-1.5 rounded-full text-xs font-bold text-white bg-blue-600 hover:bg-blue-700"
-              >
-                Consult
-              </a>
+            {/* Right Actions: Cart & Primary CTA */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* Cart Button */}
               <button
                 type="button"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-1.5 text-slate-700 hover:text-blue-600 rounded-lg focus:outline-none cursor-pointer"
-                aria-label="Toggle Navigation Menu"
+                onClick={openCart}
+                className="relative p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors flex items-center justify-center cursor-pointer min-w-[44px] min-h-[44px]"
+                aria-label={`View cart with ${totalCount} items`}
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                <ShoppingBag className="w-5 h-5" />
+                {totalCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-blue-600 text-white font-bold text-[10px] flex items-center justify-center shadow-xs animate-in zoom-in duration-150">
+                    {totalCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Primary Consultation CTA */}
+              <Link
+                href="/contact?service=consultation"
+                className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm transition-all shadow-sm shadow-blue-500/15 min-h-[44px]"
+              >
+                <span>Book a Consultation</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+
+              {/* Mobile Hamburger Toggle */}
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen((prev) => !prev)}
+                className="lg:hidden p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
+                aria-label="Toggle mobile menu"
+                aria-expanded={mobileMenuOpen}
+              >
+                {mobileMenuOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Menu Panel (Pure White Sheet) */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-b border-slate-200 bg-white/98 backdrop-blur-2xl px-4 pt-3 pb-6 space-y-3 shadow-xl animate-in fade-in slide-in-from-top-2 duration-150">
-            <div className="flex flex-col space-y-1">
-              <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-3 pt-1 pb-1 font-bold">
-                Operating Systems
+      {/* Mobile Slide-Out Navigation */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden overflow-hidden">
+          <div
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity animate-in fade-in"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+
+          <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-200">
+            {/* Mobile Menu Header */}
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-blue-600 text-white font-extrabold text-xs flex items-center justify-center">
+                  HR
+                </div>
+                <span className="font-bold text-sm text-slate-900">
+                  Hemanth Ranam
+                </span>
               </div>
-              <Link
-                href="/business-os"
+              <button
+                type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-800 hover:bg-blue-50 flex items-center gap-2.5"
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
+                aria-label="Close menu"
               >
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <Layers className="w-3.5 h-3.5" />
-                </div>
-                <span>Business OS (All-in-One)</span>
-              </Link>
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Mobile Nav Links */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-1">
               <Link
-                href="/crm-os"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-800 hover:bg-blue-50 flex items-center gap-2.5"
+                href="/"
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-[44px]"
               >
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <Users className="w-3.5 h-3.5" />
-                </div>
-                <span>CRM OS</span>
-              </Link>
-              <Link
-                href="/finance-os"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-800 hover:bg-blue-50 flex items-center gap-2.5"
-              >
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <CreditCard className="w-3.5 h-3.5" />
-                </div>
-                <span>Finance OS</span>
-              </Link>
-              <Link
-                href="/website-growth-os"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-800 hover:bg-blue-50 flex items-center gap-2.5"
-              >
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <Globe className="w-3.5 h-3.5" />
-                </div>
-                <span>Website Growth OS</span>
-              </Link>
-              <Link
-                href="/trading-technology"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-800 hover:bg-blue-50 flex items-center gap-2.5"
-              >
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <TrendingUp className="w-3.5 h-3.5" />
-                </div>
-                <span>Trading Technology</span>
+                Home
               </Link>
 
-              <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-3 pt-3 pb-1 font-bold">
-                Core Catalogue &amp; Resources
+              <div className="pt-2 pb-1 px-3">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold block mb-1">
+                  Services
+                </span>
+                <div className="space-y-1 pl-2 border-l border-slate-200">
+                  <Link
+                    href="/services"
+                    className="block py-2 text-xs font-bold text-blue-600 hover:underline min-h-[36px]"
+                  >
+                    View All Services →
+                  </Link>
+                  <Link
+                    href="/services?cat=business-systems"
+                    className="block py-1.5 text-xs text-slate-600 hover:text-blue-600 min-h-[36px]"
+                  >
+                    • Business Systems
+                  </Link>
+                  <Link
+                    href="/services?cat=automation"
+                    className="block py-1.5 text-xs text-slate-600 hover:text-blue-600 min-h-[36px]"
+                  >
+                    • Business Automation
+                  </Link>
+                  <Link
+                    href="/services?cat=erpnext"
+                    className="block py-1.5 text-xs text-slate-600 hover:text-blue-600 min-h-[36px]"
+                  >
+                    • ERPNext Implementation
+                  </Link>
+                  <Link
+                    href="/services?cat=websites"
+                    className="block py-1.5 text-xs text-slate-600 hover:text-blue-600 min-h-[36px]"
+                  >
+                    • Business Websites
+                  </Link>
+                  <Link
+                    href="/trading-technology"
+                    className="block py-1.5 text-xs text-slate-600 hover:text-blue-600 min-h-[36px]"
+                  >
+                    • Trading Technology (Pine &amp; MT5)
+                  </Link>
+                </div>
               </div>
+
               <Link
-                href="/checkout"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-bold text-blue-700 bg-blue-50/70 hover:bg-blue-100 flex items-center gap-2.5"
+                href="/work"
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-[44px]"
               >
-                <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0">
-                  <CreditCard className="w-3.5 h-3.5" />
-                </div>
-                <span>E-Commerce Checkout &amp; Store</span>
+                Selected Work
               </Link>
-              <Link
-                href="/products"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-800 hover:bg-blue-50 flex items-center gap-2.5"
-              >
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <Boxes className="w-3.5 h-3.5" />
-                </div>
-                <span>All Products &amp; Services</span>
-              </Link>
+
               <Link
                 href="/resources"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold text-emerald-800 hover:bg-emerald-50 flex items-center gap-2.5"
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-[44px]"
               >
-                <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                  <Sparkles className="w-3.5 h-3.5" />
-                </div>
-                <span>Free Resources &amp; Blueprints</span>
-              </Link>
-              <Link
-                href="/monthly"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-800 hover:bg-blue-50 flex items-center gap-2.5"
-              >
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <Shield className="w-3.5 h-3.5" />
-                </div>
-                <span>Monthly Managed Retainers</span>
-              </Link>
-              <Link
-                href="/services"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-800 hover:bg-blue-50 flex items-center gap-2.5"
-              >
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <Workflow className="w-3.5 h-3.5" />
-                </div>
-                <span>Commercial Pillars Overview</span>
+                Free Resources
               </Link>
 
-              <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-3 pt-3 pb-1 font-bold">
-                Platform &amp; Process
-              </div>
               <Link
-                href="/#how-it-works"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2.5"
+                href="/store"
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-[44px]"
               >
-                <Workflow className="w-3.5 h-3.5 text-blue-600" />
-                <span>How It Works (8 Stages)</span>
+                Digital Store
               </Link>
+
               <Link
-                href="/#pricing"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2.5"
+                href="/about"
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-[44px]"
               >
-                <CreditCard className="w-3.5 h-3.5 text-blue-600" />
-                <span>Pricing Architecture</span>
+                About Hemanth
               </Link>
+
               <Link
-                href="/#why-hemanth"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2.5"
+                href="/pricing"
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-[44px]"
               >
-                <Users className="w-3.5 h-3.5 text-blue-600" />
-                <span>Why Hemanth</span>
+                Pricing &amp; Support Plans
               </Link>
+
               <Link
-                href="/blogs"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2.5"
+                href="/contact"
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-[44px]"
               >
-                <Globe className="w-3.5 h-3.5 text-blue-600" />
-                <span>Articles &amp; Guides</span>
+                Contact
               </Link>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  openCart();
+                }}
+                className="w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-[44px]"
+              >
+                <div className="flex items-center gap-2">
+                  <ShoppingBag className="w-4 h-4 text-blue-600" />
+                  <span>Shopping Cart</span>
+                </div>
+                <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-xs font-bold">
+                  {totalCount}
+                </span>
+              </button>
             </div>
 
-            <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
-              <a
-                href={SITE_CONFIG.whatsappUrl}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 shadow-xs"
-              >
-                <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Chat on WhatsApp</span>
-              </a>
-              <a
-                href="/#contact"
+            {/* Mobile Footer CTA */}
+            <div className="p-4 border-t border-slate-200 bg-slate-50 space-y-2">
+              <Link
+                href="/contact?service=consultation"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-blue-600 text-white font-bold text-sm text-center shadow-sm min-h-[44px]"
               >
-                <span>Book Systems Consultation</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
+                <span>Book a Consultation</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
-        )}
-      </header>
-      {/* Permanent Fixed Header Spacer */}
-      <div className="h-16 w-full shrink-0" aria-hidden="true" />
+        </div>
+      )}
     </>
   );
 }

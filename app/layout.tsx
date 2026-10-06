@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SITE_CONFIG } from "@/data/siteData";
+import { ClientProviders } from "@/components/ClientProviders";
 import { CookieConsent } from "@/components/ui/CookieConsent";
 import "./globals.css";
 
@@ -152,7 +153,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-blue-600/20 selection:text-blue-900">
-        {children}
+        <ClientProviders>
+          {children}
+        </ClientProviders>
         <CookieConsent />
       </body>
     </html>

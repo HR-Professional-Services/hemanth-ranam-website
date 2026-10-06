@@ -1,78 +1,62 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/sections/Hero";
-import { BusinessOsIntroSection } from "@/components/sections/BusinessOsIntroSection";
-import { BusinessOsProductGrid } from "@/components/sections/BusinessOsProductGrid";
+import { WhatWeSolveSection } from "@/components/sections/WhatWeSolveSection";
+import { CoreCategoriesSection } from "@/components/sections/CoreCategoriesSection";
 import { InteractiveBusinessOsDiagram } from "@/components/sections/InteractiveBusinessOsDiagram";
-import { DigitalGrowthSection } from "@/components/sections/DigitalGrowthSection";
 import { HowItWorksProcess } from "@/components/sections/HowItWorksProcess";
-import { BusinessOsPricingSection } from "@/components/sections/BusinessOsPricingSection";
 import { CaseStudiesSection } from "@/components/sections/CaseStudiesSection";
-import { TradingTechnologySection } from "@/components/sections/TradingTechnologySection";
 import { WhyHemanthSection } from "@/components/sections/WhyHemanthSection";
+import { BusinessOsPricingSection } from "@/components/sections/BusinessOsPricingSection";
 import { BusinessOsFaqSection } from "@/components/sections/BusinessOsFaqSection";
-import { BusinessOsFinalCta } from "@/components/sections/BusinessOsFinalCta";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { TechBackground3D } from "@/components/ui/TechBackground3D";
 
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-white text-slate-900 selection:bg-blue-600/20 selection:text-blue-700 overflow-x-hidden">
-      {/* Persistent 3D Interactive Tech Model Layer (Light Colors) */}
-      <TechBackground3D />
-
       {/* Viewport Reading Progress Bar */}
       <ScrollProgressBar />
 
-      {/* Sticky Header Navigation with Division Menus */}
+      {/* Sticky Header Navigation */}
       <Navbar />
 
-      {/* Main Homepage Flow (SaaS Platform Architecture) */}
+      {/* Main Homepage Flow */}
       <main id="main-content" className="relative z-10 flex flex-col">
-        {/* 1. HERO: "BUILD YOUR BUSINESS OPERATING SYSTEM" + Floating Dashboard Mockup */}
+        {/* 1. HERO: "Business Systems That Make Your Business Easier to Run" */}
         <Hero />
 
-        {/* 2. BUSINESS OS INTRODUCTION: "Your business should not run across ten disconnected tools." */}
-        <BusinessOsIntroSection />
+        {/* 2. PROBLEM: "Your business shouldn't depend on disconnected tools." */}
+        <WhatWeSolveSection />
 
-        {/* 3. BUSINESS OS PRODUCT GRID: 10 Core Operating Systems */}
-        <BusinessOsProductGrid />
+        {/* 3. CORE SERVICES: The 5 Pillars */}
+        <CoreCategoriesSection />
 
-        {/* 4. INTERACTIVE BUSINESS OS DIAGRAM: Automated Inbound-to-Management Flow */}
+        {/* 4. BUSINESS SYSTEMS FLAGSHIP: 9-Stage Connected Sequence */}
         <InteractiveBusinessOsDiagram />
 
-        {/* 5. 02 DIGITAL GROWTH: Featuring Website Growth OS */}
-        <DigitalGrowthSection />
-
-        {/* 6. HOW IT WORKS: 8-Stage Methodology (Discover to Improve) */}
+        {/* 5. HOW IT WORKS: 6-Stage Process (Understand to Support) */}
         <HowItWorksProcess />
 
-        {/* 7. PRICING ARCHITECTURE: One-Time Implementation vs. Monthly Managed Business OS */}
-        <BusinessOsPricingSection />
-
-        {/* 8. SELECTED SYSTEMS & CASE STUDIES: UI Dashboard Mockups */}
+        {/* 6. SELECTED WORK: Real Projects, Internal Architectures & Demonstrations */}
         <CaseStudiesSection />
 
-        {/* 9. 03 TRADING TECHNOLOGY: Systematic Pine Script & MT5 Tools */}
-        <TradingTechnologySection />
-
-        {/* 10. WHY HEMANTH: Founder-Led, MBA/CMI Level 7, Zero Agency Fluff */}
+        {/* 7. FOUNDER: "Built directly by Hemanth Ranam" */}
         <WhyHemanthSection />
 
-        {/* 11. FREQUENTLY ASKED QUESTIONS */}
+        {/* 8. PRICING & MONTHLY CARE: Clear Investment */}
+        <BusinessOsPricingSection />
+
+        {/* 9. FREQUENTLY ASKED QUESTIONS */}
         <BusinessOsFaqSection />
 
-        {/* 12. FINAL CTA: "Build the system your business actually needs." */}
-        <BusinessOsFinalCta />
-
-        {/* 13. LEAD CAPTURE CONTACT FORM (Preserving Google Sheets CRM & Lead IDs) */}
+        {/* 10. LEAD CAPTURE & CONSULTATION BOOKING */}
         <ContactSection />
       </main>
 
-      {/* Compact Clean Executive Footer */}
+      {/* Clean Professional Footer */}
       <Footer />
 
       {/* Persistent WhatsApp Floating Button & Back to Top */}

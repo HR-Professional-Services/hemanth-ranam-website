@@ -16,6 +16,7 @@ import {
   CANONICAL_SERVICES_CATALOGUE,
   FREE_RESOURCES,
 } from "@/data/pricingData";
+import { useCart } from "@/context/CartContext";
 import {
   Search,
   Filter,
@@ -32,6 +33,7 @@ import {
   Tag,
   Clock,
   Shield,
+  ShoppingBag,
 } from "lucide-react";
 
 const STORE_TABS = [
@@ -45,6 +47,7 @@ const STORE_TABS = [
 ];
 
 export default function StorePage() {
+  const { addItem } = useCart();
   const [activeTab, setActiveTab] = useState("All Items");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState<CheckoutItem | null>(null);
@@ -341,14 +344,41 @@ export default function StorePage() {
                       </div>
 
                       {/* Buy / Download CTA */}
-                      <div className="pt-6 mt-6 border-t border-slate-100">
+                      <div className="pt-4 mt-6 border-t border-slate-100 flex items-center gap-2">
+                        {!isFree && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const numericPrice = parseFloat(item.price.replace(/[^0-9.]/g, "")) || 0;
+                              addItem({
+                                id: item.id,
+                                name: item.name,
+                                price: numericPrice,
+                                priceDisplay: item.price,
+                                category: item.category,
+                                billingType: item.billingType as any,
+                                deliveryTime: item.deliveryTime,
+                                shortDescription: item.shortDescription,
+                                stripePaymentLink: item.stripePaymentLink,
+                                bookingUrl: item.bookingUrl,
+                                downloadUrl: item.downloadUrl,
+                              });
+                            }}
+                            className="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5 min-h-[44px]"
+                          >
+                            <ShoppingBag className="w-3.5 h-3.5" />
+                            <span>Add to Cart</span>
+                          </button>
+                        )}
                         <button
                           type="button"
                           onClick={() => handleOpenCheckout(item)}
-                          className={`w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold transition-all shadow-md cursor-pointer ${
+                          className={`${
+                            isFree ? "w-full" : "flex-1"
+                          } py-2.5 px-3 rounded-xl font-bold text-xs transition-all shadow-xs cursor-pointer flex items-center justify-center gap-1.5 min-h-[44px] ${
                             isFree
-                              ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-500/25"
-                              : "bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white shadow-blue-500/25"
+                              ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                              : "bg-blue-600 hover:bg-blue-700 text-white"
                           }`}
                         >
                           {isFree ? (
@@ -360,8 +390,8 @@ export default function StorePage() {
                             {isFree
                               ? "Get Free Access ($0)"
                               : item.billingType === "MONTHLY"
-                              ? `Subscribe (${item.price})`
-                              : `Buy Now (${item.price})`}
+                              ? "Subscribe"
+                              : "Buy Now"}
                           </span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </button>

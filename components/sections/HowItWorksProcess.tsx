@@ -1,86 +1,126 @@
 "use client";
 
-import { BUSINESS_OS_PROCESS } from "@/data/businessOsData";
-import { CheckCircle2, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import Link from "next/link";
+import {
+  Search,
+  PenTool,
+  Cpu,
+  Workflow,
+  Rocket,
+  Headphones,
+  ArrowRight,
+  CheckCircle2,
+} from "lucide-react";
 
 export function HowItWorksProcess() {
+  const steps = [
+    {
+      num: "01",
+      title: "Understand",
+      desc: "Understand your business, problems and existing tools.",
+      icon: Search,
+      deliverable: "Bottleneck diagnosis & toolchain review",
+    },
+    {
+      num: "02",
+      title: "Design",
+      desc: "Map the workflows and system architecture.",
+      icon: PenTool,
+      deliverable: "System blueprint & data models",
+    },
+    {
+      num: "03",
+      title: "Build",
+      desc: "Configure or build the required technology.",
+      icon: Cpu,
+      deliverable: "ERPNext setup, custom software, or web build",
+    },
+    {
+      num: "04",
+      title: "Automate",
+      desc: "Connect systems and remove repetitive work.",
+      icon: Workflow,
+      deliverable: "Zero-latency webhooks & automated triggers",
+    },
+    {
+      num: "05",
+      title: "Launch",
+      desc: "Deploy, test and train.",
+      icon: Rocket,
+      deliverable: "Production deployment, team training & SOPs",
+    },
+    {
+      num: "06",
+      title: "Support",
+      desc: "Maintain and improve the system.",
+      icon: Headphones,
+      deliverable: "Ongoing updates, backups & proactive monitoring",
+    },
+  ];
+
   return (
-    <section id="how-it-works" className="py-16 sm:py-20 lg:py-24 border-t border-slate-200/80 relative">
+    <section id="how-it-works" className="py-16 sm:py-24 bg-slate-50 border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-mono uppercase tracking-wider font-semibold">
-            Operational Methodology
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">
+            <span>Engineering Methodology</span>
           </div>
-          <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
-            We Don&apos;t Just Install Software.{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
-              We Engineer Systems.
-            </span>
+          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            How It Works
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Software alone rarely fixes operational friction. Every implementation follows our rigorous 8-stage engineering process to guarantee seamless adoption, staff mastery, and measurable business ROI.
+          <p className="mt-3 text-sm sm:text-base text-slate-600">
+            A straightforward, disciplined six-step process from initial discovery through long-term maintenance.
           </p>
         </div>
 
-        {/* 8-Stage Process Cards Grid with Headings Next to Icons */}
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {BUSINESS_OS_PROCESS.map((stage) => (
-            <div
-              key={stage.step}
-              className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-lg hover:shadow-blue-500/5 transition-all space-y-3 relative group"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xl font-extrabold font-mono text-blue-600 group-hover:text-blue-700 transition-colors">
-                  {stage.step}
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-semibold">
-                  {stage.name}
-                </span>
-              </div>
+        {/* 6 Steps Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {steps.map((s) => {
+            const Icon = s.icon;
+            return (
+              <div
+                key={s.num}
+                className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-7 shadow-xs hover:border-blue-400 hover:shadow-md transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <span className="text-2xl font-black font-mono text-blue-600">
+                      {s.num}
+                    </span>
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center">
+                      <Icon className="w-5 h-5 stroke-[1.75]" />
+                    </div>
+                  </div>
 
-              {/* Heading next to stage icon/indicator */}
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-600 shrink-0" />
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug">
-                  {stage.title}
-                </h3>
-              </div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-1.5">
+                    {s.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-normal">
+                    {s.desc}
+                  </p>
+                </div>
 
-              <p className="text-xs text-slate-600 leading-relaxed">
-                {stage.description}
-              </p>
-
-              <div className="pt-3 border-t border-slate-100 text-[11px]">
-                <span className="text-slate-400 block font-mono text-[10px] uppercase font-semibold">
-                  Tangible Deliverable
-                </span>
-                <span className="text-slate-800 font-medium mt-0.5 block">
-                  {stage.deliverable}
-                </span>
+                <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-500">
+                  <span className="font-bold text-slate-700 uppercase tracking-wider block text-[10px]">
+                    Outcome
+                  </span>
+                  <span>{s.deliverable}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        {/* Bottom Banner */}
-        <div className="mt-12 p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-1 text-center md:text-left">
-            <h4 className="text-lg font-bold text-slate-900">
-              Ready to diagnose your operational bottlenecks?
-            </h4>
-            <p className="text-xs sm:text-sm text-slate-600 max-w-xl">
-              Start with a structured Systems Consultation. We analyze your tech stack, outline a customized Business OS architecture, and provide a fixed milestone proposal.
-            </p>
-          </div>
-
-          <a
-            href="/#contact"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:to-blue-900 shadow-md shadow-blue-500/25 transition-all hover:scale-[1.02]"
+        {/* Action Link */}
+        <div className="mt-12 text-center">
+          <Link
+            href="/contact?service=consultation"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm transition-colors shadow-xs"
           >
-            <span>Book Systems Consultation</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </a>
+            <span>Start with Step 01 — Book a $49 Consultation</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </section>
