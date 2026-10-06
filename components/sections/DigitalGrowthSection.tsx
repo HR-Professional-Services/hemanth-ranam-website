@@ -3,14 +3,9 @@
 import Link from "next/link";
 import {
   Globe,
-  Mail,
-  Network,
   Calendar,
-  Zap,
   CheckCircle2,
   ArrowRight,
-  ShieldCheck,
-  MessageSquare,
   Sparkles,
 } from "lucide-react";
 import { DIGITAL_GROWTH_PRODUCTS } from "@/data/businessOsData";
@@ -87,14 +82,14 @@ export function DigitalGrowthSection() {
                 </div>
 
                 <div className="pt-2 flex flex-wrap gap-3">
-                  <a
+                  <Link
                     href="/#contact"
                     className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-500 hover:to-blue-700 shadow-md shadow-blue-500/20 transition-all hover:scale-[1.02]"
                   >
                     <Calendar className="w-3.5 h-3.5" />
                     <span>Deploy Website Growth OS</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </a>
+                  </Link>
 
                   <Link
                     href="/website-growth-os"
@@ -169,13 +164,13 @@ export function DigitalGrowthSection() {
               </div>
 
               <div className="pt-4 border-t border-slate-100">
-                <a
+                <Link
                   href="/#contact"
                   className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 transition-colors"
                 >
                   <span>Inquire about {prod.name}</span>
                   <ArrowRight className="w-3 h-3" />
-                </a>
+                </Link>
               </div>
             </div>
           ))}

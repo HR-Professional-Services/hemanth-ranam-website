@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { PROCESS_STEPS } from "@/data/siteData";
 import {
   Search,
@@ -89,13 +90,13 @@ export function HowItWorksSection() {
               Start with a no-obligation technical diagnostic to evaluate scope and feasibility.
             </p>
           </div>
-          <a
+          <Link
             href="/#contact"
             className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-xs shrink-0"
           >
             <span>Talk to Us</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

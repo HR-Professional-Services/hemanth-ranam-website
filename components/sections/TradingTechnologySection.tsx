@@ -9,12 +9,10 @@ import {
   Bot,
   Send,
   Cpu,
-  CheckCircle2,
   ArrowRight,
   ShieldAlert,
   Terminal,
   Activity,
-  Zap,
 } from "lucide-react";
 import { TRADING_TECH_PRODUCTS } from "@/data/businessOsData";
 
@@ -168,9 +166,9 @@ export function TradingTechnologySection() {
 
             {activeTab === "pine" && (
               <div className="space-y-2 text-[11px] text-slate-700 p-2">
-                <div className="text-slate-400">// TradingView Pine Script v5 Non-Repainting Indicator</div>
+                <div className="text-slate-400">{"// TradingView Pine Script v5 Non-Repainting Indicator"}</div>
                 <div className="space-y-1">
-                  <span className="text-blue-600 font-bold">//@version=5</span>
+                  <span className="text-blue-600 font-bold">{"//@version=5"}</span>
                   <br />
                   <span className="text-sky-600 font-bold">indicator</span>(&quot;Trend &amp; Confluence Signals&quot;, overlay = true)
                   <br />

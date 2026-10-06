@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ONE_TIME_PROJECT_PLANS, MONTHLY_SUBSCRIPTION_PLANS, CommercialPlan } from "@/data/siteData";
-import { Tag, ArrowRight, CheckCircle2, ShieldCheck, Sparkles, Layers, RefreshCw } from "lucide-react";
+import { Tag, ArrowRight, CheckCircle2, Sparkles, Layers } from "lucide-react";
 
 export function PricingSection() {
   const [billingMode, setBillingMode] = useState<"one-time" | "monthly">("one-time");
@@ -13,7 +13,7 @@ export function PricingSection() {
 
   const handleSelectPlan = (item: CommercialPlan) => {
     if (item.stripePaymentLink && item.stripePaymentLink.trim().length > 0) {
-      window.location.href = item.stripePaymentLink;
+      window.location.assign(item.stripePaymentLink);
       return;
     }
 

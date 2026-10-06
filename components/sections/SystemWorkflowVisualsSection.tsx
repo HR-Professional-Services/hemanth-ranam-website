@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   Lightbulb,
   Workflow,
@@ -117,13 +118,13 @@ export function SystemWorkflowVisualsSection() {
 
         {/* Bottom Fast Action */}
         <div className="mt-8 text-center">
-          <a
+          <Link
             href="/#contact"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md shadow-blue-600/20 transition-all cursor-pointer"
           >
             <span>Discuss Your Pipeline</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { SUPPORT_AND_TRAINING_TIERS } from "@/data/siteData";
 import { Headphones, CheckCircle2, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 
@@ -103,7 +104,7 @@ export function SupportAndTrainingSection() {
 
                 {/* Bottom CTA */}
                 <div className={`pt-4 border-t ${tier.recommended ? "border-slate-800" : "border-slate-200"}`}>
-                  <a
+                  <Link
                     href="/#contact"
                     className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                       tier.recommended
@@ -113,7 +114,7 @@ export function SupportAndTrainingSection() {
                   >
                     <span>Discuss {tier.name}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             );
@@ -128,13 +129,13 @@ export function SupportAndTrainingSection() {
               All ongoing monthly agreements operate on flexible milestone terms with no multi-year lock-in.
             </span>
           </div>
-          <a
+          <Link
             href="/#how-it-works"
             className="font-bold text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center gap-1 shrink-0"
           >
             <span>See How We Train & Handover Systems</span>
             <ArrowRight className="w-3 h-3" />
-          </a>
+          </Link>
         </div>
 
       </div>

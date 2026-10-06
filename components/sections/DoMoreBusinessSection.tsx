@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { DO_MORE_BUSINESS_NODES } from "@/data/siteData";
 import {
   Globe,
@@ -120,13 +121,13 @@ export function DoMoreBusinessSection() {
               </p>
             </div>
 
-            <a
+            <Link
               href="/#contact"
               className="w-full py-3 px-6 rounded-xl bg-white text-slate-900 font-bold text-xs sm:text-sm hover:bg-blue-50 transition-colors shadow-sm flex items-center justify-center gap-2"
             >
               <span>Build My System</span>
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   X,
   ShieldCheck,
@@ -229,13 +230,13 @@ export function EcommerceCheckoutModal({
                 <p className="text-slate-600 leading-relaxed mb-3">
                   Book a 30-minute 1-on-1 strategy consultation with Hemanth. 100% of the $25 fee is credited towards any subsequent custom build.
                 </p>
-                <a
+                <Link
                   href="/services/business-consultation"
                   className="text-xs font-bold text-blue-700 hover:text-blue-900 inline-flex items-center gap-1"
                 >
                   <span>Book Strategy Consultation ($25)</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+                </Link>
               </div>
             </div>
           ) : (

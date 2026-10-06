@@ -3,10 +3,6 @@
 import Link from "next/link";
 import {
   Layers,
-  Workflow,
-  Cpu,
-  Globe,
-  TrendingUp,
   Mail,
   MapPin,
   Shield,
@@ -14,11 +10,11 @@ import {
   RefreshCw,
   MessageSquare,
   Sparkles,
-  ShoppingBag,
-  FolderKanban,
   AlertCircle,
+  FolderKanban,
 } from "lucide-react";
 import { SITE_CONFIG } from "@/data/siteData";
+import { LinkedinIcon } from "@/components/ui/LinkedinIcon";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -74,6 +70,17 @@ export function Footer() {
                   className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors"
                 >
                   Direct WhatsApp Chat
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <LinkedinIcon className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                <a
+                  href={SITE_CONFIG.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-300 hover:text-white transition-colors"
+                >
+                  LinkedIn Profile
                 </a>
               </div>
             </div>

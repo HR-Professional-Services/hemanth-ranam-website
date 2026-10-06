@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
@@ -8,21 +8,15 @@ import { Footer } from "@/components/sections/Footer";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { CURATED_OFFERS, CuratedOffer } from "@/data/curatedCatalog";
+import { CURATED_OFFERS } from "@/data/curatedCatalog";
 import { useCart } from "@/context/CartContext";
 import {
   Layers,
-  Workflow,
-  Cpu,
-  Globe,
-  TrendingUp,
   CheckCircle2,
   Clock,
   ArrowRight,
   ShoppingBag,
-  Sparkles,
   Search,
-  Filter,
 } from "lucide-react";
 
 const CATEGORIES = [
@@ -37,15 +31,11 @@ const CATEGORIES = [
 function ServicesContent() {
   const searchParams = useSearchParams();
   const initialCat = searchParams.get("cat") || "all";
-  const [selectedCat, setSelectedCat] = useState(initialCat);
+  const [userCat, setUserCat] = useState<string | null>(null);
+  const selectedCat = userCat ?? initialCat;
+  const setSelectedCat = (cat: string) => setUserCat(cat);
   const [searchQuery, setSearchQuery] = useState("");
   const { addItem } = useCart();
-
-  useEffect(() => {
-    if (initialCat) {
-      setSelectedCat(initialCat);
-    }
-  }, [initialCat]);
 
   const filteredOffers = CURATED_OFFERS.filter((offer) => {
     const matchesCat =

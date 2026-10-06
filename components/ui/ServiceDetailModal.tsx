@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { ServiceItem } from "@/data/siteData";
 import {
   X,
@@ -177,7 +178,7 @@ export function ServiceDetailModal({ service, onClose }: ServiceDetailModalProps
             Close
           </button>
 
-          <a
+          <Link
             href="/#contact"
             onClick={onClose}
             className="inline-flex items-center gap-2 px-5 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs transition-all"
@@ -185,7 +186,7 @@ export function ServiceDetailModal({ service, onClose }: ServiceDetailModalProps
             <MessageSquare className="w-3.5 h-3.5" />
             <span>Discuss This Project</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </a>
+          </Link>
         </div>
       </div>
     </div>

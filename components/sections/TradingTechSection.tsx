@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   TrendingUp,
   Binary,
@@ -83,13 +84,13 @@ export function TradingTechSection() {
             ))}
           </div>
 
-          <a
+          <Link
             href="/#contact"
             className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 shrink-0"
           >
             <span>Discuss Trading Setup</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </a>
+          </Link>
         </div>
 
         {/* Tiny Compliance Note */}

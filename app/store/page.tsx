@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { TechBackground3D } from "@/components/ui/TechBackground3D";
@@ -19,18 +18,13 @@ import {
 import { useCart } from "@/context/CartContext";
 import {
   Search,
-  Filter,
   CheckCircle2,
   Sparkles,
   ArrowRight,
   Download,
-  Calendar,
-  Layers,
   Lock,
-  Zap,
   AlertTriangle,
   FolderLock,
-  Tag,
   Clock,
   Shield,
   ShoppingBag,
@@ -356,7 +350,7 @@ export default function StorePage() {
                                 price: numericPrice,
                                 priceDisplay: item.price,
                                 category: item.category,
-                                billingType: item.billingType as any,
+                                billingType: (item.billingType === "monthly" ? "MONTHLY" : item.billingType === "custom" ? "CUSTOM" : item.billingType === "free" ? "FREE" : "ONE_TIME"),
                                 deliveryTime: item.deliveryTime,
                                 shortDescription: item.shortDescription,
                                 stripePaymentLink: item.stripePaymentLink,

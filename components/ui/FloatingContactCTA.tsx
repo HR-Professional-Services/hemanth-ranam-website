@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { MessageSquare, ArrowRight } from "lucide-react";
 
 export function FloatingContactCTA() {
@@ -33,14 +34,14 @@ export function FloatingContactCTA() {
             <p className="text-[11px] text-slate-400">Systems • Automation • Trading Tech</p>
           </div>
         </div>
-        <a
+        <Link
           href="/#contact"
           id="mobile-floating-cta-btn"
           className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-xl transition-colors shadow-sm"
         >
           <span>Connect</span>
           <ArrowRight className="w-3.5 h-3.5" />
-        </a>
+        </Link>
       </div>
     </div>
   );

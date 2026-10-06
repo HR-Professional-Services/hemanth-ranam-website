@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useMemo, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/sections/Footer";
@@ -26,7 +26,6 @@ import {
   ArrowRight,
   ArrowLeft,
   ShoppingBag,
-  Trash2,
   Plus,
   Minus,
   Lock,
@@ -63,7 +62,6 @@ interface DirectItem {
 }
 
 function CheckoutContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const initialItemId =
     searchParams.get("id") ||
@@ -76,7 +74,6 @@ function CheckoutContent() {
     removeFromCart,
     updateQuantity,
     clearCart,
-    subtotal: cartSubtotal,
     totalItems,
   } = useCart();
 
@@ -310,14 +307,14 @@ function CheckoutContent() {
         const redirectUrl = `${directItem.stripePaymentLink}${sep}prefilled_email=${encodeURIComponent(
           billingEmail
         )}&client_reference_id=${encodeURIComponent(orderId)}`;
-        window.location.href = redirectUrl;
+        window.location.assign(redirectUrl);
         return;
       }
 
       // If consultation booking URL
       if (directItem?.bookingUrl && directItem.price === 49) {
         clearCart();
-        window.location.href = directItem.bookingUrl;
+        window.location.assign(directItem.bookingUrl);
         return;
       }
 

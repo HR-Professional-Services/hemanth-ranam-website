@@ -188,6 +188,25 @@ export function ContactSection({
                   </span>
                 </div>
               </div>
+
+              <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                  <LinkedinIcon className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block">
+                    Professional Network
+                  </span>
+                  <a
+                    href={SITE_CONFIG.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold text-slate-900 hover:text-blue-600 text-sm transition-colors"
+                  >
+                    Connect on LinkedIn →
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div className="pt-2 text-xs text-slate-500 flex items-center gap-2">

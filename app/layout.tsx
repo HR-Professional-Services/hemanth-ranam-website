@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { SITE_CONFIG } from "@/data/siteData";
 import { ClientProviders } from "@/components/ClientProviders";
 import { CookieConsent } from "@/components/ui/CookieConsent";
 import "./globals.css";

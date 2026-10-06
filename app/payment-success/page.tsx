@@ -27,8 +27,7 @@ function PaymentSuccessContent() {
   const amount = searchParams.get("amount") || "$35";
   const currency = searchParams.get("currency") || "USD";
   const billingType = searchParams.get("billing") || "one-time";
-  const paymentRef = searchParams.get("ref") || searchParams.get("session_id") || "TX-" + Date.now().toString().slice(-8);
-  const email = searchParams.get("email") || "Customer Email";
+  const paymentRef = searchParams.get("ref") || searchParams.get("session_id") || "TX-CONFIRMED";
   const downloadUrl = searchParams.get("downloadUrl") || searchParams.get("download") || "";
 
   const today = new Date().toLocaleDateString("en-GB", {

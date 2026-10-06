@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { FAQ_ITEMS } from "@/data/siteData";
 import { HelpCircle, ChevronDown, MessageSquare } from "lucide-react";
 
@@ -72,13 +73,13 @@ export function FAQSection() {
           <p className="text-xs text-slate-600 mb-2">
             Have a specific requirement not covered here?
           </p>
-          <a
+          <Link
             href="/#contact"
             className="text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center gap-1.5"
           >
             <MessageSquare className="w-3.5 h-3.5" />
             <span>Discuss your questions directly with our team</span>
-          </a>
+          </Link>
         </div>
 
       </div>

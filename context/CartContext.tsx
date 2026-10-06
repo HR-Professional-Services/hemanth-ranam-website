@@ -8,7 +8,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { CURATED_OFFERS, MONTHLY_PLANS, getCanonicalPrice } from "@/data/curatedCatalog";
+import { getCanonicalPrice } from "@/data/curatedCatalog";
 import { CANONICAL_SERVICES_CATALOGUE } from "@/data/pricingData";
 
 export interface CartItem {
@@ -84,13 +84,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             }
             return item;
           });
-          setItems(validated);
+          queueMicrotask(() => {
+            setItems(validated);
+            setIsHydrated(true);
+          });
+        } else {
+          queueMicrotask(() => setIsHydrated(true));
         }
+      } else {
+        queueMicrotask(() => setIsHydrated(true));
       }
     } catch (e) {
       console.warn("Failed to read cart from localStorage:", e);
+      queueMicrotask(() => setIsHydrated(true));
     }
-    setIsHydrated(true);
   }, []);
 
   // Sync to localStorage whenever items change after initial hydration

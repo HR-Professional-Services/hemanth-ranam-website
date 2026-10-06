@@ -14,13 +14,6 @@ import {
   Globe,
   TrendingUp,
   ShoppingBag,
-  FolderKanban,
-  FileText,
-  CreditCard,
-  User,
-  MessageSquare,
-  Sparkles,
-  Phone,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
@@ -30,7 +23,14 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesFlyoutOpen, setServicesFlyoutOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [prevPathname, setPrevPathname] = useState(pathname);
   const flyoutRef = useRef<HTMLDivElement>(null);
+
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setMobileMenuOpen(false);
+    setServicesFlyoutOpen(false);
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,12 +50,6 @@ export function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileMenuOpen(false);
-    setServicesFlyoutOpen(false);
-  }, [pathname]);
 
   const serviceCategories = [
     {
