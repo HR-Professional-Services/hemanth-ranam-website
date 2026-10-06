@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/sections/Footer";
-import { TechBackground3D } from "@/components/ui/TechBackground3D";
 import { ShieldCheck, ArrowLeft, CheckCircle2, AlertCircle } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -17,7 +16,6 @@ export const metadata: Metadata = {
 export default function RefundPolicyPage() {
   return (
     <div className="relative min-h-screen bg-white text-slate-900 selection:bg-blue-600/20 selection:text-blue-700 overflow-x-hidden">
-      <TechBackground3D />
       <Navbar />
 
       <main id="main-content" className="relative z-10 flex flex-col pt-16">

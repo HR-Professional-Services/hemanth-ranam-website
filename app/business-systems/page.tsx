@@ -4,7 +4,6 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { TechBackground3D } from "@/components/ui/TechBackground3D";
 import {
   Layers,
   Users,
@@ -107,7 +106,6 @@ const SYSTEMS = [
 export default function BusinessSystemsPage() {
   return (
     <div className="relative min-h-screen bg-white text-slate-900 selection:bg-blue-600/20 selection:text-blue-700 overflow-x-hidden">
-      <TechBackground3D />
       <Navbar />
 
       <main id="main-content" className="relative z-10 flex flex-col pt-16">

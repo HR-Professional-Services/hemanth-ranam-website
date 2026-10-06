@@ -5,7 +5,6 @@ import { Footer } from "@/components/sections/Footer";
 import { BusinessOsFaqSection } from "@/components/sections/BusinessOsFaqSection";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { TechBackground3D } from "@/components/ui/TechBackground3D";
 import { Sparkles, HelpCircle, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -20,7 +19,6 @@ export const metadata: Metadata = {
 export default function FaqPage() {
   return (
     <div className="relative min-h-screen bg-white text-slate-900 selection:bg-blue-600/20 selection:text-blue-700 overflow-x-hidden">
-      <TechBackground3D />
       <Navbar />
 
       <main id="main-content" className="relative z-10 flex flex-col pt-16">

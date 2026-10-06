@@ -4,7 +4,6 @@ import { Footer } from "@/components/sections/Footer";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { TechBackground3D } from "@/components/ui/TechBackground3D";
 import { Sparkles, MessageSquare, Mail, Calendar, ShieldCheck } from "lucide-react";
 import { SITE_CONFIG } from "@/data/siteData";
 
@@ -20,7 +19,6 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="relative min-h-screen bg-white text-slate-900 selection:bg-blue-600/20 selection:text-blue-700 overflow-x-hidden">
-      <TechBackground3D />
       <Navbar />
 
       <main id="main-content" className="relative z-10 flex flex-col pt-16">

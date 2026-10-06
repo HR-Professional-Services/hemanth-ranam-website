@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { SITE_CONFIG } from "@/data/siteData";
 import { LinkedinIcon } from "@/components/ui/LinkedinIcon";
+import { Logo } from "@/components/ui/Logo";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -26,21 +27,7 @@ export function Footer() {
           {/* Col 1: Brand & Positioning */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 p-[1.5px] shadow-sm">
-                <div className="w-full h-full bg-slate-950 rounded-[9px] flex items-center justify-center">
-                  <span className="font-extrabold text-sm text-blue-400">
-                    HR
-                  </span>
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-base text-white tracking-tight group-hover:text-blue-400 transition-colors">
-                  Hemanth Ranam
-                </span>
-                <span className="text-[11px] text-blue-400 font-medium">
-                  Founder &amp; Systems Architect
-                </span>
-              </div>
+              <Logo theme="dark" />
             </Link>
 
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">

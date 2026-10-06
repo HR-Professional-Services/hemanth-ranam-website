@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/sections/Footer";
-import { TechBackground3D } from "@/components/ui/TechBackground3D";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
@@ -482,7 +481,6 @@ function CheckoutContent() {
     return (
       <div className="min-h-screen bg-slate-50 text-slate-900">
         <Navbar />
-        <TechBackground3D />
         <div className="max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
           <div className="w-16 h-16 rounded-2xl bg-slate-100 border border-slate-200 text-slate-400 flex items-center justify-center mx-auto mb-6 shadow-xs">
             <ShoppingBag className="w-8 h-8 text-slate-400" />
@@ -560,7 +558,6 @@ function CheckoutContent() {
     <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white">
       <Navbar />
       <ScrollProgressBar />
-      <TechBackground3D />
 
       {/* Header Bar */}
       <section className="relative pt-28 pb-8 px-4 sm:px-6 lg:px-8 border-b border-slate-200 bg-white">

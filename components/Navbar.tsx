@@ -16,6 +16,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { Logo } from "@/components/ui/Logo";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -97,21 +98,7 @@ export function Navbar() {
           <div className="flex items-center justify-between h-16 sm:h-18">
             {/* Brand Logo & Name */}
             <Link href="/" className="flex items-center gap-3 shrink-0 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-[1.5px] shadow-sm group-hover:shadow-blue-500/25 transition-all">
-                <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center">
-                  <span className="font-extrabold text-xs tracking-wider bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">
-                    HR
-                  </span>
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-sm tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors leading-none">
-                  Hemanth Ranam
-                </span>
-                <span className="text-[11px] text-slate-500 font-normal leading-tight mt-1">
-                  Business Systems &amp; Automation
-                </span>
-              </div>
+              <Logo theme="light" />
             </Link>
 
             {/* Desktop Navigation Links */}
@@ -302,14 +289,13 @@ export function Navbar() {
           <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-200">
             {/* Mobile Menu Header */}
             <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-blue-600 text-white font-extrabold text-xs flex items-center justify-center">
-                  HR
-                </div>
-                <span className="font-bold text-sm text-slate-900">
-                  Hemanth Ranam
-                </span>
-              </div>
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 group"
+              >
+                <Logo theme="light" size="sm" />
+              </Link>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}

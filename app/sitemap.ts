@@ -5,9 +5,10 @@ import { DEDICATED_SERVICES } from "@/data/siteData";
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://hemanth.ranam.dev";
+  const baseUrl = "https://app.ranam.workers.dev";
   const now = new Date();
 
+  // Core public indexable landing pages
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -16,9 +17,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/products`,
+      url: `${baseUrl}/services`,
       lastModified: now,
-      changeFrequency: "daily",
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/work`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/pricing`,
+      lastModified: now,
+      changeFrequency: "weekly",
       priority: 0.95,
     },
     {
@@ -28,22 +41,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95,
     },
     {
-      url: `${baseUrl}/checkout`,
+      url: `${baseUrl}/products`,
       lastModified: now,
       changeFrequency: "daily",
-      priority: 0.95,
-    },
-    {
-      url: `${baseUrl}/services`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.95,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/resources`,
       lastModified: now,
       changeFrequency: "daily",
       priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/monthly`,
@@ -57,6 +76,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    // Business OS Suite Architecture Pages
     {
       url: `${baseUrl}/business-os`,
       lastModified: now,
@@ -106,6 +126,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.85,
     },
     {
+      url: `${baseUrl}/helpdesk-os`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/custom-os`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
       url: `${baseUrl}/website-growth-os`,
       lastModified: now,
       changeFrequency: "weekly",
@@ -124,37 +156,40 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.85,
     },
     {
-      url: `${baseUrl}/blogs`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
       url: `${baseUrl}/business-systems`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    // Articles & Knowledge Hub
     {
-      url: `${baseUrl}/about`,
+      url: `${baseUrl}/blogs`,
       lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: now,
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
       priority: 0.9,
     },
+    // FAQ & Support
     {
       url: `${baseUrl}/faq`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    // Policies & Legal
     {
       url: `${baseUrl}/disclaimer`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/terms`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
@@ -173,6 +208,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
+  // All Dedicated Dynamic Service Detail Pages
   const servicePages: MetadataRoute.Sitemap = DEDICATED_SERVICES.map((s) => ({
     url: `${baseUrl}/services/${s.slug}`,
     lastModified: now,
@@ -180,6 +216,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
+  // All Dynamic Deep Technical Articles & Case Studies
   const blogPages: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
     url: `${baseUrl}/blogs/${post.slug}`,
     lastModified: now,

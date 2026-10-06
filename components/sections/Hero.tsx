@@ -13,7 +13,7 @@ import {
 
 export function Hero() {
   return (
-    <section className="relative pt-12 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24 overflow-hidden bg-white">
+    <section className="relative pt-12 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24 overflow-hidden bg-white/60 backdrop-blur-xs">
       {/* Subtle radial ambient blue gradients on white */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[420px] bg-gradient-to-b from-blue-50/70 via-indigo-50/30 to-transparent pointer-events-none blur-3xl -z-10" />
 

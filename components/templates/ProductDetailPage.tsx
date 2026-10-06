@@ -7,7 +7,6 @@ import { ContactSection } from "@/components/sections/ContactSection";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
-import { TechBackground3D } from "@/components/ui/TechBackground3D";
 import {
   Layers,
   CheckCircle2,
@@ -45,9 +44,6 @@ export interface ProductDetailProps {
 export function ProductDetailPage({ product }: { product: ProductDetailProps }) {
   return (
     <div className="relative min-h-screen bg-white text-slate-900 selection:bg-blue-600/20 selection:text-blue-700 overflow-x-hidden">
-      {/* 3D Wireframe Tech Background */}
-      <TechBackground3D />
-
       <ScrollProgressBar />
       <Navbar />
 
